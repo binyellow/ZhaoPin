@@ -1,1 +1,3 @@
-one
+one= () =>{
+    console.log(aa)
+}
