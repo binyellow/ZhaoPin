@@ -11,14 +11,12 @@ import {Provider} from 'react-redux';
 import reducer from './reducer/reducer';
 import {BrowserRouter,Route,Switch,Redirect} from 'react-router-dom';
 import {Row} from 'antd';
-
+import 'antd-mobile/dist/antd-mobile.css';
 const store = createStore(reducer,compose(
     applyMiddleware(thunk),
     window.devToolsExtension?window.devToolsExtension():()=>{}
 ));
-const A = ()=>{
-    return <h4>A</h4>
-}
+
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>

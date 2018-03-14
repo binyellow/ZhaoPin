@@ -1,15 +1,15 @@
 import React from 'react';
-
+import {Link} from 'react-router-dom'
+import './config'
 export default class Test extends React.Component{
     render(){
-        const people = {name:'huangbin',age:21,sex:'male'}
         const location = this.props.match.params;
-        // console.log(location,this.props);
-        for (const [key,value] of Object.entries(people)) {
-            console.log(key,value)
-        }
+        console.log(location,this.props);
         return (
-            <div>测试组件  {Object.keys(location)+"--"+Object.values(location)}</div>
+            <div>
+                <Link to="/dashboard">DashBoard</Link><br/>
+                测试组件  {Object.keys(location)+"--"+Object.values(location)}
+            </div>
         )
     }
 }

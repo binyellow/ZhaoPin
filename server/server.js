@@ -17,7 +17,7 @@ const User = mongoose.model('user',new mongoose.Schema({
 // })
 // User.remove({age:22})
 // User.update({user:'huangbin'},{$set:{age:21}},(err,doc)=>console.log(doc))
-app.get('/',(req,res)=>{
+app.get('/data',(req,res)=>{
     User.find({user:'huangbin'},(err,doc)=>res.json(doc))
 })
 app.listen(9030,()=>{

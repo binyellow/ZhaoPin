@@ -61,4 +61,7 @@ export default App
 //      
 // }
 
+// const mapDispatchToProps = (dispatch) => {
+//      return {addUser:(user)=>dispatch(addUser(user))}
+// }
 // export default connect(mapStateToProps, mapDispatchToProps)(component)
