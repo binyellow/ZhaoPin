@@ -4,6 +4,7 @@ import lodash from 'lodash'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import {LoginAction,AddUserAction} from '../reducer/login'
+import Logo from './Logo/Logo'
 
 @connect(
 state=>({auth:state.login}),
@@ -27,6 +28,7 @@ export default class Login extends Component{
         console.log(auth)
         const loginPage = (
             <div>
+                <Logo/>
                 {(lodash.isArray(auth)?auth:[]).map((item,index)=>{
                     return <div key={index}>
                         {item.user}:{item.age}
