@@ -1,9 +1,9 @@
-const ADD_USER = 'ADD_USER'
+const LOAD_DATA = 'LOAD_DATA'
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
-const initState = {isAuth:false,user:'huangBin'}
-export function login(state=[initState],action){
+const initState = {isAuth:false,userName:'',passWord:'',type:''}
+export function login(state=initState,action){
     switch(action.type){
         case LOGIN:
             return {
@@ -15,20 +15,20 @@ export function login(state=[initState],action){
                 ...state,
                 isAuth:false
             }
-        case ADD_USER:
-            return [
+        case LOAD_DATA:
+            return {
                 ...state,
-                ...action.payload
-            ]
+                ...action.payload,
+                isAuth:true
+            }
         default:
             return state;
     }
 }
 
-export function AddUserAction(payload){
-    console.log(payload)
+export function LoadData(payload){
     return {
-        type: ADD_USER,
+        type: LOAD_DATA,
         payload
     }
 }

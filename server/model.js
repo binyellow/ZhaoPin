@@ -7,8 +7,9 @@ mongoose.connection.on('connected',()=>console.log('连接成功'))
 
 const models = {
     user:{
-        user:{type:String,required:true},
-        age:{type:Number,required:true}
+        userName:{type:String,required:true},
+        passWord:{type:String,required:true},
+        type:{type:String,required:true},
     },
     char:{
 
@@ -26,8 +27,9 @@ module.exports = {
     }
 }
 // mongoose.model('user').create({
-//     user:'huangbin',
-//     age:22
+//     userName:'huangbin',
+//     passWord:'123456',
+//     type:'genius'
 // },(err,doc)=>{
 //     if(!err){console.log(doc)}else{console.log(err)}
 // })

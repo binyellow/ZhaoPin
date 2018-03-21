@@ -1,10 +1,154 @@
 import React, { Component } from 'react'
+import { Button, Input, Radio, Form, Modal } from 'antd'
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
+// import axios from 'axios';
+import Logo from '../../components/Logo/Logo'
+import styles from './Register.less'
+import {LoginAction} from '../../reducer/login'
+import { register } from '../../services/register';
+const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
+const FormItemLayout = {
+    labelCol:{span:4},
+    wrapperCol:{span:20}
+}
 
-export default class Register extends Component {
+@withRouter
+@Form.create()
+@connect(
+    state=>({login:state.login}),
+    {LoginAction}
+)
+export default class Login extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            userName:'',
+            passWord:'',
+            repeatPassWord:{
+                value:'',
+            },
+            type:'genius',
+        }
+    }
+    handleChangeState = (key,value)=>{
+        this.setState({
+            [key]:value
+        })
+    }
+    validRepeatPwd=(value)=>{
+        if(value===this.state.passWord){
+            return {
+                validateStatus:'success'
+            }
+        }else{
+            return {
+                validateStatus:'error'
+            }
+        }
+    }
+    handleRepeatPwdChangeState = (value)=>{
+        this.setState({
+            repeatPassWord:{
+                ...this.validRepeatPwd(value),
+                value
+            }
+        })
+    }
+    handleRegister = () =>{
+        const {validateFields} = this.props.form;
+        const {repeatPassWord,type} = this.state;
+        validateFields((err,values)=>{
+            if(!err&&repeatPassWord.validateStatus!=='error'&&repeatPassWord.value){
+                console.log(values,type)
+                register({...values,type}).then(res=>{
+                    if(res.status === 200){
+                        const {data} = res;
+                        if(data.code===1){
+                            Modal.error({title:'注册失败',content:data.message})
+                        }else if(data.code===0){
+                            Modal.success({
+                                title:'注册成功',
+                                content:`欢迎您${values.userName}`,
+                                onOk:()=>{
+                                    this.props.LoginAction();
+                                    this.props.history.push('/login')
+                                }
+                            })
+                        }
+                    }
+                })
+            }else{
+                this.setState({repeatPassWord:{validateStatus:'error'}})
+            }
+        })
+    }
     render() {
+        // console.log(this.state)
+        const {form:{getFieldDecorator}} = this.props;
         return (
-            <div>
-                Register
+            <div className={styles.wrapper}>
+                {}
+                <Logo/>
+                <FormItem
+                label="账号"
+                {...FormItemLayout}
+                >
+                {getFieldDecorator('userName',{
+                    rules:[{
+                        required:true,
+                    }]
+                })(
+                    <Input
+                    onChange={e=>this.handleChangeState('userName',e.target.value)}/>
+                )}
+                </FormItem>
+                <FormItem
+                label="密码"
+                {...FormItemLayout}
+                >
+                {getFieldDecorator('passWord',{
+                    rules:[{
+                        required:true,
+                    }]
+                })(
+                    <Input
+                    type="password"
+                    onChange={e=>this.handleChangeState('passWord',e.target.value)}/>
+                )}
+                </FormItem>
+                <FormItem
+                label="重复密码"
+                {...FormItemLayout}
+                hasFeedback
+                validateStatus={this.state.repeatPassWord.validateStatus||''}
+                >
+                    <Input
+                    type="password"
+                    onChange={e=>this.handleRepeatPwdChangeState(e.target.value)}/>
+                </FormItem>
+                <div className={styles.operator}>
+                    <div>
+                        <RadioGroup
+                        value={this.state.type}
+                        onChange={(e)=>this.handleChangeState('type',e.target.value)}
+                        >
+                            <Radio
+                            value="genius"
+                            >
+                            牛人
+                            </Radio>
+                            <Radio 
+                            value="boss"
+                            >BOSS</Radio>
+                        </RadioGroup>
+                    </div>
+                    <div style={{marginTop:'10px'}}>
+                        <Button type="primary" onClick={()=>this.handleRegister()}>注册</Button>
+                        <Button type="primary" onClick={()=>this.props.history.push('/login')}>登录</Button>
+                    </div>
+                </div>
             </div>
         )
     }
