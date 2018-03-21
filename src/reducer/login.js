@@ -19,7 +19,6 @@ export function login(state=initState,action){
             return {
                 ...state,
                 ...action.payload,
-                isAuth:true
             }
         default:
             return state;

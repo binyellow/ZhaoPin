@@ -6,7 +6,7 @@ import { LoadData } from '../../reducer/login'
 
 @withRouter
 @connect(
-	null,
+	state=>({login:state.login}),
 	{LoadData}
 )
 class AuthRoute extends React.Component{
@@ -21,8 +21,9 @@ class AuthRoute extends React.Component{
 			.then(res=>{
 				if (res.status===200) {
 					if (res.data.code===0) {
-						// 有登录信息de
 						this.props.LoadData(res.data.data)
+						const {type} = this.props.login;
+						this.props.history.push(`/${type}-info`)
 					}else{
 						this.props.history.push('/register')
 					}

@@ -10,6 +10,7 @@ const models = {
         userName:{type:String,required:true},
         passWord:{type:String,required:true},
         type:{type:String,required:true},
+        createTime:{type:Date,default:new Date()}
     },
     char:{
 

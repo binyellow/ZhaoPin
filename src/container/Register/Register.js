@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom'
 import Logo from '../../components/Logo/Logo'
 import styles from './Register.less'
 import {LoginAction} from '../../reducer/login'
-import { register } from '../../services/register';
+import { register } from '../../services/user';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const FormItemLayout = {

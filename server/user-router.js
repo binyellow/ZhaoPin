@@ -1,6 +1,8 @@
 const koaRouter = require('koa-router');
 const model = require('./model')
 const filter = {'pwd':0,'__v':0}
+const lodash = require('lodash')
+const utils = require('utility')
 
 
 const user = new koaRouter();
@@ -44,12 +46,15 @@ const register = (ctx, next) => {
     }).then(({code, message})=>{
             let registerData = ctx.request.body;
             const User = model.getModule('user');
-            new Promise((resolve,reject)=>{//新的Promise决定之前的状态,then也是处理他的状态
-                User.create({...registerData}).then(data=>resolve(data),err=>reject(err))
+            return new Promise((resolve,reject)=>{//新的Promise决定之前的状态,then也是处理他的状态
+                User.create({...registerData,passWord:getMd5Pwd(registerData.passWord)}).then(data=>{
+                    console.log(data)
+                    resolve({code:0,data})
+                },err=>reject(err))
             })
-    }).then(({code,message})=>{
-        ctx.cookies.set('userId',message._id)
-        ctx.body = {code,message};
+    }).then(({code,data})=>{
+        ctx.cookies.set('userId',data._id)
+        ctx.body = {code,data};
         next();
     }).catch((err) => {
         ctx.body = err;
@@ -61,13 +66,11 @@ const Login = (ctx, next)=>{
     const User = model.getModule('user');
     console.log(requestData)
     return new Promise((resolve,reject)=>{
-        User.findOne({...requestData},(err,doc)=>{
-            if(!err){
-                resolve(doc)
-            }else{
-                reject(err)
-            }
-        })
+        if(lodash.isEmpty(requestData)){
+            reject({code:1,message:'请输入合法的账号密码'})
+        }else{
+            User.findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)},{userName:1,passWord:1,type:1,_id:1}).then(data=>resolve(data))
+        }
     }).then(doc=>{
         ctx.cookies.set('userId',doc._id)
         ctx.body = {code:0,doc};
@@ -75,8 +78,30 @@ const Login = (ctx, next)=>{
     })
     .catch(err=>{
         console.log(err);
-        ctx.body = {code:1,err,message:'账号密码错误'};
+        ctx.body = {code:err.code||1,err,message:'账号密码错误'};
         next();
+    })
+}
+
+const EditPwd = (ctx,next)=>{
+    const {userName,passWord,newPassWord,type} = ctx.query;
+    const User = model.getModule('user');
+    return new Promise((resolve,reject)=>{
+        User.findOneAndUpdate({userName,passWord:getMd5Pwd(passWord)},{passWord:getMd5Pwd(newPassWord),userName,type},(err,doc)=>{
+            if(err||passWord===newPassWord){
+                reject({err,code:1,message:'请不要近期试用过的密码'})
+            }else{
+                if(doc){
+                    resolve({code:0,doc})
+                }else{
+                    reject({code:1,message:'账号密码错误'})
+                }
+            }
+        })
+    }).then(res=>{
+        ctx.body = res
+    }).catch(err=>{
+        ctx.body = err
     })
 }
 
@@ -84,5 +109,11 @@ const Login = (ctx, next)=>{
 user.get('/info', getData)
 user.post('/register', register)//post、get注意一下
 user.get('/login',Login)
+user.get('/edit-pwd',EditPwd)
 
 module.exports = user
+
+function getMd5Pwd(passWord){
+    const salt = "huangBin_-.,a;fsk@!#!%^&*()_+";
+    return utils.md5(utils.md5(salt+passWord))
+}
