@@ -1,8 +1,10 @@
 const koaRouter = require('koa-router');
 const model = require('./model')
+const mongoose= require('mongoose')
 const filter = {'pwd':0,'__v':0}
 const lodash = require('lodash')
-const utils = require('utility')
+const getMd5Pwd = require('./utils/utils')
+const User = require('./controllers/user')
 
 
 const user = new koaRouter();
@@ -28,50 +30,23 @@ const getData = (ctx,next) => {
         next()
     })
 }
-const register = (ctx, next) => {
-    const { userName } = ctx.request.body;
-    const User = model.getModule('user');
-    return new Promise((resolve,reject)=>{//返回Promise对象的执行结果其实就是 ctx.body=
-        User.findOne({ userName },(err, doc) => {
-            if(err){
-                reject(err)
-                return;
-            }
-            if (doc) {
-                reject( { code: 1, message: `用户名${userName}已存在`,doc })
-            }else{
-                resolve({ code:0, message:doc })
-            }
-        })
-    }).then(({code, message})=>{
-            let registerData = ctx.request.body;
-            const User = model.getModule('user');
-            return new Promise((resolve,reject)=>{//新的Promise决定之前的状态,then也是处理他的状态
-                User.create({...registerData,passWord:getMd5Pwd(registerData.passWord)}).then(data=>{
-                    console.log(data)
-                    resolve({code:0,data})
-                },err=>reject(err))
-            })
-    }).then(({code,data})=>{
-        ctx.cookies.set('userId',data._id)
-        ctx.body = {code,data};
-        next();
-    }).catch((err) => {
-        ctx.body = err;
-        next();
-    });
-}
+
 const Login = (ctx, next)=>{
     const requestData = ctx.query;
-    const User = model.getModule('user');
+    // const User = model.getModule('user');
     console.log(requestData)
     return new Promise((resolve,reject)=>{
         if(lodash.isEmpty(requestData)){
             reject({code:1,message:'请输入合法的账号密码'})
         }else{
-            User.findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)},{userName:1,passWord:1,type:1,_id:1}).then(data=>resolve(data))
+            mongoose.model('user').findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)},
+            {userName:1,passWord:1,type:1,_id:1}).then(data=>{
+                console.log(data)
+                resolve(data)
+            })
         }
     }).then(doc=>{
+        console.log(doc);
         ctx.cookies.set('userId',doc._id)
         ctx.body = {code:0,doc};
         next();
@@ -107,13 +82,45 @@ const EditPwd = (ctx,next)=>{
 
 
 user.get('/info', getData)
-user.post('/register', register)//post、get注意一下
+user.post('/register', User.register)//post、get注意一下
 user.get('/login',Login)
 user.get('/edit-pwd',EditPwd)
+user.get('/all',User.findAll)
+
 
 module.exports = user
 
-function getMd5Pwd(passWord){
-    const salt = "huangBin_-.,a;fsk@!#!%^&*()_+";
-    return utils.md5(utils.md5(salt+passWord))
-}
+
+// const register = (ctx, next) => {
+//     const { userName } = ctx.request.body;
+//     const User = model.getModule('user');
+//     return new Promise((resolve,reject)=>{//返回Promise对象的执行结果其实就是 ctx.body=
+//         User.findOne({ userName },(err, doc) => {
+//             if(err){
+//                 reject(err)
+//                 return;
+//             }
+//             if (doc) {
+//                 reject( { code: 1, message: `用户名${userName}已存在`,doc })
+//             }else{
+//                 resolve({ code:0, message:doc })
+//             }
+//         })
+//     }).then(({code, message})=>{
+//             let registerData = ctx.request.body;
+//             const User = model.getModule('user');
+//             return new Promise((resolve,reject)=>{//新的Promise决定之前的状态,then也是处理他的状态
+//                 User.create({...registerData,passWord:getMd5Pwd(registerData.passWord)}).then(data=>{
+//                     console.log(data)
+//                     resolve({code:0,data})
+//                 },err=>reject(err))
+//             })
+//     }).then(({code,data})=>{
+//         ctx.cookies.set('userId',data._id)
+//         ctx.body = {code,data};
+//         next();
+//     }).catch((err) => {
+//         ctx.body = err;
+//         next();
+//     });
+// }

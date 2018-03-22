@@ -61,13 +61,13 @@ export default class Login extends Component {
         const {repeatPassWord,type} = this.state;
         validateFields((err,values)=>{
             if(!err&&repeatPassWord.validateStatus!=='error'&&repeatPassWord.value){
-                console.log(values,type)
+                console.log({...values,type})
                 register({...values,type}).then(res=>{
                     if(res.status === 200){
                         const {data} = res;
-                        if(data.code===1){
+                        if(!data.success){
                             Modal.error({title:'注册失败',content:data.message})
-                        }else if(data.code===0){
+                        }else if(data.success){
                             Modal.success({
                                 title:'注册成功',
                                 content:`欢迎您${values.userName}`,

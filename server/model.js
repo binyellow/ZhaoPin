@@ -12,7 +12,7 @@ const models = {
         type:{type:String,required:true},
         createTime:{type:Date,default:new Date()}
     },
-    char:{
+    chat:{
 
     }
 }
@@ -21,7 +21,7 @@ for (const key in models) {
         mongoose.model(key,mongoose.Schema(models[key]))
     }
 }
-
+// mongoose.model('user',mongoose.Schema(models.user))
 module.exports = {
     getModule:function(name){
         return mongoose.model(name)
@@ -36,3 +36,9 @@ module.exports = {
 // })
 // User.remove({age:22})
 // User.update({user:'huangbin'},{$set:{age:21}},(err,doc)=>console.log(doc))
+
+/**
+ * model就是表 params:表名,表模型
+ * model = mongoose.model('name',mongoose.Schema)
+ * 取这个模型就是mongoose.model(name)
+ */
