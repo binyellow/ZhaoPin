@@ -1,8 +1,10 @@
+import {getRedirectPath} from '../common/utils'
+
 const LOAD_DATA = 'LOAD_DATA'
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
-const initState = {isAuth:false,userName:'',passWord:'',type:''}
+const initState = {isAuth:false,userName:'',passWord:'',type:'',redirectTo:null}
 export function login(state=initState,action){
     switch(action.type){
         case LOGIN:
@@ -19,6 +21,7 @@ export function login(state=initState,action){
             return {
                 ...state,
                 ...action.payload,
+                redirectTo:getRedirectPath(action.payload)//登录或者更改密码都保留跳转到对应的页面
             }
         default:
             return state;

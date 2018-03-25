@@ -4,7 +4,7 @@ const mongoose= require('mongoose')
 const filter = {'pwd':0,'__v':0}
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
-const User = require('./controllers/user')
+const {register,findAll} = require('./controllers/user')
 
 
 const user = new koaRouter();
@@ -22,7 +22,6 @@ const getData = (ctx,next) => {
             })
         }
     }).then(doc=>{
-        console.log(doc)
         ctx.body = {code:0,data:doc}
         next()
     }).catch(e=>{
@@ -34,25 +33,21 @@ const getData = (ctx,next) => {
 const Login = (ctx, next)=>{
     const requestData = ctx.query;
     // const User = model.getModule('user');
-    console.log(requestData)
     return new Promise((resolve,reject)=>{
         if(lodash.isEmpty(requestData)){
             reject({code:1,message:'请输入合法的账号密码'})
         }else{
             mongoose.model('user').findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)},
             {userName:1,passWord:1,type:1,_id:1}).then(data=>{
-                console.log(data)
                 resolve(data)
             })
         }
     }).then(doc=>{
-        console.log(doc);
         ctx.cookies.set('userId',doc._id)
         ctx.body = {code:0,doc};
         next();
     })
     .catch(err=>{
-        console.log(err);
         ctx.body = {code:err.code||1,err,message:'账号密码错误'};
         next();
     })
@@ -82,10 +77,10 @@ const EditPwd = (ctx,next)=>{
 
 
 user.get('/info', getData)
-user.post('/register', User.register)//post、get注意一下
+user.post('/register', register)//post、get注意一下
 user.get('/login',Login)
 user.get('/edit-pwd',EditPwd)
-user.get('/all',User.findAll)
+user.get('/all',findAll)
 
 
 module.exports = user

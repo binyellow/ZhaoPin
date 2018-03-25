@@ -6,6 +6,7 @@ import {withRouter,Link,Redirect} from 'react-router-dom'
 import Logo from '../../components/Logo/Logo'
 import {editPassWord} from '../../services/user'
 import {LoadData} from '../../reducer/login';
+import AuthRoute from '../../components/AuthInfo/AuthInfo';
 const FormItem = Form.Item;
 const FormItemLayout = {
     labelCol:{span:4},
@@ -54,7 +55,7 @@ export default class GeniusInfo extends Component {
         })
     }
     handleEditPassWord = () =>{
-        const {form:{validateFields},login:{type}} = this.props;
+        const {form:{validateFields},login:{type="genius"}} = this.props;
         const fieldNames = ['userName','passWord','newPassWord','repeatNewPassWord'];
         validateFields(fieldNames,(err,values)=>{
             if(!err){
@@ -73,11 +74,13 @@ export default class GeniusInfo extends Component {
         })
     }
     render() {
-        const {getFieldDecorator} = this.props.form;
+        const path = this.props.location.pathname
+        const {form:{getFieldDecorator},login:{redirectTo,isAuth}} = this.props;
         // const {isAuth,type} = this.props.login;
         return (
             <div className={globalStyles.wrapper}>
-                {this.props.login.isAuth||this.props.login.type?null:<Redirect to="/login"/>}
+                {/* {this.props.login.isAuth||this.props.login.type?null:<Redirect to="/login"/>} */}
+                {redirectTo&&path!==redirectTo?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
                 label="账号"

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Button, Input, Radio, Form, Modal } from 'antd'
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom'
+import {withRouter,Redirect} from 'react-router-dom'
 // import axios from 'axios';
 import Logo from '../../components/Logo/Logo'
 import styles from './Register.less'
-import {LoginAction} from '../../reducer/login'
+import {LoadData} from '../../reducer/login'
 import { register } from '../../services/user';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -18,7 +18,7 @@ const FormItemLayout = {
 @Form.create()
 @connect(
     state=>({login:state.login}),
-    {LoginAction}
+    {LoadData}
 )
 export default class Login extends Component {
     constructor(props){
@@ -72,7 +72,7 @@ export default class Login extends Component {
                                 title:'注册成功',
                                 content:`欢迎您${values.userName}`,
                                 onOk:()=>{
-                                    this.props.LoginAction();
+                                    this.props.LoadData({...values,type});
                                     this.props.history.push('/login')
                                 }
                             })
@@ -86,10 +86,11 @@ export default class Login extends Component {
     }
     render() {
         // console.log(this.state)
-        const {form:{getFieldDecorator}} = this.props;
+        const path = this.props.location.pathname
+        const {form:{getFieldDecorator},login:{redirectTo,isAuth}} = this.props;
         return (
             <div className={styles.wrapper}>
-                {}
+                {redirectTo&&path!==redirectTo&&isAuth?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
                 label="账号"

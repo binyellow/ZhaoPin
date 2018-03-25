@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('user')
-
+/**
+ * 查找数据库所有数据
+ */
 exports.findAll = async ()=>{
     let res = {}
     await User.find({},(err,doc)=>{
@@ -12,7 +14,10 @@ exports.findAll = async ()=>{
     })
     return res;
 }
-
+/**
+ * 根据输入条件查找是否有数据
+ * @param {*} params 
+ */
 exports.findParamsInDB = async (params)=>{
     let res = {exist:false};
     await User.findOne({...params},(err,doc)=>{
@@ -37,7 +42,10 @@ exports.findParamsInDB = async (params)=>{
     //     })
     // }).then(res=>res).catch(e=>e)
 }
-
+/**
+ * 创建数据
+ * @param {*} params 
+ */
 exports.create = async (params)=>{
     let res = {};
     await User.create({...params}).then(doc=>{

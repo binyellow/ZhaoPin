@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { LoadData } from '../../reducer/login'
 
+
 @withRouter
 @connect(
 	state=>({login:state.login}),
@@ -22,8 +23,8 @@ class AuthRoute extends React.Component{
 				if (res.status===200) {
 					if (res.data.code===0) {
 						this.props.LoadData(res.data.data)
-						const {type} = this.props.login;
-						this.props.history.push(`/${type}-info`)
+						// const {type} = this.props.login;
+						// this.props.history.push(`/${type}-info`)
 					}else{
 						this.props.history.push('/register')
 					}

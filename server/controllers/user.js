@@ -1,12 +1,12 @@
 const UserDB = require('../dbDao/user')
 const getMd5Pwd = require('../utils/utils')
 
-exports.findAll = async (ctx,next)=>{
+const findAll = async (ctx,next)=>{
     let res = await UserDB.findAll();
     ctx.body = res
 }
-console.log(getMd5Pwd)
-exports.register = async (ctx,next)=>{
+
+const register = async (ctx,next)=>{
     const {userName,passWord} = ctx.request.body;
     let isExist = await UserDB.findParamsInDB({userName})//数据库有true,数据库出错false
     let res;
@@ -18,3 +18,4 @@ exports.register = async (ctx,next)=>{
     }
     ctx.body = res
 }
+module.exports = {findAll,register}

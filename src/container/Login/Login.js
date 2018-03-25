@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Button, Input, Form, Modal } from 'antd'
 import {connect} from 'react-redux';
-import {withRouter,Link} from 'react-router-dom'
+import {withRouter,Link,Redirect} from 'react-router-dom'
 import {login} from '../../services/user'
 import Logo from '../../components/Logo/Logo'
 import styles from './Login.less'
-import {LoginAction} from '../../reducer/login'
+import {LoginAction,LoadData} from '../../reducer/login'
+import axios from 'axios'
 const FormItem = Form.Item;
 const FormItemLayout = {
     labelCol:{span:4},
@@ -15,7 +16,7 @@ const FormItemLayout = {
 @withRouter
 @connect(
     state=>({login:state.login}),
-    {LoginAction}
+    {LoginAction,LoadData}
 )
 export default class Login extends Component {
     constructor(props){
@@ -42,7 +43,18 @@ export default class Login extends Component {
                                 content:`欢迎您${values.userName}`,
                                 onOk:()=>{
                                     this.props.LoginAction();
-                                    this.props.history.push(`/${res.data.doc.type}-info`)
+                                    // axios.get('/user/info')
+                                    // .then(res=>{
+                                    //     if (res.status===200) {
+                                    //         if (res.data.code===0) {
+                                    //             this.props.LoadData(res.data.data)
+                                    //             // const {type} = this.props.login;
+                                    //             // this.props.history.push(`/${type}-info`)
+                                    //         }else{
+                                    //             this.props.history.push('/register')
+                                    //         }
+                                    //     }
+                                    // })
                                 }
                             })
                         }
@@ -52,10 +64,11 @@ export default class Login extends Component {
         })
     }
     render() {
-        const {getFieldDecorator} = this.props.form;
+        const {form:{getFieldDecorator},login:{redirectTo,isAuth}} = this.props;
         // const {isAuth,type} = this.props.login;
         return (
             <div className={styles.wrapper}>
+                {redirectTo?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
                 label="账号"
