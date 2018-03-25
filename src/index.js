@@ -8,7 +8,7 @@ import {createStore,applyMiddleware,compose} from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import reducer from './reducer/reducer';
-import BossInfo from './container/BossInfo'
+import BossInfo from './container/BossInfo/BossInfo'
 import GeniusInfo from './container/GeniusInfo/GeniusInfo'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import AuthRoute from './components/AuthInfo/AuthInfo';
@@ -23,7 +23,7 @@ ReactDOM.render(
             <div>
                 <AuthRoute/>
 				<Switch>
-					<Route path='/boss-info' component={BossInfo}></Route>
+					{/* <Route path='/boss-info' component={BossInfo}></Route> */}
 					<Route path='/genius-info' component={GeniusInfo}></Route>
 					<Route path='/login' component={Login}></Route>
 					<Route path='/register' component={Register}></Route>

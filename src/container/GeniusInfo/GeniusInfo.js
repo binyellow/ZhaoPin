@@ -1,14 +1,15 @@
 
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {update} from '../../reducer/login'
+import {LoadData} from '../../reducer/login'
+import {update} from '../../services/user'
 
 @connect(
 	state=>state.user,
-	{update}
+	{LoadData}
 )
 class GeniusInfo extends React.Component{
 	constructor(props) {
@@ -21,6 +22,16 @@ class GeniusInfo extends React.Component{
 	onChange(key,val){
 		this.setState({
 			[key]:val
+		})
+	}
+	handleUpdate = (data) =>{
+		console.log(data)
+		update(data).then(res=>{
+			if(res.status===200&&res.data.success==='true'){
+				this.props.LoadData(res.data.data)
+			}else{
+				Modal.alert('更新失败',res.data.message)
+			}
 		})
 	}
 	render(){
@@ -48,9 +59,7 @@ class GeniusInfo extends React.Component{
 				>
 				</TextareaItem>
 				<Button 
-					onClick={()=>{
-						this.props.update(this.state)
-					}}
+					onClick={console.log(1)}
 					type='primary'>保存</Button>
 			</div>
 			

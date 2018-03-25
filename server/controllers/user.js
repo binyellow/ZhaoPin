@@ -18,4 +18,11 @@ const register = async (ctx,next)=>{
     }
     ctx.body = res
 }
-module.exports = {findAll,register}
+
+const update = async (ctx,next)=>{
+    const id = ctx.cookies.get('userId');
+    const {body} = ctx.request;
+    const resData = await UserDB.update(id,body);
+    ctx.body = resData
+}
+module.exports = {findAll,register,update}

@@ -4,7 +4,7 @@ const mongoose= require('mongoose')
 const filter = {'pwd':0,'__v':0}
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
-const {register,findAll} = require('./controllers/user')
+const {register,findAll,update} = require('./controllers/user')
 
 
 const user = new koaRouter();
@@ -81,6 +81,7 @@ user.post('/register', register)//post、get注意一下
 user.get('/login',Login)
 user.get('/edit-pwd',EditPwd)
 user.get('/all',findAll)
+user.post('/update',update)
 
 
 module.exports = user

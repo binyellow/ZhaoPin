@@ -11,3 +11,7 @@ export function login(params){
 export function editPassWord(params){
     return axios.get('/user/edit-pwd',{params:{...params}})
 }
+
+export function update(params){
+    return axios.post('/user/update',{params:{...params}})
+}

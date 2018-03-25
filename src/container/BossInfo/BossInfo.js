@@ -1,14 +1,14 @@
 
 import React from 'react'
 import {NavBar,InputItem, TextareaItem, Button} from 'antd-mobile'
-import AvatarSelector from '../../component/avatar-selector/avatar-selector'
+import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {update} from '../../redux/user.redux'
+// import {update} from '../../redux/user.redux'
 
 @connect(
 	state=>state.user,
-	{update}
+	// {update}
 )
 class BossInfo extends React.Component{
 	constructor(props) {

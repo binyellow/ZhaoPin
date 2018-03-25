@@ -10,7 +10,15 @@ const models = {
         userName:{type:String,required:true},
         passWord:{type:String,required:true},
         type:{type:String,required:true},
-        createTime:{type:Date,default:new Date()}
+        createTime:{type:Date,default:new Date()},
+        'avatar':{'type':String},
+		// 个人简介或者职位简介
+		'desc':{'type':String},
+		// 职位名
+		'title':{'type':String},
+		// 如果你是boss 还有两个字段
+		'company':{'type':String},
+		'money':{'type':String}
     },
     chat:{
 

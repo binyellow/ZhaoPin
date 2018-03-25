@@ -55,4 +55,21 @@ exports.create = async (params)=>{
     })
     return res
 }
-
+/**
+ * 找到并更新数据
+ */
+exports.update = async (query,params)=>{
+    let res = {};
+    await User.findByIdAndUpdate(query,params,function(err,doc){
+		if(!err){
+            const data = Object.assign({},{
+                user:doc.user,
+                type:doc.type
+            },params)
+            res = {success:true,data}
+        }else{
+            res = {success:false,message:'服务器出错'}
+        }
+	})
+    return res
+}
