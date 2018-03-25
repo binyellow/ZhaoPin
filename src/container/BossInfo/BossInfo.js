@@ -1,21 +1,23 @@
 
 import React from 'react'
 import {NavBar,InputItem, TextareaItem, Button} from 'antd-mobile'
-import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
+import AvatarSelector from '../../component/avatar-selector/avatar-selector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {update} from '../../reducer/login'
+import {update} from '../../redux/user.redux'
 
 @connect(
 	state=>state.user,
 	{update}
 )
-class GeniusInfo extends React.Component{
+class BossInfo extends React.Component{
 	constructor(props) {
 		super(props)
 		this.state = {
 			title:'',
-			desc:''
+			desc:'',
+			company:'',
+			money:''
 		}
 	}
 	onChange(key,val){
@@ -29,23 +31,30 @@ class GeniusInfo extends React.Component{
 		return (
 			<div>
 				{redirect&&redirect!==path? <Redirect to={this.props.redirectTo}></Redirect> :null}
-				<NavBar mode="dark" >牛人完善信息页</NavBar>
+				<NavBar mode="dark" >BOSS完善信息页</NavBar>
 				<AvatarSelector 
-					selectAvatar={(imgName)=>{
+					selectAvatar={(imgname)=>{
 						this.setState({
-							avatar:imgName
+							avatar:imgname
 						})
 					}}
 				></AvatarSelector>
 				<InputItem onChange={(v)=>this.onChange('title',v)}>
-					求职岗位
+					招聘职位
+				</InputItem>
+				<InputItem onChange={(v)=>this.onChange('company',v)}>
+					公司名称
+				</InputItem>
+				<InputItem onChange={(v)=>this.onChange('money',v)}>
+					职位薪资
 				</InputItem>
 				<TextareaItem
 					onChange={(v)=>this.onChange('desc',v)}
 					rows={3}
 					autoHeight
-					title='个人见解'
+					title='职位要求'
 				>
+					
 				</TextareaItem>
 				<Button 
 					onClick={()=>{
@@ -58,4 +67,4 @@ class GeniusInfo extends React.Component{
 	}
 }
 
-export default GeniusInfo
+export default BossInfo
