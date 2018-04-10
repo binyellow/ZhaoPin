@@ -25,7 +25,7 @@ const models = {
         to:{type:String,required:true},
         chatId:{type:String,required:true},
         content:{type:String,required:true},
-        chatTime:{type:Date,default:new Date().getTime()},
+        chatTime:{type:Number,default:Date.now},
         read:{type:Boolean,default:false}
     }
 }

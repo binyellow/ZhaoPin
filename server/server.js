@@ -9,6 +9,7 @@ const Chat = model.getModule('chat')
 const app = new koa();
 const router = new Router();
 
+// Chat.remove({},(err,doc)=>{console.log(doc)})
 app.use(cors({credentials: true}))
 app.use(bodyParser())
 router.use('/user',userRouter.routes(),userRouter.allowedMethods());

@@ -3,13 +3,13 @@ import io from 'socket.io-client';
 import lodash from 'lodash';
 import {List,InputItem, Button,NavBar,Icon,Grid} from 'antd-mobile';
 import {connect} from 'react-redux';
-import {getMsgList,sendMsg,recvMsg} from '../../reducer/ChatList-redux';
+import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
 
 const socket = io('ws://localhost:9030');
 const {Item} = List
 @connect(
     state=>state,
-    {getMsgList,sendMsg,recvMsg}
+    {getMsgList,sendMsg,recvMsg,readMsg}
 )
 export default class Chat extends Component {
     constructor(props){
@@ -24,9 +24,13 @@ export default class Chat extends Component {
         if(!this.props.ChatList.chatMsg.length){
             console.log(this.props.match.params.username)
             this.props.getMsgList(this.props.match.params.username)
-            this.props.recvMsg()
+            // this.props.recvMsg()
         }
         this.fixCarousel()
+    }
+    componentWillUnmount(){
+        //将要离开页面的时候把聊天的id传过去
+        this.props.readMsg(this.props.match.params.username)
     }
     fixCarousel(){
         setTimeout(()=>window.dispatchEvent(new Event('resize')),0)

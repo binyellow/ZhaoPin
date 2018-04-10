@@ -4,6 +4,7 @@ const mongoose= require('mongoose')
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
 const {register,findList,update} = require('./controllers/user')
+const Chat = model.getModule('chat');
 
 
 const filter = {'pwd':0,'__v':0}
@@ -75,7 +76,6 @@ const EditPwd = (ctx,next)=>{
     })
 }
 const getMsgList = async (ctx,next)=>{
-    const Chat = model.getModule('chat');
     const user = ctx.cookies.get('userId');
     const {to} = ctx.query;
     let res = {}//常量的错不要再犯了
@@ -101,6 +101,20 @@ const getMsgList = async (ctx,next)=>{
         })
     }).then(data=> ctx.body = res).catch(e=>ctx.body = {success:false,message:e})
 }
+const readMsg = async (ctx,next)=>{
+    const to = ctx.cookies.get('userId');
+    const { from } = ctx.request.body;
+    await new Promise((resolve,reject)=>{
+        Chat.update({from,to},{'$set':{read:true}},{'multi':true},(err,doc)=>{
+            if(!err){
+                console.log(doc)
+                resolve({success:true,num:doc.nModified})
+            }else{
+                reject({})
+            }
+        })
+    }).then(res=>ctx.body = res).catch(e=>ctx.body={success:false,message:e})
+}
 // mongoose,model('user').find({},(e,userDoc)=>{
 //     if(!e){
 //         userDoc.forEach(item=>{
@@ -111,6 +125,7 @@ const getMsgList = async (ctx,next)=>{
 //         resolve(res)
 //     }
 // })
+user.post('/read-msg',readMsg)
 user.get('/get-msg-list',getMsgList)
 user.get('/info', getData)
 user.post('/register', register)//post、get注意一下

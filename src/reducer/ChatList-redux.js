@@ -28,7 +28,13 @@ export function ChatList(state=initState,action){
         case MSG_RECV:
             const n = action.payload.msg.to === action.payload.loginId? 1: 0; 
             return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unRead:state.unRead+n}
-        // case MSG_READ:
+        case MSG_READ:
+            return {...state,chatMsg:state.chatMsg.map(item=>{
+                if(item.from===action.payload.from){
+                    item.read = true;
+                }
+                return item;
+            }),unRead:state.unRead-action.payload.num}
         default:
             return state;
     }
@@ -69,6 +75,24 @@ export function recvMsg(){
             console.log(data)
             const loginId = getState().login._id;
             dispatch(msgRecv(data,loginId));
+        })
+    }
+}
+
+function msgRead({from,to,num}){
+    return {
+        type: MSG_READ,
+        payload:{from,to,num}
+    }
+}
+//是要把从from到me的消息置为read:true
+export function readMsg(from){
+    return (dispatch,getState)=>{
+        const to = getState().login._id; //to可以从cookie直接获取
+        axios.post('/user/read-msg',{from}).then(res=>{
+            if(res.status===200 && res.data.success){
+                dispatch(msgRead({from,to,num:res.data.num}))
+            }
         })
     }
 }
