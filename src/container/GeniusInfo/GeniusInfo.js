@@ -8,7 +8,7 @@ import {LoadData} from '../../reducer/login'
 import {update} from '../../services/user'
 
 @connect(
-	state=>state.user,
+	state=>state.login,
 	{LoadData}
 )
 class GeniusInfo extends React.Component{
@@ -16,7 +16,8 @@ class GeniusInfo extends React.Component{
 		super(props)
 		this.state = {
 			title:'',
-			desc:''
+			desc:'',
+			avatar:null
 		}
 	}
 	onChange(key,val){
@@ -25,9 +26,8 @@ class GeniusInfo extends React.Component{
 		})
 	}
 	handleUpdate = (data) =>{
-		console.log(data)
 		update(data).then(res=>{
-			if(res.status===200&&res.data.success==='true'){
+			if(res.status===200&&res.data.success===true){
 				this.props.LoadData(res.data.data)
 			}else{
 				Modal.alert('更新失败',res.data.message)
@@ -55,11 +55,11 @@ class GeniusInfo extends React.Component{
 					onChange={(v)=>this.onChange('desc',v)}
 					rows={3}
 					autoHeight
-					title='个人见解'
+					title='个人简介'
 				>
 				</TextareaItem>
 				<Button 
-					onClick={console.log(1)}
+					onClick={()=>this.handleUpdate(this.state)}
 					type='primary'>保存</Button>
 			</div>
 			

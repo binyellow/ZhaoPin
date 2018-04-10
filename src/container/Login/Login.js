@@ -6,7 +6,8 @@ import {login} from '../../services/user'
 import Logo from '../../components/Logo/Logo'
 import styles from './Login.less'
 import {LoginAction,LoadData} from '../../reducer/login'
-import axios from 'axios'
+import HocForm from '../../components/HocForm/HocForm'
+
 const FormItem = Form.Item;
 const FormItemLayout = {
     labelCol:{span:4},
@@ -18,17 +19,8 @@ const FormItemLayout = {
     state=>({login:state.login}),
     {LoginAction,LoadData}
 )
+@HocForm
 export default class Login extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            userName:'',
-            passWord:'',
-        }
-    }
-    handleChangeState = (key,value)=>{
-        this.setState({[key]:value})
-    }
     handleLogin = () =>{
         const {validateFields} = this.props.form;
         validateFields((err,values)=>{
@@ -42,19 +34,7 @@ export default class Login extends Component {
                                 title:'登录成功',
                                 content:`欢迎您${values.userName}`,
                                 onOk:()=>{
-                                    this.props.LoginAction();
-                                    // axios.get('/user/info')
-                                    // .then(res=>{
-                                    //     if (res.status===200) {
-                                    //         if (res.data.code===0) {
-                                    //             this.props.LoadData(res.data.data)
-                                    //             // const {type} = this.props.login;
-                                    //             // this.props.history.push(`/${type}-info`)
-                                    //         }else{
-                                    //             this.props.history.push('/register')
-                                    //         }
-                                    //     }
-                                    // })
+                                    this.props.LoadData(res.data.data);
                                 }
                             })
                         }
@@ -64,11 +44,11 @@ export default class Login extends Component {
         })
     }
     render() {
-        const {form:{getFieldDecorator},login:{redirectTo,isAuth}} = this.props;
+        const {form:{getFieldDecorator},login:{redirectTo}} = this.props;
         // const {isAuth,type} = this.props.login;
         return (
             <div className={styles.wrapper}>
-                {redirectTo?<Redirect to={redirectTo}/>:null}
+                {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
                 label="账号"
@@ -79,7 +59,7 @@ export default class Login extends Component {
                     rules:[{required:true}]
                 })(
                     <Input
-                    onChange={e=>this.handleChangeState('userName',e.target.value)}/>
+                    onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
                 )}
                 </FormItem>
                 <FormItem
@@ -92,7 +72,7 @@ export default class Login extends Component {
                 })(
                     <Input
                         type="password"
-                        onChange={e=>this.handleChangeState('passWord',e.target.value)}/>
+                        onChange={e=>this.props.handleChangeState('passWord',e.target.value)}/>
                 )}
                 </FormItem>
                 <div className={styles.operator}>

@@ -21,7 +21,12 @@ const models = {
 		'money':{'type':String}
     },
     chat:{
-
+        from:{type:String,required:true},
+        to:{type:String,required:true},
+        chatId:{type:String,required:true},
+        content:{type:String,required:true},
+        chatTime:{type:Date,default:new Date().getTime()},
+        read:{type:Boolean,default:false}
     }
 }
 for (const key in models) {

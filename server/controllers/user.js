@@ -1,8 +1,9 @@
 const UserDB = require('../dbDao/user')
 const getMd5Pwd = require('../utils/utils')
 
-const findAll = async (ctx,next)=>{
-    let res = await UserDB.findAll();
+const findList = async (ctx,next)=>{
+    const {type} = ctx.query;
+    let res = await UserDB.findList({type});
     ctx.body = res
 }
 
@@ -12,7 +13,7 @@ const register = async (ctx,next)=>{
     let res;
     if(!isExist.exist){//数据库没有这个用户
         res = await UserDB.create({...ctx.request.body,passWord:getMd5Pwd(passWord)})
-        ctx.cookies.set('userId',res.doc._id)
+        ctx.cookies.set('userId',res.doc._id,{httpOnly:false})
     }else{
         res = {...isExist,success:false}
     }
@@ -21,8 +22,8 @@ const register = async (ctx,next)=>{
 
 const update = async (ctx,next)=>{
     const id = ctx.cookies.get('userId');
-    const {body} = ctx.request;
-    const resData = await UserDB.update(id,body);
+    const body = ctx.request.body;
+    const resData = await UserDB.update(id,{...body});
     ctx.body = resData
 }
-module.exports = {findAll,register,update}
+module.exports = {findList,register,update}

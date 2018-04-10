@@ -1,14 +1,15 @@
 
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-// import {update} from '../../redux/user.redux'
+import {update} from '../../services/user'
+import {LoadData} from '../../reducer/login'
 
 @connect(
-	state=>state.user,
-	// {update}
+	state=>state.login,
+	{LoadData}
 )
 class BossInfo extends React.Component{
 	constructor(props) {
@@ -20,6 +21,15 @@ class BossInfo extends React.Component{
 			money:''
 		}
 	}
+	handleUpdate = (data) =>{
+		update(data).then(res=>{
+			if(res.status===200&&res.data.success===true){
+				this.props.LoadData(res.data.data)
+			}else{
+				Modal.alert('更新失败',res.data.message)
+			}
+		})
+	}
 	onChange(key,val){
 		this.setState({
 			[key]:val
@@ -30,7 +40,7 @@ class BossInfo extends React.Component{
 		const redirect = this.props.redirectTo
 		return (
 			<div>
-				{redirect&&redirect!==path? <Redirect to={this.props.redirectTo}></Redirect> :null}
+				{redirect&&redirect!==path? <Redirect to={this.props.redirectTo}/> :null}
 				<NavBar mode="dark" >BOSS完善信息页</NavBar>
 				<AvatarSelector 
 					selectAvatar={(imgname)=>{
@@ -57,9 +67,7 @@ class BossInfo extends React.Component{
 					
 				</TextareaItem>
 				<Button 
-					onClick={()=>{
-						this.props.update(this.state)
-					}}
+					onClick={()=>this.handleUpdate(this.state)}
 					type='primary'>保存</Button>
 			</div>
 			

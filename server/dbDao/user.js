@@ -3,14 +3,25 @@ const User = mongoose.model('user')
 /**
  * 查找数据库所有数据
  */
-exports.findAll = async ()=>{
+exports.findList = async (params)=>{
     let res = {}
-    await User.find({},(err,doc)=>{
-        if(err){
-            res = {success:false,data:err};
-        }else{
-            res = {success:true,data:doc};
-        }
+    console.log(params.type);
+    let newParams;
+    if(params.type){
+        newParams = params;
+    }else{
+        newParams = null
+    }
+    await new Promise((resolve,reject)=>{
+        User.find({...newParams},(err,doc)=>{
+            if(err){
+                res = {success:false,data:err};
+                reject(res);
+            }else{
+                res = {success:true,data:doc};
+                resolve(res);
+            }
+        })
     })
     return res;
 }
@@ -48,7 +59,7 @@ exports.findParamsInDB = async (params)=>{
  */
 exports.create = async (params)=>{
     let res = {};
-    await User.create({...params}).then(doc=>{
+    await User.create(params).then(doc=>{
         res = {success:true,doc}
     }).catch(e=>{
         res = {success:false,message:'后台出错啦'}
@@ -60,16 +71,21 @@ exports.create = async (params)=>{
  */
 exports.update = async (query,params)=>{
     let res = {};
-    await User.findByIdAndUpdate(query,params,function(err,doc){
-		if(!err){
-            const data = Object.assign({},{
-                user:doc.user,
-                type:doc.type
-            },params)
-            res = {success:true,data}
-        }else{
-            res = {success:false,message:'服务器出错'}
-        }
-	})
+    await new Promise((resolve,reject)=>{
+        User.findByIdAndUpdate(query,params,(err,doc)=>{
+            if(!err){
+                const data = Object.assign({},{
+                    userName:doc.userName,
+                    type:doc.type
+                },params)
+                console.log(doc)
+                res = {success:true,data}
+                resolve(res);
+            }else{
+                res = {success:false,message:'服务器出错'}
+                reject(err);
+            }
+        })
+    })
     return res
 }

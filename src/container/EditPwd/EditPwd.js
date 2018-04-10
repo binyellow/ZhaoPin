@@ -18,7 +18,7 @@ const FormItemLayout = {
     state=>({login:state.login}),
     {LoadData}
 )
-export default class GeniusInfo extends Component {
+export default class EditPwd extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -80,7 +80,7 @@ export default class GeniusInfo extends Component {
         return (
             <div className={globalStyles.wrapper}>
                 {/* {this.props.login.isAuth||this.props.login.type?null:<Redirect to="/login"/>} */}
-                {redirectTo&&path!==redirectTo?<Redirect to={redirectTo}/>:null}
+                {/* {redirectTo&&path!==redirectTo?<Redirect to={redirectTo}/>:null} */}
                 <Logo/>
                 <FormItem
                 label="账号"

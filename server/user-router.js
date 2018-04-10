@@ -1,12 +1,12 @@
 const koaRouter = require('koa-router');
 const model = require('./model')
 const mongoose= require('mongoose')
-const filter = {'pwd':0,'__v':0}
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
-const {register,findAll,update} = require('./controllers/user')
+const {register,findList,update} = require('./controllers/user')
 
 
+const filter = {'pwd':0,'__v':0}
 const user = new koaRouter();
 const getData = (ctx,next) => {
     const cookie = ctx.cookies.get('userId');
@@ -37,14 +37,14 @@ const Login = (ctx, next)=>{
         if(lodash.isEmpty(requestData)){
             reject({code:1,message:'请输入合法的账号密码'})
         }else{
-            mongoose.model('user').findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)},
-            {userName:1,passWord:1,type:1,_id:1}).then(data=>{
+            mongoose.model('user').findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)})
+            .then(data=>{
                 resolve(data)
             })
         }
-    }).then(doc=>{
-        ctx.cookies.set('userId',doc._id)
-        ctx.body = {code:0,doc};
+    }).then(data=>{
+        ctx.cookies.set('userId',data._id,{httpOnly:false})
+        ctx.body = {code:0,data};
         next();
     })
     .catch(err=>{
@@ -74,13 +74,49 @@ const EditPwd = (ctx,next)=>{
         ctx.body = err
     })
 }
-
-
+const getMsgList = async (ctx,next)=>{
+    const Chat = model.getModule('chat');
+    const user = ctx.cookies.get('userId');
+    const {to} = ctx.query;
+    let res = {}//常量的错不要再犯了
+    await new Promise((resolve,reject)=>{
+        let users = {};
+        const User = mongoose.model('user');
+        User.find({},(e,userDoc)=>{
+            if(!e){
+                userDoc.forEach(item=>{
+                    users[item._id] = {name:item.userName,avatar:item.avatar}
+                })
+                // console.log(user,to)
+                Chat.find({$or:[{from:user},{to:user}]},(err,doc)=>{   //查找from,to对应的聊天记录
+                    if(!err){
+                        // console.log(doc)
+                        res = {success:true,msgs:doc,users}
+                        resolve(res)
+                    }else{
+                        reject({success:false,message:err})
+                    }
+                })
+            }
+        })
+    }).then(data=> ctx.body = res).catch(e=>ctx.body = {success:false,message:e})
+}
+// mongoose,model('user').find({},(e,userDoc)=>{
+//     if(!e){
+//         userDoc.forEach(item=>{
+//             users[item._id] = {name:item.userName,avatar:item.avatar}
+//         })
+//         res = {success:true,msgs:doc._doc,users}
+//         console.log(res)
+//         resolve(res)
+//     }
+// })
+user.get('/get-msg-list',getMsgList)
 user.get('/info', getData)
 user.post('/register', register)//post、get注意一下
 user.get('/login',Login)
 user.get('/edit-pwd',EditPwd)
-user.get('/all',findAll)
+user.get('/list',findList)
 user.post('/update',update)
 
 

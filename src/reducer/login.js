@@ -14,8 +14,8 @@ export function login(state=initState,action){
             }
         case LOGOUT:
             return {
-                ...state,
-                isAuth:false
+                ...initState,
+                redirectTo:'/login'
             }
         case LOAD_DATA:
             return {

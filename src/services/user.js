@@ -13,5 +13,5 @@ export function editPassWord(params){
 }
 
 export function update(params){
-    return axios.post('/user/update',{params:{...params}})
+    return axios.post('/user/update',{...params})
 }
