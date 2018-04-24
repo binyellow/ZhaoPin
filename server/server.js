@@ -1,3 +1,5 @@
+import React from 'react';
+import {renderToString,renderToStaticMarkup} from 'react-dom/server';
 const koa = require('koa');
 const Router = require('koa-router')
 const userRouter = require('./user-router')
@@ -5,6 +7,9 @@ const cors = require('koa2-cors')
 const bodyParser = require('koa-body')//koa-body、koa-bodyparser都可以body-parser暂时不知道为啥不可以
 const model = require('./model')
 const Chat = model.getModule('chat')
+const path = require('path')
+const koaStatic = require('koa-static')
+const fs = require('fs');
 
 const app = new koa();
 const router = new Router();
@@ -12,8 +17,21 @@ const router = new Router();
 // Chat.remove({},(err,doc)=>{console.log(doc)})
 app.use(cors({credentials: true}))
 app.use(bodyParser())
+app.use(koaStatic(path.resolve('build')))
 router.use('/user',userRouter.routes(),userRouter.allowedMethods());
+app.use((ctx, next)=>{
+    if(ctx.request.path.startsWith('/user/')||ctx.request.path.startsWith('/static/')){
+        return next()
+    }
+    function APP(){
+        return <h2>woca</h2>
+    }
+    ctx.type = 'html';
+    // ctx.body = renderToString(<APP></APP>)
+    ctx.body = fs.createReadStream(path.join(__dirname+'../build/index.html'));//path.resolve('build/index.html')
+})
 app.use(router.routes()).use(router.allowedMethods())
+
 
 var server = require('http').createServer(app.callback());
 var io = require('socket.io')(server)

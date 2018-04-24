@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client';
 import lodash from 'lodash';
+import QueueAnim from 'rc-queue-anim';
 import {List,InputItem, Button,NavBar,Icon,Grid} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
@@ -62,21 +63,23 @@ export default class Chat extends Component {
                         icon={<Icon type="left" />}
                         onLeftClick={() => this.props.history.goBack()}
                     >{ !lodash.isEmpty(users) && (users[`${to}`].name) ||to}</NavBar>
-                    {ChatMsg.map(item=>{
-                        const avatar = require(`../img/${users[item.from].avatar}.png`)
-                        return <List key={item._id}>
-                            {item.from===to?(
-                                <Item
-                                    thumb={avatar}
-                                >对方：{item.content}</Item>
-                            ):(
-                                <Item className="chat-me"
-                                    extra={<img src={avatar}/>}
-                                >{item.content}</Item>
-                            )}
-                        </List>
-                    }
-                    )}
+                    <QueueAnim type='top'>
+                        {ChatMsg.map(item=>{
+                            const avatar = require(`../img/${users[item.from].avatar}.png`)
+                            return <List key={item._id}>
+                                {item.from===to?(
+                                    <Item
+                                        thumb={avatar}
+                                    >对方：{item.content}</Item>
+                                ):(
+                                    <Item className="chat-me"
+                                        extra={<img src={avatar}/>}
+                                    >{item.content}</Item>
+                                )}
+                            </List>
+                        }
+                        )}
+                    </QueueAnim>
                 </div>
                 <List className="stick-footer">
                     {this.state.showEmoji?

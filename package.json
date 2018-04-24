@@ -7,6 +7,7 @@
     "antd-mobile": "^2.1.6",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
@@ -41,6 +42,7 @@
     "koa-bodyparser": "^4.2.0",
     "koa-cors": "^0.0.16",
     "koa-router": "^7.4.0",
+    "koa-static": "^4.0.2",
     "less": "^3.0.1",
     "lodash": "^4.17.5",
     "mongoose": "^5.0.9",
@@ -49,6 +51,7 @@
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
     "raf": "3.4.0",
+    "rc-queue-anim": "^1.5.0",
     "react": "^16.2.0",
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.2.0",
@@ -69,6 +72,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start1": "set NODE_ENV=test&& nodemon --exec babel-node server/server.js",
     "koa": "nodemon port=9093 server/server.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
