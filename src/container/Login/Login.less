@@ -1,14 +1,24 @@
-.wrapper {
-    width: 90%;
+.particlesClass {
     height: 100%;
-    margin: 30px auto;
-    background-color: white;
-    padding: 50px;
-    overflow-y: scroll;
+    canvas {
+        position: absolute;
+        top: 0;
+        z-index: 10;
+      }
+}
+.loginRow {
+    height: 100%;
+    background-color: #e3e2dd;
+}
+.loginCol {
+    z-index: 20;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 40px;
 }
 .operator{
     text-align: center;
-
+    flex-direction: column;
     button + button {
         margin-left: 15px;
     }

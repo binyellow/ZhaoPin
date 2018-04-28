@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Input, Form, Modal } from 'antd'
+import { Button, Input, Form, Modal, Row, Col, Icon } from 'antd'
 import {connect} from 'react-redux';
+import 'particles.js';
 import {withRouter,Link,Redirect} from 'react-router-dom'
 import {login} from '../../services/user'
 import Logo from '../../components/Logo/Logo'
@@ -9,10 +10,10 @@ import {LoginAction,LoadData} from '../../reducer/login'
 import HocForm from '../../components/HocForm/HocForm'
 
 const FormItem = Form.Item;
-const FormItemLayout = {
-    labelCol:{span:4},
-    wrapperCol:{span:20}
-}
+// const FormItemLayout = {
+//     labelCol:{span:4},
+//     wrapperCol:{span:20}
+// }
 @Form.create()
 @withRouter
 @connect(
@@ -43,48 +44,60 @@ export default class Login extends Component {
             }
         })
     }
+    componentDidMount() {
+        window.particlesJS.load('particles', '/particles.json', () => {
+          console.log('callback - particles-js config loaded');
+        });
+    }
     render() {
         const {form:{getFieldDecorator},login:{redirectTo}} = this.props;
         // const {isAuth,type} = this.props.login;
         return (
-            <div className={styles.wrapper}>
-                {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
-                <Logo/>
-                <FormItem
-                label="账号"
-                help
-                {...FormItemLayout}
-                >
-                {getFieldDecorator('userName',{
-                    rules:[{required:true}]
-                })(
-                    <Input
-                    onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
-                )}
-                </FormItem>
-                <FormItem
-                label="密码"
-                help
-                {...FormItemLayout}
-                >
-                {getFieldDecorator('passWord',{
-                    rules:[{required:true}]
-                })(
-                    <Input
-                        type="password"
-                        onChange={e=>this.props.handleChangeState('passWord',e.target.value)}/>
-                )}
-                </FormItem>
-                <div className={styles.operator}>
-                    <div style={{marginTop:'10px'}}>
-                        <Button 
-                        type="primary" 
-                        onClick={this.handleLogin}
-                        style={{ transform: 'translateX(50px)'}}>
-                        登录</Button>
-                        <Link to="/register" style={{position:'relative',left:'200px'}}>还没有账号？注册</Link>
-                    </div>
-                </div>
+            <div id="particles" className={styles.particlesClass}>
+                <Row type="flex" align="center" justify="middle" className={styles.loginRow}>
+                <Col className={styles.loginCol} span="7">
+                    {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
+                    <Logo/>
+                    <FormItem
+                    help
+                    >
+                    {getFieldDecorator('userName',{
+                        rules:[{required:true}],
+                    })(
+                        <Input
+                        prefix={<Icon type="user"/>}
+                        placeholder="账号"
+                        onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
+                    )}
+                    </FormItem>
+                    <FormItem
+                    help
+                    >
+                    {getFieldDecorator('passWord',{
+                        rules:[{required:true}]
+                    })(
+                        <Input
+                            type="password"
+                            prefix={<Icon type="lock"/>}
+                            placeholder="密码"
+                            onChange={e=>this.props.handleChangeState('passWord',e.target.value)}/>
+                    )}
+                        </FormItem>
+                        <div>
+                            <Row type="flex" justify="center" className={styles.operator}>
+                                <Col>
+                                    <Button 
+                                    type="primary" 
+                                    onClick={this.handleLogin}>
+                                    登录</Button>
+                                </Col>
+                                <Col>
+                                    <Link to="/register">注册</Link>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Col>
+                </Row>
             </div>
         )
     }

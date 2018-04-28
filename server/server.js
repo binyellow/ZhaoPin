@@ -1,5 +1,5 @@
-import React from 'react';
-import {renderToString,renderToStaticMarkup} from 'react-dom/server';
+// import React from 'react';
+// import {renderToString,renderToStaticMarkup} from 'react-dom/server';
 const koa = require('koa');
 const Router = require('koa-router')
 const userRouter = require('./user-router')
@@ -23,9 +23,9 @@ app.use((ctx, next)=>{
     if(ctx.request.path.startsWith('/user/')||ctx.request.path.startsWith('/static/')){
         return next()
     }
-    function APP(){
-        return <h2>woca</h2>
-    }
+    // function APP(){
+    //     return <h2>woca</h2>
+    // }
     ctx.type = 'html';
     // ctx.body = renderToString(<APP></APP>)
     ctx.body = fs.createReadStream(path.join(__dirname+'../build/index.html'));//path.resolve('build/index.html')
