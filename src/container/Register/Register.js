@@ -94,8 +94,7 @@ export default class Login extends Component {
                 {redirectTo&&path!==redirectTo&&isAuth?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
-                label="账号"
-                {...FormItemLayout}
+                help
                 >
                 {getFieldDecorator('userName',{
                     rules:[{
@@ -103,12 +102,12 @@ export default class Login extends Component {
                     }]
                 })(
                     <Input
+                    placeholder="账号"
                     onChange={e=>this.handleChangeState('userName',e.target.value)}/>
                 )}
                 </FormItem>
                 <FormItem
-                label="密码"
-                {...FormItemLayout}
+                help
                 >
                 {getFieldDecorator('passWord',{
                     rules:[{
@@ -117,17 +116,18 @@ export default class Login extends Component {
                 })(
                     <Input
                     type="password"
+                    placeholder="密码"
                     onChange={e=>this.handleChangeState('passWord',e.target.value)}/>
                 )}
                 </FormItem>
                 <FormItem
-                label="重复密码"
-                {...FormItemLayout}
+                help
                 hasFeedback
                 validateStatus={this.state.repeatPassWord.validateStatus||''}
                 >
                     <Input
                     type="password"
+                    placeholder="重复密码"
                     onChange={e=>this.handleRepeatPwdChangeState(e.target.value)}/>
                 </FormItem>
                 <div className={styles.operator}>

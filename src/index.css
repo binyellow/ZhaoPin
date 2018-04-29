@@ -20,6 +20,7 @@ body {
 }
 .fixd-header.am-navbar{
 	position: fixed;
+	z-index: 30;
 	top: 0;
 	width: 100%;
 }

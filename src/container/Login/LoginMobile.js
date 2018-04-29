@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Button, Input, Form, Modal } from 'antd'
+import { Button, Input, Form, Modal, Row, Col } from 'antd'
 import {connect} from 'react-redux';
 import {withRouter,Link,Redirect} from 'react-router-dom'
 import {login} from '../../services/user'
 import Logo from '../../components/Logo/Logo'
-import styles from './LoginPc.less'
+import styles from './LoginMobile.less'
 import {LoginAction,LoadData} from '../../reducer/login'
 import HocForm from '../../components/HocForm/HocForm'
 
@@ -51,39 +51,40 @@ export default class LoginMobile extends Component {
                 {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
-                label="账号"
                 help
-                {...FormItemLayout}
                 >
                 {getFieldDecorator('userName',{
                     rules:[{required:true}]
                 })(
                     <Input
-                    onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
+                        placeholder="账号"
+                        onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
                 )}
                 </FormItem>
                 <FormItem
-                label="密码"
                 help
-                {...FormItemLayout}
                 >
                 {getFieldDecorator('passWord',{
                     rules:[{required:true}]
                 })(
                     <Input
                         type="password"
+                        placeholder="密码"
                         onChange={e=>this.props.handleChangeState('passWord',e.target.value)}/>
                 )}
                 </FormItem>
-                <div className={styles.operator}>
-                    <div style={{marginTop:'10px'}}>
-                        <Button 
-                        type="primary" 
-                        onClick={this.handleLogin}
-                        style={{ transform: 'translateX(50px)'}}>
-                        登录</Button>
-                        <Link to="/register" style={{position:'relative',left:'200px'}}>还没有账号？注册</Link>
-                    </div>
+                <div>
+                    <Row type="flex" justify="center" className={styles.operator}>
+                        <Col>
+                            <Button 
+                            type="primary" 
+                            onClick={this.handleLogin}>
+                            登录</Button>
+                        </Col>
+                        <Col>
+                            <Link to="/register">注册</Link>
+                        </Col>
+                    </Row>
                 </div>
             </div>
         )
