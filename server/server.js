@@ -5,6 +5,9 @@ const cors = require('koa2-cors')
 const bodyParser = require('koa-body')//koa-body、koa-bodyparser都可以body-parser暂时不知道为啥不可以
 const model = require('./model')
 const Chat = model.getModule('chat')
+const fs = require('fs');
+const path = require('path')
+const koaStatic = require('koa-static')
 
 const app = new koa();
 const router = new Router();
@@ -12,7 +15,17 @@ const router = new Router();
 // Chat.remove({},(err,doc)=>{console.log(doc)})
 app.use(cors({credentials: true}))
 app.use(bodyParser())
+app.use(koaStatic(path.resolve('build')))
 router.use('/user',userRouter.routes(),userRouter.allowedMethods());
+app.use((ctx, next)=>{
+    if(ctx.request.path.startsWith('/user/')||ctx.request.path.startsWith('/static/')){
+        return next()
+    }
+    ctx.type = 'html';
+    // ctx.body = renderToString(<APP></APP>)
+    ctx.body = fs.createReadStream(path.join(__dirname+'../build/index.html'));//path.resolve('build/index.html')
+})
+
 app.use(router.routes()).use(router.allowedMethods())
 
 var server = require('http').createServer(app.callback());
