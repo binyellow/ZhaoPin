@@ -25,7 +25,7 @@ const store = createStore(reducer,compose(
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <div>
+            <div style={{height:'100%'}}>
                 <AuthRoute></AuthRoute>
 				<Switch>
 					<Route path='/boss-info' component={BossInfo}></Route>
