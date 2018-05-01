@@ -34,7 +34,8 @@ class UserInfoCard extends Component {
                                 <div>薪资：{item.money}</div>
                             </div>:
                             <div>
-                                期望薪资: {item.expectMoney}
+                                <div>期望薪资: {item.expectMoney}</div>
+                                <div>工作经验: {item.experience}</div>
                             </div>
                         }
                     </Card.Body>

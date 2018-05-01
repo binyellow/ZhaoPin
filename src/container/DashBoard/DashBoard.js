@@ -17,6 +17,7 @@ import Msg from '../../components/Msg/Msg'
 
 class DashBoard extends React.Component{
 	componentDidMount(){
+		console.log(this.props)
 		if(!this.props.ChatList.chatMsg.length){
             this.props.getMsgList()
             this.props.recvMsg()

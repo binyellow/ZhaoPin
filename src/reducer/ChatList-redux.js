@@ -54,6 +54,7 @@ export function sendMsg(data){
 }
 export function getMsgList(params){
     return (dispatch,getState)=>{
+        console.log(params);
         axios.get('/user/get-msg-list',{params:{to:params}})
         .then(res=>{
             if(res.status===200 && res.data.success){
