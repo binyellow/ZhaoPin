@@ -57,7 +57,7 @@ export default class Chat extends Component {
         const [...userList] = this.props.UserList.userList;
         const chatId = [this.props.login._id,to].sort().join('_');
         const ChatMsg = this.props.ChatList.chatMsg.filter(item=>item.chatId===chatId)
-        const toName = userList.find(item=>item._id===to).userName
+        const toName = userList.length>0?userList.find(item=>item._id===to).userName:null
         return (
             <div id="chat-page">
                 <div>

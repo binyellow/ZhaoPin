@@ -59,6 +59,13 @@ class DashBoard extends React.Component{
 				component:Msg
 			},
 			{
+				path:'/analysis',
+				text:'分析',
+				icon:'analysis',
+				title:'分析招聘信息',
+				component:Analysis
+			},
+			{
 				path:'/me',
 				text:'我',
 				icon:'user',

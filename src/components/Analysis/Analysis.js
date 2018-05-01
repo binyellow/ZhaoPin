@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
-import io from 'socket.io-client';
-import QueueAnim from 'rc-queue-anim';
-import {List,InputItem, Button,NavBar,Icon,Grid} from 'antd-mobile';
-import {connect} from 'react-redux';
-import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
+import {connect} from 'react-redux'
+import {getUserList} from '../../reducer/UserList-redux'
+import ReactEcharts from 'echarts-for-react'
 
-// const {Item} = List
-// @connect(
-//     state=>state,
-//     {getMsgList,sendMsg,recvMsg,readMsg}
-// )
+@connect(
+    state=>state,
+    {getUserList}
+)
 export default class Analysis extends Component {
     constructor(props){
         super(props);
@@ -17,11 +14,77 @@ export default class Analysis extends Component {
 
         }
     }
-
+    componentDidMount(){
+        console.log(this.props);
+        const {type} = this.props.login;//type是指当前用户类型
+        this.props.getUserList(type==='genius'?'boss':'genius')
+    }
+    getOption = () => {
+        const {userList} = this.props.UserList;
+        const {type} = this.props.login;
+        const xData = [];//x轴数据：公司、求职名称
+        const yData = [];
+        userList.forEach(item=>{
+            if(type==='genius'){
+                xData.push(item.userName);
+                yData.push(item.money)
+            }else{
+                xData.push(item.userName);
+                yData.push(item.expectMoney)
+            }
+        })
+        return {
+          title: {
+            text: type==='genius'?'各公司工资':'求职者期待薪资'
+          },
+          tooltip : {
+            trigger: 'axis'
+          },
+          legend: {
+            data:['工资']
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {},     
+              magicType:{
+                  type: ['line', 'bar']
+              },
+              restore:{}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis : [
+            {
+              type : 'category',
+              boundaryGap : false,
+              data : xData
+            }
+          ],
+          yAxis : [
+            {
+              type : 'value'
+            }
+          ],
+          series : [
+            {
+              name:'工资',  //对应折线图上选中时选择的标题
+              type:'line',
+              stack: '总量',
+              areaStyle: {normal: {}},
+              data: yData
+            }
+          ]
+        };
+    };
     render() {
         return (
             <div>
-                Analysis
+                <ReactEcharts option={this.getOption()} />
             </div>
         )
     }
