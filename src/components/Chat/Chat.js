@@ -53,16 +53,18 @@ export default class Chat extends Component {
         .split(' ').filter(v=>v).map(v=>({text:v}));
         const to = this.props.match.params.username
         // console.log(this.props.ChatList.users[`${to}`].name)
-        const {users} = this.props.ChatList
+        const {users} = this.props.ChatList;
+        const [...userList] = this.props.UserList.userList;
         const chatId = [this.props.login._id,to].sort().join('_');
         const ChatMsg = this.props.ChatList.chatMsg.filter(item=>item.chatId===chatId)
+        const toName = userList.find(item=>item._id===to).userName
         return (
             <div id="chat-page">
                 <div>
                     <NavBar
                         icon={<Icon type="left" />}
                         onLeftClick={() => this.props.history.goBack()}
-                    >{ !lodash.isEmpty(users) && (users[`${to}`].name) ||to}</NavBar>
+                    >{ !lodash.isEmpty(userList) && toName ||to}</NavBar>
                     <QueueAnim type='top'>
                         {ChatMsg.map(item=>{
                             const avatar = require(`../img/${users[item.from].avatar}.png`)

@@ -6,10 +6,11 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {LoadData} from '../../reducer/login'
 import {update} from '../../services/user'
+import {getMsgList} from '../../reducer/ChatList-redux'
 
 @connect(
 	state=>state.login,
-	{LoadData}
+	{LoadData,getMsgList}
 )
 class GeniusInfo extends React.Component{
 	constructor(props) {
@@ -21,6 +22,11 @@ class GeniusInfo extends React.Component{
 			desc:'',
 			avatar:null
 		}
+	}
+	componentDidMount(){
+		if(!this.props.ChatList || !this.props.ChatList.chatMsg.length){
+            this.props.getMsgList()
+        }
 	}
 	onChange(key,val){
 		this.setState({

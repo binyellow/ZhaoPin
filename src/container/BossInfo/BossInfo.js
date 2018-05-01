@@ -6,10 +6,11 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {update} from '../../services/user'
 import {LoadData} from '../../reducer/login'
+import {getMsgList} from '../../reducer/ChatList-redux'
 
 @connect(
 	state=>state.login,
-	{LoadData}
+	{LoadData,getMsgList}
 )
 class BossInfo extends React.Component{
 	constructor(props) {
@@ -20,6 +21,11 @@ class BossInfo extends React.Component{
 			company:'',
 			money:''
 		}
+	}
+	componentDidMount(){
+		if(!this.props.ChatList || !this.props.ChatList.chatMsg.length){
+            this.props.getMsgList()
+        }
 	}
 	handleUpdate = (data) =>{
 		update(data).then(res=>{

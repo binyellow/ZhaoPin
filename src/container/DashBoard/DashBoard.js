@@ -9,6 +9,7 @@ import Genius from '../../components/Genius/Genius'
 import User from '../../components/User/User'
 import {getMsgList,sendMsg,recvMsg} from '../../reducer/ChatList-redux'
 import Msg from '../../components/Msg/Msg'
+import Analysis from '../../components/Analysis/Analysis'
 
 @connect(
 	state=>state,
