@@ -93,25 +93,21 @@ export default class Login extends Component {
             <div className={styles.wrapper}>
                 {redirectTo&&path!==redirectTo&&isAuth?<Redirect to={redirectTo}/>:null}
                 <Logo/>
-                <FormItem
-                help
-                >
+                <FormItem>
                 {getFieldDecorator('userName',{
                     rules:[{
-                        required:true,
+                        required:true,message:'请输入用户名'
                     }]
                 })(
                     <Input
-                    placeholder="账号"
+                    placeholder="用户名"
                     onChange={e=>this.handleChangeState('userName',e.target.value)}/>
                 )}
                 </FormItem>
-                <FormItem
-                help
-                >
+                <FormItem>
                 {getFieldDecorator('passWord',{
                     rules:[{
-                        required:true,
+                        required:true,message:'请输入密码'
                     }]
                 })(
                     <Input
@@ -123,7 +119,7 @@ export default class Login extends Component {
                 <FormItem
                 help
                 hasFeedback
-                validateStatus={this.state.repeatPassWord.validateStatus||''}
+                validateStatus={this.state.repeatPassWord.validateStatus||''}//自定义校验
                 >
                     <Input
                     type="password"

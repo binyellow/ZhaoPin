@@ -32,7 +32,10 @@ class UserInfoCard extends Component {
                             <div>
                                 <div>公司：{item.company}</div>
                                 <div>薪资：{item.money}</div>
-                            </div>:null
+                            </div>:
+                            <div>
+                                期望薪资: {item.expectMoney}
+                            </div>
                         }
                     </Card.Body>
                 </Card>

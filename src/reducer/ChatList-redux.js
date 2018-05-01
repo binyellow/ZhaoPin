@@ -34,7 +34,7 @@ export function ChatList(state=initState,action){
                     item.read = true;
                 }
                 return item;
-            }),unRead:state.unRead-action.payload.num}
+            }),unRead:state.unRead-action.payload.num===0?0:state.unRead-action.payload.num}
         default:
             return state;
     }

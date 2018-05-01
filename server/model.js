@@ -15,10 +15,15 @@ const models = {
 		// 个人简介或者职位简介
 		'desc':{'type':String},
 		// 职位名
-		'title':{'type':String},
+        'title':{'type':String},
+        // 期望薪资
+        expectMoney:{type:String},
+        // 工作经验
+        experience:{type:String},
 		// 如果你是boss 还有两个字段
 		'company':{'type':String},
-		'money':{'type':String}
+        'money':{'type':String},
+        'workingPlace':{type:String},
     },
     chat:{
         from:{type:String,required:true},

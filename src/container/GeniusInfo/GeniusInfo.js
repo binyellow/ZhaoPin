@@ -16,6 +16,8 @@ class GeniusInfo extends React.Component{
 		super(props)
 		this.state = {
 			title:'',
+			experience:'',
+			expectMoney:'',
 			desc:'',
 			avatar:null
 		}
@@ -48,8 +50,14 @@ class GeniusInfo extends React.Component{
 						})
 					}}
 				></AvatarSelector>
-				<InputItem onChange={(v)=>this.onChange('title',v)}>
+				<InputItem onChange={(v)=>this.onChange('title',v)} clear>
 					求职岗位
+				</InputItem>
+				<InputItem onChange={(v)=>this.onChange('expectMoney',v)} clear>
+					期望薪资
+				</InputItem>
+				<InputItem onChange={(v)=>this.onChange('experience',v)} clear>
+					工作经验
 				</InputItem>
 				<TextareaItem
 					onChange={(v)=>this.onChange('desc',v)}

@@ -6,6 +6,7 @@ const userRouter = require('./user-router')
 const cors = require('koa2-cors')
 const bodyParser = require('koa-body')//koa-body、koa-bodyparser都可以body-parser暂时不知道为啥不可以
 const model = require('./model')
+const User = model.getModule('user')
 const Chat = model.getModule('chat')
 const path = require('path')
 const koaStatic = require('koa-static')
@@ -14,6 +15,7 @@ const fs = require('fs');
 const app = new koa();
 const router = new Router();
 
+// User.remove({},(err,doc)=>{console.log(doc)})
 // Chat.remove({},(err,doc)=>{console.log(doc)})
 app.use(cors({credentials: true}))
 app.use(bodyParser())
