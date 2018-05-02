@@ -4,21 +4,28 @@ import lodash from 'lodash';
 import {List,Badge} from 'antd-mobile'
 import {withRouter} from 'react-router-dom'
 import {getMsgList,recvMsg} from '../../reducer/ChatList-redux'
+import {getUserList} from '../../reducer/UserList-redux'
 
 const {Item} = List
 const {Brief} = Item
 @connect(
     state=>state,
-    {getMsgList,recvMsg}
+    {getMsgList,recvMsg,getUserList}
 )
 @withRouter
 export default class Msg extends Component {
-    componentDidMount(){
-		console.log(this.props)
-		if(!this.props.ChatList.chatMsg.length){
+    componentWillUpdate(nextProps, nextState){
+        console.log(nextProps,nextState);
+        if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
+            const {type} = this.props.login;
+            this.props.getUserList(type==='boss'?'genius':'boss')
             this.props.getMsgList()
-            // this.props.recvMsg()
         }
+    }
+    componentDidMount(){
+        const {type} = this.props.login;
+        this.props.getUserList(type==='boss'?'genius':'boss')
+        this.props.getMsgList()
 	}
     getLast = (arr) =>{
         return arr[arr.length-1]
@@ -45,7 +52,7 @@ export default class Msg extends Component {
                     const from = allUsers[fromId]
                     const targetId = item[0].from === userId?item[0].to:item[0].from;
                     const unreadNum = item.filter(_item=>!_item.read&&_item.to===userId).length
-                    const avatarPath = require(`../img/${from.avatar}.png`)
+                    const avatarPath = from?require(`../img/${from.avatar}.png`):require('../img/boy.png')
                     return (<List key={index}>
                         <Item
                             extra={<Badge text={unreadNum}/>}
@@ -54,7 +61,7 @@ export default class Msg extends Component {
                             onClick={()=>this.props.history.push(`chat/${targetId}`)}
                         >
                             {last.content}
-                            <Brief>{from.name}</Brief>
+                            <Brief>{from?from.name:''}</Brief>
                         </Item>
                     </List>)
                 })}

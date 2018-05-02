@@ -21,11 +21,19 @@ export default class Chat extends Component {
             showEmoji: false
         }
     }
+    componentWillUpdate(nextProps, nextState){
+        console.log(nextProps,nextState);
+        if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
+            const {type} = this.props.login;
+            this.props.getUserList(type==='boss'?'genius':'boss')
+            this.props.getMsgList()
+        }
+    }
     componentDidMount(){
         if(!this.props.ChatList.chatMsg.length){
-            this.props.getMsgList()//this.props.match.params.username
             this.props.recvMsg()
         }
+        this.props.getMsgList()//this.props.match.params.username
         this.fixCarousel()
     }
     componentWillUnmount(){
@@ -56,7 +64,7 @@ export default class Chat extends Component {
         const [...userList] = this.props.UserList.userList;
         const chatId = [this.props.login._id,to].sort().join('_');
         const ChatMsg = this.props.ChatList.chatMsg.filter(item=>item.chatId===chatId)
-        const toName = userList.length>0?userList.find(item=>item._id===to).userName:null
+        const toName = users[`${to}`]?this.props.ChatList.users[`${to}`].name:null
         return (
             <div id="chat-page">
                 <div>
