@@ -23,9 +23,8 @@ export default class Chat extends Component {
     }
     componentDidMount(){
         if(!this.props.ChatList.chatMsg.length){
-            console.log(this.props.match.params.username)
-            this.props.getMsgList(this.props.match.params.username)
-            // this.props.recvMsg()
+            this.props.getMsgList()//this.props.match.params.username
+            this.props.recvMsg()
         }
         this.fixCarousel()
     }

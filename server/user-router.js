@@ -77,7 +77,7 @@ const EditPwd = (ctx,next)=>{
 }
 const getMsgList = async (ctx,next)=>{
     const user = ctx.cookies.get('userId');
-    const {to} = ctx.query;
+    // const {to} = ctx.query;
     let res = {}//常量的错不要再犯了
     await new Promise((resolve,reject)=>{
         let users = {};

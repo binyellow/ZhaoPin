@@ -17,6 +17,12 @@ import Analysis from '../../components/Analysis/Analysis'
 )
 
 class DashBoard extends React.Component{
+	constructor(props){
+		super(props);
+		if(this.props.location.pathname==='/'){
+			this.props.history.push('/register')
+		}
+	}
 	componentDidMount(){
 		console.log(this.props)
 		if(!this.props.ChatList.chatMsg.length){
@@ -24,13 +30,6 @@ class DashBoard extends React.Component{
             this.props.recvMsg()
         }
 	}
-	constructor(props){
-		super(props);
-		if(this.props.location.pathname==='/'){
-			this.props.history.push('/register')
-		}
-	}
-	
 	render(){
 		const { pathname } = this.props.location
 		const {login} = this.props

@@ -3,15 +3,23 @@ import {connect} from 'react-redux'
 import lodash from 'lodash';
 import {List,Badge} from 'antd-mobile'
 import {withRouter} from 'react-router-dom'
+import {getMsgList,recvMsg} from '../../reducer/ChatList-redux'
 
 const {Item} = List
 const {Brief} = Item
 @connect(
     state=>state,
-    {}
+    {getMsgList,recvMsg}
 )
 @withRouter
 export default class Msg extends Component {
+    componentDidMount(){
+		console.log(this.props)
+		if(!this.props.ChatList.chatMsg.length){
+            this.props.getMsgList()
+            // this.props.recvMsg()
+        }
+	}
     getLast = (arr) =>{
         return arr[arr.length-1]
     }

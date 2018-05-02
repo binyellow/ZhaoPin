@@ -73,7 +73,8 @@ export default class Login extends Component {
                                 title:'注册成功',
                                 content:`欢迎您${values.userName}`,
                                 onOk:()=>{
-                                    this.props.LoadData({...values,type});
+                                    const {_id} = data.doc;
+                                    this.props.LoadData({...values,type,_id});
                                     this.props.history.push('/login')
                                 }
                             })
