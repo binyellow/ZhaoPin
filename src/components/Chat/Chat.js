@@ -5,12 +5,13 @@ import QueueAnim from 'rc-queue-anim';
 import {List,InputItem, Button,NavBar,Icon,Grid} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
+import {getUserList} from '../../reducer/UserList-redux'
 
 const socket = io('ws://localhost:9030');
 const {Item} = List
 @connect(
     state=>state,
-    {getMsgList,sendMsg,recvMsg,readMsg}
+    {getMsgList,sendMsg,recvMsg,readMsg,getUserList}
 )
 export default class Chat extends Component {
     constructor(props){
