@@ -26,8 +26,12 @@ export function ChatList(state=initState,action){
                 unRead:action.payload.msgs.filter(v=>!v.read&&v.to===action.payload.loginId).length
             }
         case MSG_RECV:
-            const n = action.payload.msg.to === action.payload.loginId? 1: 0; 
-            return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unRead:state.unRead+n}
+            if(state.chatMsg.some(item=>item.chatId===action.payload.msg.chatId&&item.chatTime===action.payload.msg.chatTime)){
+                return {...state}
+            }else{
+                const n = action.payload.msg.to === action.payload.loginId? 1: 0; 
+                return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unRead:state.unRead+n}
+            }
         case MSG_READ:
             return {...state,chatMsg:state.chatMsg.map(item=>{
                 if(item.from===action.payload.from){
