@@ -78,7 +78,7 @@ class DashBoard extends React.Component{
 			<div>
 				{}
 				<NavBar className='fixd-header' mode='dark'>{pathname==='/'?null:navList.find(v=>v.path===pathname).title}</NavBar>
-				<div style={{marginTop:45}}>
+				<div style={{marginTop:45,marginBottom:50}}>
 					<Switch>
 						{navList.map(v=>(
 							<Route key={v.path} path={v.path} component={v.component}></Route>

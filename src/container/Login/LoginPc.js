@@ -59,11 +59,9 @@ export default class LoginPc extends Component {
                 <Col className={styles.loginCol} span="7">
                     {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
                     <Logo/>
-                    <FormItem
-                    help
-                    >
+                    <FormItem>
                     {getFieldDecorator('userName',{
-                        rules:[{required:true}],
+                        rules:[{required:true,message:'请输入账号'}],
                     })(
                         <Input
                         prefix={<Icon type="user"/>}
@@ -71,11 +69,9 @@ export default class LoginPc extends Component {
                         onChange={e=>this.props.handleChangeState('userName',e.target.value)}/>
                     )}
                     </FormItem>
-                    <FormItem
-                    help
-                    >
+                    <FormItem>
                     {getFieldDecorator('passWord',{
-                        rules:[{required:true}]
+                        rules:[{required:true,message:'请输入密码'}]
                     })(
                         <Input
                             type="password"
