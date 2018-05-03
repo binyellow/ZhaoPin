@@ -109,7 +109,7 @@ export default class Chat extends Component {
                             this.setState({text:v})
                         }}
                         extra={
-                            <div>
+                            <div style={{lineHeight:1.5}}>
                                 <span style={{marginRight:'10px'}} onClick={()=>{
                                     this.handleShow();
                                     this.fixCarousel()

@@ -60,8 +60,8 @@ export default class Msg extends Component {
                             arrow="horizontal"
                             onClick={()=>this.props.history.push(`chat/${targetId}`)}
                         >
-                            {last.content}
                             <Brief>{from?from.name:''}</Brief>
+                            {last.content}
                         </Item>
                     </List>)
                 })}
