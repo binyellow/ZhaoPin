@@ -51,10 +51,9 @@ export default class LoginMobile extends Component {
                 {(redirectTo&&redirectTo!=='/login')?<Redirect to={redirectTo}/>:null}
                 <Logo/>
                 <FormItem
-                help
                 >
                 {getFieldDecorator('userName',{
-                    rules:[{required:true}]
+                    rules:[{required:true,message:'请输入账号'}]
                 })(
                     <Input
                         placeholder="账号"
@@ -62,10 +61,9 @@ export default class LoginMobile extends Component {
                 )}
                 </FormItem>
                 <FormItem
-                help
                 >
                 {getFieldDecorator('passWord',{
-                    rules:[{required:true}]
+                    rules:[{required:true,message:'请输入密码'}]
                 })(
                     <Input
                         type="password"

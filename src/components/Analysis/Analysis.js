@@ -60,9 +60,13 @@ export default class Analysis extends Component {
           },
           xAxis : [
             {
-              type : 'category',
-              boundaryGap : false,
-              data : xData
+              type : 'category',  //适用于类目
+              boundaryGap : false,  //两边留白
+              data : xData,
+              axisLabel:{
+                interval: 0,  //强制显示所有横轴
+                // rotate: -30
+              }
             }
           ],
           yAxis : [
