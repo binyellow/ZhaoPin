@@ -5,6 +5,7 @@ import {List,Badge} from 'antd-mobile'
 import {withRouter} from 'react-router-dom'
 import {getMsgList,recvMsg} from '../../reducer/ChatList-redux'
 import {getUserList} from '../../reducer/UserList-redux'
+import styles from './Msg.less';
 
 const {Item} = List
 const {Brief} = Item
@@ -45,7 +46,7 @@ export default class Msg extends Component {
         })
         console.log(chatList)
         return (
-            <div>
+            <div className={styles.msg}>
                 {chatList.map((item,index)=>{
                     const last = this.getLast(item)//最后一条
                     const fromId = last.from===userId?last.to:last.from;
@@ -55,7 +56,7 @@ export default class Msg extends Component {
                     const avatarPath = from?require(`../img/${from.avatar}.png`):require('../img/boy.png')
                     return (<List key={index}>
                         <Item
-                            extra={<Badge text={unreadNum}/>}
+                            extra={<div><span style={{marginRight: '5px'}}>{new Date(last.chatTime).toLocaleString()}</span><Badge text={unreadNum}/></div>}
                             thumb={avatarPath}
                             arrow="horizontal"
                             onClick={()=>this.props.history.push(`chat/${targetId}`)}

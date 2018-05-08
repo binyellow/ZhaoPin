@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {getUserList} from '../../reducer/UserList-redux'
 import ReactEcharts from 'echarts-for-react'
+import {Accordion} from 'antd-mobile'
 
 @connect(
     state=>state,
@@ -88,7 +89,11 @@ export default class Analysis extends Component {
     render() {
         return (
             <div>
-                <ReactEcharts option={this.getOption()} />
+                <Accordion>
+                  <Accordion.Panel header="薪资分析">
+                    <ReactEcharts option={this.getOption()} />
+                  </Accordion.Panel>
+                </Accordion>
             </div>
         )
     }
