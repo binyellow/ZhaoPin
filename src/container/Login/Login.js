@@ -7,10 +7,10 @@ export default class Login extends Component {
     render() {
         return (
             <div style={{height:'100%'}}>
-                <MediaQuery minWidth={900}>
+                <MediaQuery minWidth={800}>
                     <LoginPc/>
                 </MediaQuery>
-                <MediaQuery maxWidth={900}>
+                <MediaQuery maxWidth={800}>
                     <LoginMobile></LoginMobile>
                 </MediaQuery>
             </div>

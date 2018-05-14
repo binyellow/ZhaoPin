@@ -79,20 +79,20 @@ export default class LoginPc extends Component {
                             placeholder="密码"
                             onChange={e=>this.props.handleChangeState('passWord',e.target.value)}/>
                     )}
-                        </FormItem>
-                        <div>
-                            <Row type="flex" justify="center" className={styles.operator}>
-                                <Col>
-                                    <Button 
-                                    type="primary" 
-                                    onClick={this.handleLogin}>
-                                    登录</Button>
-                                </Col>
-                                <Col>
-                                    <Link to="/register">注册</Link>
-                                </Col>
-                            </Row>
-                        </div>
+                    </FormItem>
+                    <div>
+                        <Row type="flex" justify="center" className={styles.operator}>
+                            <Col>
+                                <Button 
+                                type="primary" 
+                                onClick={this.handleLogin}>
+                                登录</Button>
+                            </Col>
+                            <Col>
+                                <Link to="/register">注册</Link>
+                            </Col>
+                        </Row>
+                    </div>
                     </Col>
                 </Row>
             </div>
