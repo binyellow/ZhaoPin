@@ -1,5 +1,6 @@
 const UserDB = require('../dbDao/user')
 const getMd5Pwd = require('../utils/utils')
+// const mongoose = require('mongoose')
 
 const findList = async (ctx,next)=>{
     const {type} = ctx.query;
@@ -13,6 +14,7 @@ const register = async (ctx,next)=>{
     let res;
     if(!isExist.exist){//数据库没有这个用户
         res = await UserDB.create({...ctx.request.body,passWord:getMd5Pwd(passWord)})
+        // mongoose.module('lastLoginTime').create
         ctx.cookies.set('userId',res.doc._id,{httpOnly:false})
     }else{
         res = {...isExist,success:false}

@@ -22,7 +22,11 @@ export function getMaxNumber(params){
 			hash[ele]++;
 		}
 	}
-	const arr = Object.values(hash);
+	console.log(hash);
+	let arr = [];
+	for (const key in hash) {
+		arr.push(hash[key])
+	}
 	let max = 0;
 	for(let i=0;i<arr.length;i++){
 		if(arr[i]>arr[i-1]){

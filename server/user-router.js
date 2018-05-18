@@ -40,6 +40,14 @@ const Login = (ctx, next)=>{
         }else{
             mongoose.model('user').findOne({...requestData,passWord:getMd5Pwd(requestData.passWord)})
             .then(data=>{
+                const lastLoginTime = mongoose.model('lastLoginTime')
+                lastLoginTime.findOne({userName:requestData.userName},(err,doc)=>{
+                    if(!doc){
+                        lastLoginTime.create({userName:requestData.userName},(err,doc)=>console.log(doc))
+                    }else{
+                        lastLoginTime.update({userName:requestData.userName},{time:new Date().getTime()},(err,doc)=>console.log(doc))
+                    }
+                })
                 resolve(data)
             })
         }

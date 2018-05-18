@@ -41,7 +41,7 @@ const models = {
         score:{type:String}
     },
     lastLoginTime:{
-        user:{type:String,required:true},
+        userName:{type:String,required:true},
         time:{type:Number,default:Date.now},
     },
     collections_applicant:{

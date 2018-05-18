@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button,Modal,Icon} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -8,6 +8,7 @@ import {update} from '../../services/user'
 import {LoadData} from '../../reducer/login'
 import {getMsgList} from '../../reducer/ChatList-redux'
 import {getAllUserList} from '../../reducer/UserList-redux'
+import city from '../../common/city'
 
 @connect(
 	state=>state,
@@ -19,6 +20,7 @@ class BossInfo extends React.Component{
 		this.state = {
 			title:'',
 			desc:'',
+			workingPlace:[],
 			company:'',
 			money:'',
 			avatar:null
@@ -68,6 +70,17 @@ class BossInfo extends React.Component{
 		const redirect = this.props.login.redirectTo;
 		const {userName} = this.props.login;
 		const editItem = this.props.UserList.allUserList.find(n=>n.userName===userName);
+		// const workingCity = editItem.workingPlace instanceof Array?editItem.workingPlace:editItem.workingPlace.split(' ')
+		let workingCity;
+		if(editItem&&!this.state.workingPlace.length){
+			if(editItem.workingPlace instanceof Array){
+				workingCity = editItem.workingPlace
+			}else{
+				workingCity = editItem.workingPlace.split(' ')
+			}
+		}else{
+			workingCity = this.state.workingPlace
+		}
 		return (
 			<div>
 				{redirect&&redirect!==path? <Redirect to={this.props.login.redirectTo}/> :null}
@@ -87,6 +100,19 @@ class BossInfo extends React.Component{
 				<InputItem onChange={(v)=>this.onChange('title',v)} clear defaultValue={editItem?editItem.title:null}>
 					招聘职位
 				</InputItem>
+				<Picker
+					data={city}
+					title="选择城市"
+					cascade={false}
+					value={workingCity}
+					// onChange={v => console.log(v)}
+					onOk={v => {
+						console.log(v)
+						this.setState({workingPlace:v})
+					}}
+					>
+					<List.Item arrow="horizontal">工作地点</List.Item>
+				</Picker>
 				<InputItem onChange={(v)=>this.onChange('company',v)}  clear defaultValue={editItem?editItem.company:null}>
 					公司名称
 				</InputItem>
