@@ -20,10 +20,10 @@ class AvatarSelector extends React.Component{
                 icon:require(`../img/${v}.png`),
                 text:v
             }))
-		const gridHeader = this.state.icon
+		const gridHeader = this.state.icon || this.props.selectedAvatar
             ? (<div>
                     <span>已选择头像</span>
-                    <img style={{width:20}} src={this.state.icon} alt=""/>
+                    <img style={{width:20}} src={this.state.icon||require(`../img/${this.props.selectedAvatar}.png`)} alt=""/>
                 </div>)
             : '请选择头像'
 		return (

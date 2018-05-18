@@ -2,19 +2,20 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {NavBar, Icon,Popover} from 'antd-mobile'
 import QueueAnim from 'rc-queue-anim';
-import {Switch, Route,Redirect} from 'react-router-dom'
+import {Switch, Route,Link} from 'react-router-dom'
 import NavLinkBar from '../../components/NavLink/NavLink'
 import Boss from '../../components/Boss/Boss'
 import Genius from '../../components/Genius/Genius'
 import User from '../../components/User/User'
 import {getMsgList,sendMsg,recvMsg} from '../../reducer/ChatList-redux'
+import {LoadData} from '../../reducer/login'
 import Msg from '../../components/Msg/Msg'
 import Analysis from '../../components/Analysis/Analysis'
 
 const Item = Popover.Item;
 @connect(
 	state=>state,
-	{getMsgList,sendMsg,recvMsg}
+	{getMsgList,sendMsg,recvMsg,LoadData}
 )
 
 class DashBoard extends React.Component{
@@ -33,6 +34,11 @@ class DashBoard extends React.Component{
             this.props.recvMsg()
 		}
 		this.props.getMsgList()
+	}
+	editPersonInfo = () =>{
+		const {type} = this.props.login;
+		this.props.LoadData({type});
+		this.props.history.push('/login')
 	}
 	render(){
 		const { pathname } = this.props.location
@@ -90,12 +96,12 @@ class DashBoard extends React.Component{
 						  overlayStyle={{ color: 'currentColor' }}
 						  visible={this.state.visible}
 						  overlay={[
-							(<Item key="4" value="scan" icon={myImg('job')} data-seed="logId">
-							修改个人信息</Item>),
-							(<Item key="5" value="special" icon={myImg('boss')} style={{ whiteSpace: 'nowrap' }}>
-							My Qrcode</Item>),
-							(<Item key="6" value="button ct" icon={myImg('msg')}>
-							  <span style={{ marginRight: 5 }}>Help</span>
+							(<Item key="4" value="scan" icon={myImg('edit')} data-seed="logId">
+							<span onClick={this.editPersonInfo}>修改个人信息</span></Item>),
+							(<Item key="5" value="special" icon={myImg('suggest')} style={{ whiteSpace: 'nowrap' }}>
+							建议反馈</Item>),
+							(<Item key="6" value="button ct" icon={myImg('help')}>
+							  <span style={{ marginRight: 5 }}>帮助</span>
 							</Item>),
 						  ]}
 						  align={{

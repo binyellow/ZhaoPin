@@ -9,7 +9,7 @@ import {LoadData} from '../../reducer/login'
 import {getMsgList} from '../../reducer/ChatList-redux'
 
 @connect(
-	state=>state.login,
+	state=>state,
 	{LoadData,getMsgList}
 )
 class BossInfo extends React.Component{
@@ -43,10 +43,10 @@ class BossInfo extends React.Component{
 	}
 	render(){
 		const path = this.props.location.pathname
-		const redirect = this.props.redirectTo
+		const redirect = this.props.login.redirectTo
 		return (
 			<div>
-				{redirect&&redirect!==path? <Redirect to={this.props.redirectTo}/> :null}
+				{redirect&&redirect!==path? <Redirect to={this.props.login.redirectTo}/> :null}
 				<NavBar mode="dark" >BOSS完善信息页</NavBar>
 				<AvatarSelector 
 					selectAvatar={(imgname)=>{
