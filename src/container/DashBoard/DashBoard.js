@@ -10,7 +10,7 @@ import User from '../../components/User/User'
 import {getMsgList,sendMsg,recvMsg} from '../../reducer/ChatList-redux'
 import {LoadData} from '../../reducer/login'
 import Msg from '../../components/Msg/Msg'
-import Analysis from '../../components/Analysis/Analysis'
+import Analysis from '../Analysis/Analysis'
 
 const Item = Popover.Item;
 @connect(

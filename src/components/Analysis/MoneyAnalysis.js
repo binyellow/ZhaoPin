@@ -1,25 +1,7 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import {getUserList} from '../../reducer/UserList-redux'
 import ReactEcharts from 'echarts-for-react'
-import {Accordion} from 'antd-mobile'
 
-@connect(
-    state=>state,
-    {getUserList}
-)
-export default class Analysis extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-
-        }
-    }
-    componentDidMount(){
-        console.log(this.props);
-        const {type} = this.props.login;//type是指当前用户类型
-        this.props.getUserList(type==='genius'?'boss':'genius')
-    }
+export default class MoneyAnalysis extends Component {
     getOption = () => {
         const {userList} = this.props.UserList;
         const {type} = this.props.login;
@@ -89,11 +71,7 @@ export default class Analysis extends Component {
     render() {
         return (
             <div>
-                <Accordion>
-                  <Accordion.Panel header="薪资分析">
-                    <ReactEcharts option={this.getOption()} />
-                  </Accordion.Panel>
-                </Accordion>
+                <ReactEcharts option={this.getOption()} />
             </div>
         )
     }

@@ -5,6 +5,7 @@ import {withRouter,Redirect} from 'react-router-dom'
 import browserCookies from 'browser-cookies';
 import {LogoutAction} from '../../reducer/login'
 import {getAllUserList} from '../../reducer/UserList-redux'
+import city from '../../common/city'
 
 const {Item} = List
 const {Brief} = Item
@@ -37,6 +38,7 @@ export default class User extends Component {
     }
     render() {
         const userInfo = this.props.login;
+        const cityItem = userInfo.workingPlace instanceof Array?city[0].find(v=>v.value===userInfo.workingPlace[0]):city[0].find(v=>v.value===userInfo.workingPlace);
         return userInfo.userName?(
             <div>
                 <Result
@@ -44,9 +46,12 @@ export default class User extends Component {
                     title={userInfo.userName}
                     message={userInfo.type==='boss'?userInfo.company:null}
                 />
-                <List renderHeader={()=>userInfo.type==='boss'?'招聘要求':'个人简介'}>
+                <List renderHeader={()=>userInfo.type==='boss'?'招聘要求':'个人信息'}>
                     <Item multipleLine>
-                        {userInfo.desc}
+                        详细描述：{userInfo.desc}
+                        <Brief>
+                            工作地点：{cityItem?cityItem.label:''}
+                        </Brief>
                         {userInfo.type==='boss'?
                             (<div>
                                 <Brief>
@@ -55,9 +60,16 @@ export default class User extends Component {
                                 <Brief>
                                 薪资：{userInfo.money}
                                 </Brief>
-                            </div>):(<div>
+                            </div>):
+                            (<div>
                                 <Brief>
                                 意向岗位：{userInfo.title}
+                                </Brief>
+                                <Brief>
+                                期待薪资：{userInfo.expectMoney}
+                                </Brief>
+                                <Brief>
+                                工作经验：{userInfo.experience}
                                 </Brief>
                             </div>)
                         }

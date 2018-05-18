@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button,Modal,Icon} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -8,6 +8,7 @@ import {LoadData} from '../../reducer/login'
 import {update} from '../../services/user'
 import {getMsgList} from '../../reducer/ChatList-redux'
 import {getAllUserList} from '../../reducer/UserList-redux'
+import city from '../../common/city'
 
 @connect(
 	state=>state,
@@ -18,6 +19,7 @@ class GeniusInfo extends React.Component{
 		super(props)
 		this.state = {
 			title:'',
+			workingPlace:[],
 			experience:'',
 			expectMoney:'',
 			desc:'',
@@ -58,6 +60,7 @@ class GeniusInfo extends React.Component{
 		update(data).then(res=>{
 			if(res.status===200&&res.data.success===true){
 				this.props.LoadData(res.data.data)
+				this.props.history.goBack()
 			}else{
 				Modal.alert('更新失败',res.data.message)
 			}
@@ -66,8 +69,8 @@ class GeniusInfo extends React.Component{
 	render(){
 		const path = this.props.location.pathname
 		const redirect = this.props.login.redirectTo
-		const {userName} = this.props.login;
-		const editItem = this.props.UserList.allUserList.find(n=>n.userName===userName);
+		const editItem = this.props.login;
+		const workingCity = editItem.workingPlace instanceof Array?editItem.workingPlace:editItem.workingPlace.split(' ')
 		return (
 			<div>
 				{redirect&&redirect!==path? <Redirect to={this.props.login.redirectTo}></Redirect> :null}
@@ -87,6 +90,19 @@ class GeniusInfo extends React.Component{
 				<InputItem onChange={(v)=>this.onChange('title',v)} clear defaultValue={editItem?editItem.title:null}>
 					求职岗位
 				</InputItem>
+				<Picker
+					data={city}
+					title="选择城市"
+					cascade={false}
+					value={editItem&&!this.state.workingPlace.length?workingCity:this.state.workingPlace}
+					// onChange={v => console.log(v)}
+					onOk={v => {
+						console.log(v)
+						this.setState({workingPlace:v})
+					}}
+					>
+					<List.Item arrow="horizontal">求职地点</List.Item>
+				</Picker>
 				<InputItem onChange={(v)=>this.onChange('expectMoney',v)} clear defaultValue={editItem?editItem.expectMoney:null}>
 					期望薪资
 				</InputItem>
