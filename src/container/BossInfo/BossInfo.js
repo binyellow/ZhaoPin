@@ -76,7 +76,11 @@ class BossInfo extends React.Component{
 			if(editItem.workingPlace instanceof Array){
 				workingCity = editItem.workingPlace
 			}else{
-				workingCity = editItem.workingPlace.split(' ')
+				if(editItem.workingPlace===''){
+					workingCity=[]
+				}else{
+					workingCity = editItem.workingPlace.split(' ')
+				}
 			}
 		}else{
 			workingCity = this.state.workingPlace

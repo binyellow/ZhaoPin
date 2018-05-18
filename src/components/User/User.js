@@ -6,6 +6,7 @@ import browserCookies from 'browser-cookies';
 import {LogoutAction} from '../../reducer/login'
 import {getAllUserList} from '../../reducer/UserList-redux'
 import city from '../../common/city'
+import experienceData from '../../common/experience'
 
 const {Item} = List
 const {Brief} = Item
@@ -69,7 +70,7 @@ export default class User extends Component {
                                 期待薪资：{userInfo.expectMoney}
                                 </Brief>
                                 <Brief>
-                                工作经验：{userInfo.experience}
+                                工作经验：{experienceData[userInfo.experience]}
                                 </Brief>
                             </div>)
                         }

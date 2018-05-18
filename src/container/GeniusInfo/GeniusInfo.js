@@ -1,6 +1,5 @@
-
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List,Slider} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -9,6 +8,8 @@ import {update} from '../../services/user'
 import {getMsgList} from '../../reducer/ChatList-redux'
 import {getAllUserList} from '../../reducer/UserList-redux'
 import city from '../../common/city'
+import experienceData from '../../common/experience'
+import styles from './GeniusInfo.less'
 
 @connect(
 	state=>state,
@@ -18,12 +19,12 @@ class GeniusInfo extends React.Component{
 	constructor(props) {
 		super(props)
 		this.state = {
-			title:'',
-			workingPlace:[],
-			experience:'',
-			expectMoney:'',
-			desc:'',
-			avatar:null
+			title: '',
+			workingPlace: [],
+			experience: 3,
+			expectMoney: '',
+			desc: '',
+			avatar: null
 		}
 	}
 	componentWillMount(nextProps,nextState){
@@ -36,6 +37,7 @@ class GeniusInfo extends React.Component{
 		if(!this.props.ChatList || !this.props.ChatList.chatMsg.length){
             this.props.getMsgList()
 		}
+		console.log(experienceData);
 	}
 	onChange(key,val){
 		this.setState({
@@ -66,11 +68,31 @@ class GeniusInfo extends React.Component{
 			}
 		})
 	}
+	log = (value) =>{
+		return (value)=>{
+			console.log(value);
+			this.setState({experience:value})
+		}
+	}
 	render(){
 		const path = this.props.location.pathname
 		const redirect = this.props.login.redirectTo
 		const editItem = this.props.login;
-		const workingCity = editItem.workingPlace instanceof Array?editItem.workingPlace:editItem.workingPlace.split(' ')
+		// const workingCity = editItem.workingPlace instanceof Array?editItem.workingPlace:editItem.workingPlace.split(' ')
+		let workingCity;
+		if(editItem&&!this.state.workingPlace.length){
+			if(editItem.workingPlace instanceof Array){
+				workingCity = editItem.workingPlace
+			}else{
+				if(editItem.workingPlace===''){
+					workingCity=[]
+				}else{
+					workingCity = editItem.workingPlace.split(' ')
+				}
+			}
+		}else{
+			workingCity = this.state.workingPlace
+		}
 		return (
 			<div>
 				{redirect&&redirect!==path? <Redirect to={this.props.login.redirectTo}></Redirect> :null}
@@ -94,7 +116,7 @@ class GeniusInfo extends React.Component{
 					data={city}
 					title="选择城市"
 					cascade={false}
-					value={editItem&&!this.state.workingPlace.length?workingCity:this.state.workingPlace}
+					value={workingCity}
 					// onChange={v => console.log(v)}
 					onOk={v => {
 						console.log(v)
@@ -106,9 +128,20 @@ class GeniusInfo extends React.Component{
 				<InputItem onChange={(v)=>this.onChange('expectMoney',v)} clear defaultValue={editItem?editItem.expectMoney:null}>
 					期望薪资
 				</InputItem>
-				<InputItem onChange={(v)=>this.onChange('experience',v)} clear defaultValue={editItem?editItem.experience:null}>
+				{/* <InputItem onChange={(v)=>this.onChange('experience',v)} clear defaultValue={editItem?editItem.experience:null}>
 					工作经验
-				</InputItem>
+				</InputItem> */}
+				<div className={styles.slider}>
+					<h3 style={{marginLeft:'13px'}}>工作经验：</h3>
+					<Slider
+						style={{ marginLeft: 30, marginRight: 30 }}
+						defaultValue={3}
+						min={0}
+						max={5}
+						onChange={this.log()}
+						// marks={experienceData}
+					/>
+				</div>
 				<TextareaItem
 					onChange={(v)=>this.onChange('desc',v)}
 					rows={3}
