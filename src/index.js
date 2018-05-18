@@ -16,6 +16,7 @@ import AuthRoute from './components/AuthInfo/AuthInfo';
 import DashBoard from './container/DashBoard/DashBoard';
 import EditPwd from './container/EditPwd/EditPwd';
 import Chat from './components/Chat/Chat';
+import Detail from './container/Detail/Detail'
 
 const store = createStore(reducer,compose(
     applyMiddleware(thunk),
@@ -34,6 +35,7 @@ ReactDOM.render(
                     <Route path='/chat/:username' component={Chat}></Route>
 					<Route path='/register' component={Register}></Route>
                     <Route path='/edit-pwd' component={EditPwd}></Route>
+                    <Route path='/detail/:id' exact component={Detail}/>
 					<Route component={DashBoard}></Route>
 				</Switch>
             </div>

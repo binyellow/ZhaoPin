@@ -81,7 +81,7 @@ export default class Chat extends Component {
     }
     seeDetail = () =>{
         const to = this.props.match.params.username
-        console.log(to);
+        this.props.history.push(`/detail/${to}`)
     }
     render() {
         const emoji = '😀 😁 😂 🤣 😃 😄 😍 😋 😘 😗 😙 😚 🤩 🙄 😶 😑 😐 😣 😥 😮 🤐 😪 😫 😴 😌 😛 😝 🤤 😒 😓 😔 😕 🙃 🤑 🤯 😬 😱 😳 🤪 😵 😡 😠 😷 🤢 🤕 😇 🤠 🤡'

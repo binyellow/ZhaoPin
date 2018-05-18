@@ -7,23 +7,20 @@ mongoose.connection.on('connected',()=>console.log('连接成功'))
 
 const models = {
     user:{
-        userName:{type:String,required:true},
-        passWord:{type:String,required:true},
-        type:{type:String,required:true},
-        createTime:{type:Date,default:new Date()},
-        'avatar':{'type':String},
-		// 个人简介或者职位简介
-		'desc':{'type':String},
-		// 职位名
-        'title':{'type':String},
-        // 期望薪资
-        expectMoney:{type:String},
-        // 工作经验
-        experience:{type:String},
-		// 如果你是boss 还有两个字段
-		'company':{'type':String},
-        'money':{'type':String},
-        'workingPlace':{type:String},
+        userName:{type:String,required:true},   //用户名
+        passWord:{type:String,required:true},   //密码
+        type:{type:String,required:true},       //类型
+        createTime:{type:Date,default:new Date()},  //注册时间
+        avatar:{'type':String},               //头像
+		desc:{'type':String},                 // 个人简介或者职位简介
+        workingPlace:{type:String},           // 工作地点
+        title:{'type':String},                // 职位名
+        experience:{type:String},               // 工作经验
+        
+        expectMoney:{type:String},              // 期望薪资
+
+		company:{'type':String},              // 公司
+        money:{'type':String},                // 工作薪资
     },
     chat:{
         from:{type:String,required:true},
