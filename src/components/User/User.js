@@ -4,16 +4,22 @@ import {connect} from 'react-redux';
 import {withRouter,Redirect} from 'react-router-dom'
 import browserCookies from 'browser-cookies';
 import {LogoutAction} from '../../reducer/login'
-
+import {getAllUserList} from '../../reducer/UserList-redux'
 
 const {Item} = List
 const {Brief} = Item
 @connect(
-    state=>({userInfo:state.login}),
-    {LogoutAction}
+    state=>state,
+    {LogoutAction,getAllUserList}
 )
 @withRouter
 export default class User extends Component {
+    componentWillMount(nextProps,nextState){
+		const {userName} = this.props.login;
+		if(!this.props.UserList.allUserList.some(item=>item.userName===userName)){
+			this.props.getAllUserList()
+		}
+	}
     editPwd = () =>{
         console.log(this.props)
         this.props.history.push('/edit-pwd')
@@ -30,7 +36,7 @@ export default class User extends Component {
         ])
     }
     render() {
-        const userInfo = this.props.userInfo;
+        const userInfo = this.props.login;
         return userInfo.userName?(
             <div>
                 <Result
