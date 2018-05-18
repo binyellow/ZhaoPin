@@ -18,6 +18,7 @@ const Item = Popover.Item;
 	{getMsgList,sendMsg,recvMsg,LoadData}
 )
 
+
 class DashBoard extends React.Component{
 	constructor(props){
 		super(props);
@@ -82,12 +83,10 @@ class DashBoard extends React.Component{
 				component:User
 			}
 		]
-
 		const page = navList.find(item=>item.path === pathname)
 		const myImg = src => <img src={require(`../../components/NavLink/img/${src}.png`)} className="am-icon am-icon-xs" alt="" />;
 		return (
 			<div>
-				{}
 				<NavBar className='fixd-header' mode='dark'
 					rightContent={
 						pathname==='/me'?

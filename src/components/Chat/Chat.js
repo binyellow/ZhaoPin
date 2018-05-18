@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client';
 import lodash from 'lodash';
+import {deleteMsg} from '../../services/chat'
 import QueueAnim from 'rc-queue-anim';
-import {List,InputItem, Button,NavBar,Icon,Grid} from 'antd-mobile';
+import {Modal} from 'antd'
+import {List,InputItem, Button,NavBar,Icon,Grid,Popover} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
 import {getUserList} from '../../reducer/UserList-redux'
@@ -56,6 +58,31 @@ export default class Chat extends Component {
             showEmoji:!this.state.showEmoji
         })
     }
+    deleteMsg = (msgsChatId) =>{
+        // const to = this.props.match.params.username;
+        deleteMsg(msgsChatId).then(res=>{
+            if(res.status===200){
+                if(res.data.success){
+                    Modal.success({
+                        title:'删除成功',
+                        content:`成功删除${res.data.num}条`,
+                        onOk:()=>{
+                            this.props.history.push('/msg')
+                        }
+                    })
+                }else{
+                    Modal.error({
+                        title:'删除失败',
+                        content:res.data.message,
+                    })
+                }
+            }
+        })
+    }
+    seeDetail = () =>{
+        const to = this.props.match.params.username
+        console.log(to);
+    }
     render() {
         const emoji = '😀 😁 😂 🤣 😃 😄 😍 😋 😘 😗 😙 😚 🤩 🙄 😶 😑 😐 😣 😥 😮 🤐 😪 😫 😴 😌 😛 😝 🤤 😒 😓 😔 😕 🙃 🤑 🤯 😬 😱 😳 🤪 😵 😡 😠 😷 🤢 🤕 😇 🤠 🤡'
         .split(' ').filter(v=>v).map(v=>({text:v}));
@@ -65,13 +92,55 @@ export default class Chat extends Component {
         const [...userList] = this.props.UserList.userList;
         const chatId = [this.props.login._id,to].sort().join('_');
         const ChatMsg = this.props.ChatList.chatMsg.filter(item=>item.chatId===chatId)
+        const msgsChatId = ChatMsg.map(v=>v._id);
         const toName = users[`${to}`]?this.props.ChatList.users[`${to}`].name:null
+        const myImg = src => <img src={require(`../NavLink/img/${src}.png`)} className="am-icon am-icon-xs" alt="" />;
         return (
             <div id="chat-page">
                 <div>
                     <NavBar
                         icon={<Icon type="left" />}
                         onLeftClick={() => this.props.history.goBack()}
+                        rightContent={
+                            <Popover mask
+                              overlayClassName="fortest"
+                              overlayStyle={{ color: 'currentColor' }}
+                              visible={this.state.visible}
+                              overlay={[
+                                (<Popover.Item key="4" value="scan" icon={myImg('detail')} data-seed="logId">
+                                    <span onClick={this.seeDetail}>查看详细信息</span>
+                                </Popover.Item>),
+                                (<Popover.Item 
+                                    key="5" 
+                                    value="special" 
+                                    icon={myImg('delete')} 
+                                    style={{ whiteSpace: 'nowrap' }}
+                                >
+                                    <span onClick={()=>this.deleteMsg(msgsChatId)}>删除聊天记录</span>
+                                </Popover.Item>),
+                                (<Popover.Item key="6" value="button ct" icon={myImg('comment')}>
+                                  <span style={{ marginRight: 5 }}>评论</span>
+                                </Popover.Item>),
+                              ]}
+                              align={{
+                                overflow: { adjustY: 0, adjustX: 0 },
+                                offset: [-10, 0],
+                              }}
+                              onVisibleChange={this.handleVisibleChange}
+                              onSelect={this.onSelect}
+                            >
+                              <div style={{
+                                height: '100%',
+                                padding: '0 15px',
+                                marginRight: '-15px',
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                              >
+                                <Icon type="ellipsis" />
+                              </div>
+                            </Popover>
+                        }
                     >{ !lodash.isEmpty(userList) && toName ||to}</NavBar>
                     <QueueAnim type='top'>
                         {ChatMsg.map(item=>{

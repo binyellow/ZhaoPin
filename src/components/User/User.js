@@ -49,7 +49,7 @@ export default class User extends Component {
                 />
                 <List renderHeader={()=>userInfo.type==='boss'?'招聘要求':'个人信息'}>
                     <Item multipleLine>
-                        详细描述：{userInfo.desc}
+                        {userInfo.type==='boss'?'技能要求':'技术栈'}：{userInfo.desc}
                         <Brief>
                             工作地点：{cityItem?cityItem.label:''}
                         </Brief>
@@ -69,11 +69,11 @@ export default class User extends Component {
                                 <Brief>
                                 期待薪资：{userInfo.expectMoney}
                                 </Brief>
-                                <Brief>
-                                工作经验：{experienceData[userInfo.experience]}
-                                </Brief>
                             </div>)
                         }
+                        <Brief>
+                        {userInfo.type==='boss'?'工作经验要求':'工作经验'}：{experienceData[userInfo.experience]}
+                        </Brief>
                     </Item>
                 </List>
                 <WhiteSpace/>

@@ -37,7 +37,6 @@ class GeniusInfo extends React.Component{
 		if(!this.props.ChatList || !this.props.ChatList.chatMsg.length){
             this.props.getMsgList()
 		}
-		console.log(experienceData);
 	}
 	onChange(key,val){
 		this.setState({
@@ -48,7 +47,7 @@ class GeniusInfo extends React.Component{
 		const keys = Object.keys(state);
 		const data = {};
 		for (const key of keys) {
-			if(state[key]===''||state[key]===null){
+			if(state[key]===''||state[key]===null||state[key]===[]){
 				data[key] = editItem[key]?editItem[key]:state[key]
 			}else{
 				data[key] = state[key]
@@ -139,7 +138,7 @@ class GeniusInfo extends React.Component{
 						min={0}
 						max={5}
 						onChange={this.log()}
-						// marks={experienceData}
+						marks={experienceData}
 					/>
 				</div>
 				<TextareaItem

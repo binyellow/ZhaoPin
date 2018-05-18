@@ -101,3 +101,17 @@ export function readMsg(from){
         })
     }
 }
+
+// export function deleteMsg(msgChatIds){
+//     return (dispatch,getState)=>{
+//         const to = getState().login._id;
+//         console.log(msgChatIds);
+//         axios.post('/user/delete-msg',{msgChatIds})
+//         .then(res=>{
+//             if(res.status===200 && res.data.success){
+//                 // const loginId = getState().login._id;
+//                 // dispatch(msgList(res.data.msgs,res.data.users,loginId))
+//             }
+//         })
+//     }
+// }

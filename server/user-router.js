@@ -4,6 +4,7 @@ const mongoose= require('mongoose')
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
 const {register,findList,update} = require('./controllers/user')
+const {deleteMsg} = require('./controllers/Chat')
 const Chat = model.getModule('chat');
 
 
@@ -115,7 +116,6 @@ const readMsg = async (ctx,next)=>{
     await new Promise((resolve,reject)=>{
         Chat.update({from,to},{'$set':{read:true}},{'multi':true},(err,doc)=>{
             if(!err){
-                console.log(doc)
                 resolve({success:true,num:doc.nModified})
             }else{
                 reject({})
@@ -141,6 +141,7 @@ user.get('/login',Login)
 user.get('/edit-pwd',EditPwd)
 user.get('/list',findList)
 user.post('/update',update)
+user.post('/delete-msg',deleteMsg)
 
 
 module.exports = user

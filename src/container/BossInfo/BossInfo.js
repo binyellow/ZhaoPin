@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List} from 'antd-mobile'
+import {NavBar,InputItem, TextareaItem, Button,Modal,Icon,Picker,List,Slider} from 'antd-mobile'
 import AvatarSelector from '../../components/AvatarSelector/AvatarSelector'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -9,6 +9,8 @@ import {LoadData} from '../../reducer/login'
 import {getMsgList} from '../../reducer/ChatList-redux'
 import {getAllUserList} from '../../reducer/UserList-redux'
 import city from '../../common/city'
+import experienceData from '../../common/experience'
+import styles from '../GeniusInfo/GeniusInfo.less'
 
 @connect(
 	state=>state,
@@ -20,6 +22,7 @@ class BossInfo extends React.Component{
 		this.state = {
 			title:'',
 			desc:'',
+			experience: 3,
 			workingPlace:[],
 			company:'',
 			money:'',
@@ -57,13 +60,19 @@ class BossInfo extends React.Component{
 		const keys = Object.keys(state);
 		const data = {};
 		for (const key of keys) {
-			if(state[key]===''||state[key]===null){
+			if(state[key]===''||state[key]===null||state[key]===[]){
 				data[key] = editItem[key]?editItem[key]:state[key]
 			}else{
 				data[key] = state[key]
 			}
 		}
 		return data
+	}
+	log = (value) =>{
+		return (value)=>{
+			console.log(value);
+			this.setState({experience:value})
+		}
 	}
 	render(){
 		const path = this.props.location.pathname;
@@ -123,6 +132,17 @@ class BossInfo extends React.Component{
 				<InputItem onChange={(v)=>this.onChange('money',v)}  clear defaultValue={editItem?editItem.money:null}>
 					职位薪资
 				</InputItem>
+				<div className={styles.slider}>
+					<h3 style={{marginLeft:'13px'}}>要求工作经验：</h3>
+					<Slider
+						style={{ marginLeft: 30, marginRight: 30 }}
+						defaultValue={3}
+						min={0}
+						max={5}
+						onChange={this.log()}
+						marks={experienceData}
+					/>
+				</div>
 				<TextareaItem
 					onChange={(v)=>this.onChange('desc',v)}
 					rows={3}
