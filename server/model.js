@@ -32,6 +32,27 @@ const models = {
         content:{type:String,required:true},
         chatTime:{type:Number,default:Date.now},
         read:{type:Boolean,default:false}
+    },
+    comment:{
+        from:{type:String,required:true},
+        to:{type:String,required:true},
+        reviewTime:{type:Number,default:Date.now},
+        content:{type:String,required:true},
+        score:{type:String}
+    },
+    lastLoginTime:{
+        user:{type:String,required:true},
+        time:{type:Number,default:Date.now},
+    },
+    collections_applicant:{
+        from:{type:String,required:true},
+        collectionRecruiters:{type:String,required:true},
+        collectionTime:{type:Number,default:Date.now}
+    },
+    collections_recruiters:{
+        from:{type:String,required:true},
+        collectionApplicant:{type:String,required:true},
+        collectionTime:{type:Number,default:Date.now}
     }
 }
 for (const key in models) {
