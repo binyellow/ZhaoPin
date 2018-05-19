@@ -32,6 +32,7 @@ const models = {
     },
     comment:{
         from:{type:String,required:true},           //评论者
+        fromName:{type:String,required:true},
         to:{type:String,required:true},             //被评论者
         toName:{type:String,required:true},         //被评论者名称
         reviewTime:{type:Number,default:Date.now},  //评论时间

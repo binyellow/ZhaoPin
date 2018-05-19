@@ -3,28 +3,23 @@ import ReactEcharts from 'echarts-for-react'
 
 export default class ScoreAnalysis extends Component {
     getOption = () => {
-        const {userList,commentList} = this.props.UserList;
+        const {commentList} = this.props.UserList;
         const {type} = this.props.login;
         const xData = [];
         const yData = [];
-        userList.forEach(item=>{
-            if(type==='genius'){
-                xData.push(item.userName);
-                yData.push(item.money)
-            }else{
-                xData.push(item.userName);
-                yData.push(item.expectMoney)
-            }
+        commentList.forEach(item=>{
+          xData.push(item.toName)
+          yData.push(item.score)
         })
         return {
           title: {
-            text: type==='genius'?'各公司工资':'求职者期待薪资'
+            text: type==='genius'?'各公司评分':'求职者评分'
           },
           tooltip : {
             trigger: 'axis'
           },
           legend: {
-            data:['工资']
+            data:['评分']
           },
           toolbox: {
             feature: {

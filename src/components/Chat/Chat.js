@@ -96,8 +96,9 @@ export default class Chat extends Component {
     comment = (content,score) =>{
         const to = this.props.match.params.username;
         const {userList} = this.props.UserList;
+        const fromName = this.props.login.userName;
         const toName = userList.find(item=>item._id===to).userName;
-        addComment({content,to,score,toName}).then(res=>{
+        addComment({content,to,score,toName,fromName}).then(res=>{
             if(res.status===200&&res.data.success){
                 Modal.success({
                     title:'评论成功',
@@ -132,9 +133,6 @@ export default class Chat extends Component {
                               overlayStyle={{ color: 'currentColor' }}
                               visible={this.state.popVisible}
                               overlay={[
-                                (<Popover.Item key="4" value="scan" icon={myImg('detail')} data-seed="logId">
-                                    <span onClick={this.seeDetail}>查看详细信息</span>
-                                </Popover.Item>),
                                 (<Popover.Item 
                                     key="5" 
                                     value="special" 
@@ -145,6 +143,9 @@ export default class Chat extends Component {
                                 </Popover.Item>),
                                 (<Popover.Item key="6" value="button ct" icon={myImg('comment')}>
                                   <span onClick={()=>this.handleVisible()}>评论</span>
+                                </Popover.Item>),
+                                (<Popover.Item key="4" value="scan" icon={myImg('detail')} data-seed="logId">
+                                    <span onClick={this.seeDetail}>查看详细信息</span>
                                 </Popover.Item>),
                               ]}
                               align={{

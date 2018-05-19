@@ -6,10 +6,10 @@ import {withRouter} from 'react-router-dom'
 
 @withRouter
 class UserInfoCard extends Component {
-    handleChatTo = (item)=>{
-        console.log(item)
-        console.log(this.props)
-        this.props.history.push(`/chat/${item._id}`)
+    handleToDetail = (item)=>{
+        // console.log(item)
+        // console.log(this.props)
+        this.props.history.push(`/detail/${item._id}`)
     }
     render() {
         return (
@@ -18,7 +18,7 @@ class UserInfoCard extends Component {
             {this.props.userList.map(item=>
             <div key={item._id}>
                 <Card
-                    onClick={()=>this.handleChatTo(item)}
+                    onClick={()=>this.handleToDetail(item)}
                 >
                     <Card.Header
                         title={item.userName}                    

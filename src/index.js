@@ -35,7 +35,7 @@ ReactDOM.render(
                     <Route path='/chat/:username' component={Chat}></Route>
 					<Route path='/register' component={Register}></Route>
                     <Route path='/edit-pwd' component={EditPwd}></Route>
-                    <Route path='/detail/:id' exact component={Detail}/>
+                    <Route path='/detail/:username' component={Detail}/>
 					<Route component={DashBoard}></Route>
 				</Switch>
             </div>

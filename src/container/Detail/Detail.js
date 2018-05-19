@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
-import {Result,NavBar,Icon,List} from 'antd-mobile';
-import {getUserList} from '../../reducer/UserList-redux'
+import {Modal,Row,Col} from 'antd';
+import {Result,NavBar,Icon,List,Button,Popover} from 'antd-mobile';
+import {getUserList,getAllCommentList} from '../../reducer/UserList-redux'
 import experienceData from '../../common/experience'
 import cityData from '../../common/city'
 import {getLastLogin} from '../../services/user'
+import AddRemark from '../../components/Chat/AddRemark'
+import {addComment} from '../../services/comment'
 
 const {Item} = List
 const {Brief} = Item
 @connect(
     state=>state,
-    {getUserList}
+    {getUserList,getAllCommentList}
 )
 export default class Detail extends Component {
     constructor(props){
         super(props)
         this.state = {
-            lastLoginTime:''
+            lastLoginTime:'',
+            modalVisible:false,
+            popVisible:false
         }
     }
     componentWillMount(nextProps,nextState){
@@ -27,8 +32,8 @@ export default class Detail extends Component {
 		}
 	}
     componentDidMount(){
-        const {id} = this.props.match.params;
-        const {userName} = this.props.UserList.userList.find(item=>item._id===id)
+        const {username} = this.props.match.params;
+        const {userName} = this.props.UserList.userList.find(item=>item._id===username)
         getLastLogin({userName}).then(res=>{
             if(res.status===200){
                 if(res.data.success){
@@ -37,17 +42,74 @@ export default class Detail extends Component {
             }
         })
     }
+    toChat = () =>{
+        const {username} = this.props.match.params;
+        this.props.history.push(`/chat/${username}`)
+    }
+    handleVisible = (flag=true,popReset)=>{
+        this.setState({modalVisible:flag})
+        if(popReset==='yes'){
+            this.setState({popVisible:false})
+        }
+    }
+    comment = (content,score) =>{
+        const to = this.props.match.params.username;
+        const {userList} = this.props.UserList;
+        const fromName = this.props.login.userName;
+        const toName = userList.find(item=>item._id===to).userName;
+        addComment({content,to,score,toName,fromName}).then(res=>{
+            if(res.status===200&&res.data.success){
+                Modal.success({
+                    title:'评论成功',
+                    onOk:()=>{
+                        this.setState({modalVisible:false})
+                        this.props.getAllCommentList()
+                    }
+                })
+            }
+        });
+    }
     render() {
-        const {id} = this.props.match.params
-        const {userList} = this.props.UserList
-        const userItem = userList.find(v=>v._id===id)
-        // const {userName,avatar} = userItem
+        const {username} = this.props.match.params
+        const {userList,commentList} = this.props.UserList
+        const userItem = userList.find(v=>v._id===username)
+        const thisOneCommentList = commentList.filter(v=>v.to===username);
         const workingPlace = cityData[0].find(item=>item.value===userItem.workingPlace)
+        const myImg = src => <img src={require(`../../components/NavLink/img/${src}.png`)} className="am-icon am-icon-xs" alt="" />;
         return (
             <div>
                 <NavBar className='fixd-header' mode='dark'
                     icon={<Icon type="left" />}
                     onLeftClick={() => this.props.history.goBack()}
+                    rightContent={
+                        <Popover mask
+                          overlayClassName="fortest"
+                          overlayStyle={{ color: 'currentColor' }}
+                          visible={this.state.popVisible}
+                          overlay={[
+                            (<Popover.Item key="6" value="button ct" icon={myImg('comment')}>
+                              <span onClick={()=>this.handleVisible(true,'yes')}>评论</span>
+                            </Popover.Item>),
+                          ]}
+                          align={{
+                            overflow: { adjustY: 0, adjustX: 0 },
+                            offset: [-10, 0],
+                          }}
+                          onVisibleChange={this.handleVisibleChange}
+                          onSelect={this.onSelect}
+                        >
+                          <div style={{
+                            height: '100%',
+                            padding: '0 15px',
+                            marginRight: '-15px',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                          >
+                            <Icon type="ellipsis" />
+                          </div>
+                        </Popover>
+                    }
                 >
 					{userItem?userItem.userName:''}详细信息
 				</NavBar>
@@ -82,6 +144,39 @@ export default class Detail extends Component {
                         </Item>
                     </List>
                 </div>
+                <Row style={{margin:'5px 0'}} type="flex" justify="space-around">
+                    <Col span={10}>
+                        <Button 
+                            type="primary" 
+                            onClick={this.toChat}
+                        >
+                            发送消息
+                        </Button>
+                    </Col>
+                    <Col span={10}>
+                        <Button 
+                            type="primary" 
+                            onClick={this.toChat}
+                        >
+                            收藏
+                        </Button>
+                    </Col>
+                </Row>
+                    <h4>评价：</h4>
+                <List>
+                    {thisOneCommentList.map(item=>
+                        <Item key={item._id}>
+                            <Brief>
+                                <h4>{item.fromName}：</h4>评分：{item.score}分，评价：{item.content}
+                            </Brief>
+                        </Item>
+                    )}
+                </List>
+                <AddRemark 
+                    visible={this.state.modalVisible} 
+                    handleChangeVisible={this.handleVisible}
+                    handleComment={this.comment}
+                />
             </div>
         )
     }

@@ -8,6 +8,7 @@ import Boss from '../../components/Boss/Boss'
 import Genius from '../../components/Genius/Genius'
 import User from '../../components/User/User'
 import {getMsgList,sendMsg,recvMsg} from '../../reducer/ChatList-redux'
+import {getAllCommentList} from '../../reducer/UserList-redux'
 import {LoadData} from '../../reducer/login'
 import Msg from '../../components/Msg/Msg'
 import Analysis from '../Analysis/Analysis'
@@ -15,7 +16,7 @@ import Analysis from '../Analysis/Analysis'
 const Item = Popover.Item;
 @connect(
 	state=>state,
-	{getMsgList,sendMsg,recvMsg,LoadData}
+	{getMsgList,sendMsg,recvMsg,LoadData,getAllCommentList}
 )
 
 
@@ -35,6 +36,7 @@ class DashBoard extends React.Component{
             this.props.recvMsg()
 		}
 		this.props.getMsgList()
+		this.props.getAllCommentList()
 	}
 	editPersonInfo = () =>{
 		const {type} = this.props.login;

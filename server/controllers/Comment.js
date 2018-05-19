@@ -3,9 +3,9 @@ const CompanyComment = mongoose.model('comment');
 
 const addComment = async (ctx,next)=>{
     const from = ctx.cookies.get('userId');
-    const { content,to,score,toName } = ctx.request.body;
+    const { content,to,score,toName,fromName } = ctx.request.body;
     await new Promise((resolve,reject)=>{
-        CompanyComment.create({from,to,content,score,toName},(err,doc)=>{
+        CompanyComment.create({from,to,content,score,toName,fromName},(err,doc)=>{
             if(!err){
                 console.log(doc);
                 resolve({success:true,num:doc.n})
