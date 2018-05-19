@@ -10,7 +10,7 @@ const models = {
         userName:{type:String,required:true},   //用户名
         passWord:{type:String,required:true},   //密码
         type:{type:String,required:true},       //类型
-        createTime:{type:Date,default:new Date()},  //注册时间
+        createTime:{type:Number,default:Date.now},  //注册时间 {type:Date,default:new Date()}
         avatar:{'type':String},               //头像
 		desc:{'type':String},                 // 个人简介或者职位简介
         workingPlace:{type:String},           // 工作地点
@@ -31,24 +31,32 @@ const models = {
         read:{type:Boolean,default:false}
     },
     comment:{
-        from:{type:String,required:true},
-        to:{type:String,required:true},
-        reviewTime:{type:Number,default:Date.now},
-        content:{type:String,required:true},
-        score:{type:String}
+        from:{type:String,required:true},           //评论者
+        to:{type:String,required:true},             //被评论者
+        toName:{type:String,required:true},         //被评论者名称
+        reviewTime:{type:Number,default:Date.now},  //评论时间
+        content:{type:String,required:true},        //评论内容
+        score:{type:String}                         //打分
     },
+    // comment_application:{
+    //     from:{type:String,required:true},           //评论者
+    //     to:{type:String,required:true},             //被评论者
+    //     reviewTime:{type:Number,default:Date.now},  //评论时间
+    //     content:{type:String,required:true},        //评论内容
+    //     score:{type:String}                         //打分
+    // },
     lastLoginTime:{
         userName:{type:String,required:true},
         time:{type:Number,default:Date.now},
     },
     collections_applicant:{
         from:{type:String,required:true},
-        collectionRecruiters:{type:String,required:true},
+        to:{type:String,required:true},
         collectionTime:{type:Number,default:Date.now}
     },
-    collections_recruiters:{
+    collections_company:{
         from:{type:String,required:true},
-        collectionApplicant:{type:String,required:true},
+        to:{type:String,required:true},
         collectionTime:{type:Number,default:Date.now}
     }
 }

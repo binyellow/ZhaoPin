@@ -1,6 +1,6 @@
 const UserDB = require('../dbDao/user')
 const getMd5Pwd = require('../utils/utils')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 const findList = async (ctx,next)=>{
     const {type} = ctx.query;
@@ -28,4 +28,24 @@ const update = async (ctx,next)=>{
     const resData = await UserDB.update(id,{...body});
     ctx.body = resData
 }
-module.exports = {findList,register,update}
+
+const getLastLogin = async (ctx,next)=>{
+    const {userName} = ctx.query;
+    console.log(userName);
+    const LastLoginTime = mongoose.model('lastLoginTime')
+    let res = {}
+    await new Promise((resolve,reject)=>{
+        LastLoginTime.find({userName},(err,doc)=>{
+            if(err){
+                res = {success:false,data:err};
+                reject(res);
+            }else{
+                res = {success:true,data:doc};
+                resolve(res);
+            }
+        })
+    })
+    ctx.body =  res;
+}
+
+module.exports = {findList,register,update,getLastLogin}

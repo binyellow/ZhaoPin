@@ -8,6 +8,8 @@ import {List,InputItem, Button,NavBar,Icon,Grid,Popover} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {getMsgList,sendMsg,recvMsg,readMsg} from '../../reducer/ChatList-redux';
 import {getUserList} from '../../reducer/UserList-redux'
+import AddRemark from './AddRemark';
+import {addComment} from '../../services/comment'
 
 const socket = io('ws://localhost:9030');
 const {Item} = List
@@ -21,7 +23,9 @@ export default class Chat extends Component {
         this.state = {
             text: '',
             msg: [],
-            showEmoji: false
+            showEmoji: false,
+            modalVisible: false,
+            popVisible:false
         }
     }
     componentWillUpdate(nextProps, nextState){
@@ -42,6 +46,12 @@ export default class Chat extends Component {
     componentWillUnmount(){
         //将要离开页面的时候把聊天的id传过去
         this.props.readMsg(this.props.match.params.username)
+    }
+    handleVisible = (flag=true)=>{
+        this.setState({modalVisible:flag})
+    }
+    handlePopVisible = (flag=true) =>{
+
     }
     fixCarousel(){
         setTimeout(()=>window.dispatchEvent(new Event('resize')),0)
@@ -83,6 +93,21 @@ export default class Chat extends Component {
         const to = this.props.match.params.username
         this.props.history.push(`/detail/${to}`)
     }
+    comment = (content,score) =>{
+        const to = this.props.match.params.username;
+        const {userList} = this.props.UserList;
+        const toName = userList.find(item=>item._id===to).userName;
+        addComment({content,to,score,toName}).then(res=>{
+            if(res.status===200&&res.data.success){
+                Modal.success({
+                    title:'评论成功',
+                    onOk:()=>{
+                        this.setState({modalVisible:false})
+                    }
+                })
+            }
+        });
+    }
     render() {
         const emoji = '😀 😁 😂 🤣 😃 😄 😍 😋 😘 😗 😙 😚 🤩 🙄 😶 😑 😐 😣 😥 😮 🤐 😪 😫 😴 😌 😛 😝 🤤 😒 😓 😔 😕 🙃 🤑 🤯 😬 😱 😳 🤪 😵 😡 😠 😷 🤢 🤕 😇 🤠 🤡'
         .split(' ').filter(v=>v).map(v=>({text:v}));
@@ -105,7 +130,7 @@ export default class Chat extends Component {
                             <Popover mask
                               overlayClassName="fortest"
                               overlayStyle={{ color: 'currentColor' }}
-                              visible={this.state.visible}
+                              visible={this.state.popVisible}
                               overlay={[
                                 (<Popover.Item key="4" value="scan" icon={myImg('detail')} data-seed="logId">
                                     <span onClick={this.seeDetail}>查看详细信息</span>
@@ -119,7 +144,7 @@ export default class Chat extends Component {
                                     <span onClick={()=>this.deleteMsg(msgsChatId)}>删除聊天记录</span>
                                 </Popover.Item>),
                                 (<Popover.Item key="6" value="button ct" icon={myImg('comment')}>
-                                  <span style={{ marginRight: 5 }}>评论</span>
+                                  <span onClick={()=>this.handleVisible()}>评论</span>
                                 </Popover.Item>),
                               ]}
                               align={{
@@ -190,6 +215,11 @@ export default class Chat extends Component {
                     >
                     </InputItem>
                 </List>
+                <AddRemark 
+                    visible={this.state.modalVisible} 
+                    handleChangeVisible={this.handleVisible}
+                    handleComment={this.comment}
+                />
             </div>
         )
     }

@@ -3,10 +3,10 @@ const model = require('./model')
 const mongoose= require('mongoose')
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
-const {register,findList,update} = require('./controllers/user')
+const {register,findList,update,getLastLogin} = require('./controllers/user')
 const {deleteMsg} = require('./controllers/Chat')
 const Chat = model.getModule('chat');
-
+const {addComment,getCommentList} = require('./controllers/Comment')
 
 const filter = {'pwd':0,'__v':0}
 const user = new koaRouter();
@@ -142,7 +142,9 @@ user.get('/edit-pwd',EditPwd)
 user.get('/list',findList)
 user.post('/update',update)
 user.post('/delete-msg',deleteMsg)
-
+user.get('/get-last-login',getLastLogin)
+user.post('/comment',addComment)
+user.get('/comment-list',getCommentList)
 
 module.exports = user
 

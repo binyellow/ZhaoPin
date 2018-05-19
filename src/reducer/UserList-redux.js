@@ -1,10 +1,12 @@
 import axios from 'axios';
 const UPDATE_USER_LIST = 'UPDATE_USER_LIST';
 const UPDATE_ALL_USER_LIST = 'UPDATE_ALL_USER_LIST'
+const COMMENT_LIST = 'COMMENT_LIST'
 
 const initialState = {
     userList:[],
-    allUserList:[]
+    allUserList:[],
+    commentList:[]
 }
 export function UserList(state=initialState,action){
     switch(action.type){
@@ -12,6 +14,8 @@ export function UserList(state=initialState,action){
             return {...state,userList:action.payload};
         case UPDATE_ALL_USER_LIST:
             return {...state,allUserList:action.payload};
+        case COMMENT_LIST:
+            return {...state,commentList:action.payload};
         default:
             return state;
     }
@@ -23,12 +27,7 @@ function UserListAction(payload){
         payload
     }
 }
-function AllUserListAction(payload){
-    return {
-        type: UPDATE_ALL_USER_LIST,
-        payload
-    }
-}
+
 export function getUserList(type){
     // 如何用async,await来重构异步操作
     return async dispatch=>{
@@ -42,9 +41,30 @@ export function getUserList(type){
     // }
 }
 
+function AllUserListAction(payload){
+    return {
+        type: UPDATE_ALL_USER_LIST,
+        payload
+    }
+}
+
 export function getAllUserList(){
     return async dispatch=>{
         const res = await axios.get('/user/list');
         dispatch(AllUserListAction(res.data.data))
+    }
+}
+
+function CommentAction(payload){
+    return {
+        type: COMMENT_LIST,
+        payload
+    }
+}
+
+export function getAllCommentList(){
+    return async dispatch=>{
+        const res = await axios.get('/user/comment-list');
+        dispatch(CommentAction(res.data.data))
     }
 }

@@ -4,6 +4,7 @@ import {Result,NavBar,Icon,List} from 'antd-mobile';
 import {getUserList} from '../../reducer/UserList-redux'
 import experienceData from '../../common/experience'
 import cityData from '../../common/city'
+import {getLastLogin} from '../../services/user'
 
 const {Item} = List
 const {Brief} = Item
@@ -12,6 +13,12 @@ const {Brief} = Item
     {getUserList}
 )
 export default class Detail extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            lastLoginTime:''
+        }
+    }
     componentWillMount(nextProps,nextState){
         const {type} = this.props.login;
         const {userList} = this.props.UserList;
@@ -20,7 +27,15 @@ export default class Detail extends Component {
 		}
 	}
     componentDidMount(){
-        console.log(this.props.match.params.id);
+        const {id} = this.props.match.params;
+        const {userName} = this.props.UserList.userList.find(item=>item._id===id)
+        getLastLogin({userName}).then(res=>{
+            if(res.status===200){
+                if(res.data.success){
+                    this.setState({lastLoginTime:res.data.data[0].time})
+                }
+            }
+        })
     }
     render() {
         const {id} = this.props.match.params
@@ -38,7 +53,7 @@ export default class Detail extends Component {
 				</NavBar>
                 <div style={{marginTop:'45px'}}>
                     <Result
-                        img={<img style={{width:50}} src={require(`../../components/img/${userItem?userItem.avatar:'boy'}.png`)  }/>}
+                        img={<img style={{width:50}} src={require(`../../components/img/${userItem.avatar?userItem.avatar:'boy'}.png`)  }/>}
                         title={userItem?userItem.userName:''}
                     />
                     <List>
@@ -59,7 +74,10 @@ export default class Detail extends Component {
                                 {userItem.type==='boss'?`薪资：${userItem.money}`:`期待薪资：${userItem.expectMoney}`}
                             </Brief>
                             <Brief>
-                                注册时间：{userItem.createTime}
+                                注册时间：{new Date(userItem.createTime).toLocaleString()}
+                            </Brief>
+                            <Brief>
+                                最后登录时间：{this.state.lastLoginTime===''?'':new Date(this.state.lastLoginTime).toLocaleString()}
                             </Brief>
                         </Item>
                     </List>

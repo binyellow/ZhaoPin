@@ -22,7 +22,7 @@ class UserInfoCard extends Component {
                 >
                     <Card.Header
                         title={item.userName}                    
-                        thumb={require(`../img/${item.avatar}.png`)}
+                        thumb={require(`../img/${item.avatar?item.avatar:'boy'}.png`)}
                         extra={item.title}
                     >
                     </Card.Header>
