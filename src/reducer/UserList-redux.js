@@ -2,6 +2,7 @@ import axios from 'axios';
 const UPDATE_USER_LIST = 'UPDATE_USER_LIST';
 const UPDATE_ALL_USER_LIST = 'UPDATE_ALL_USER_LIST'
 const COMMENT_LIST = 'COMMENT_LIST'
+const FILTER_COLLECTION = 'FILTER_COLLECTION'
 
 const initialState = {
     userList:[],
@@ -16,6 +17,8 @@ export function UserList(state=initialState,action){
             return {...state,allUserList:action.payload};
         case COMMENT_LIST:
             return {...state,commentList:action.payload};
+        case FILTER_COLLECTION:
+            return {...state,userList:action.payload}
         default:
             return state;
     }
@@ -66,5 +69,18 @@ export function getAllCommentList(){
     return async dispatch=>{
         const res = await axios.get('/user/comment-list');
         dispatch(CommentAction(res.data.data))
+    }
+}
+
+function CollectionAction(payload){
+    return {
+        type: FILTER_COLLECTION,
+        payload
+    }
+}
+
+export function filterCollection(res){
+    return async dispatch=>{
+        dispatch(CollectionAction(res))
     }
 }
