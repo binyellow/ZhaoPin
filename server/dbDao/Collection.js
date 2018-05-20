@@ -7,7 +7,6 @@ const find = async (modelName,params)=>{
     await new Promise((resolve,reject)=>{
         modelName.find({...params},(err,doc)=>{
             if(doc.length){
-                console.log(doc);
                 res = {exist:true,doc,message:'已存在'}
                 resolve(res);
             }else{

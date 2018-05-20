@@ -11,8 +11,7 @@ export function getRedirectPath({type, avatar}){
 	}
 	return url
 }
-
-export function getMaxNumber(params){
+export function getArrNumToObj(params){
 	const hash = {};
 	for (let i = 0; i < params.length; i++) {
 		const ele = params[i];
@@ -22,7 +21,10 @@ export function getMaxNumber(params){
 			hash[ele]++;
 		}
 	}
-	console.log(hash);
+	return hash;
+}
+export function getMaxNumber(params){
+	const hash = getArrNumToObj(params);
 	let arr = [];
 	for (const key in hash) {
 		arr.push(hash[key])

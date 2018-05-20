@@ -9,9 +9,9 @@ const collectGenius = async (ctx,next)=>{
     const isExist = await find(CollectionGenius,{from,to})
     let res;
     if(!isExist.exist){//数据库没有这个用户
-        res = await create(CollectionGenius,{from,to})
+        res = await create(CollectionGenius,{from,...ctx.query})
     }else{
-        res = {...isExist,success:false}
+        res = await remove(CollectionGenius,{from,to})
     }
     ctx.body = res
 }
@@ -21,10 +21,8 @@ const collectCompany = async (ctx,next)=>{
     const isExist = await find(CollectionCompany,{from,to})
     let res;
     if(!isExist.exist){//数据库没有这个用户
-        console.log('noteExist',isExist);
-        res = await create(CollectionCompany,{from,to})
+        res = await create(CollectionCompany,{from,...ctx.query})
     }else{
-        console.log('Exist',isExist);
         res = await remove(CollectionCompany,{from,to})
     }
     ctx.body = res

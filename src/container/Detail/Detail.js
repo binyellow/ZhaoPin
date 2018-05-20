@@ -57,9 +57,9 @@ export default class Detail extends Component {
     comment = (content,score) =>{
         const to = this.props.match.params.username;
         const {userList} = this.props.UserList;
-        const fromName = this.props.login.userName;
+        const {type,userName} = this.props.login;
         const toName = userList.find(item=>item._id===to).userName;
-        addComment({content,to,score,toName,fromName}).then(res=>{
+        addComment({content,to,score,toName,fromName:userName,type}).then(res=>{
             if(res.status===200&&res.data.success){
                 Modal.success({
                     title:'评论成功',
@@ -189,7 +189,16 @@ export default class Detail extends Component {
                     {thisOneCommentList.map(item=>
                         <Item key={item._id}>
                             <Brief>
-                                <h4>{item.fromName}：</h4>评分：{item.score}分，评价：{item.content}
+                                <h4>{item.fromName}：</h4>
+                            </Brief>
+                            <Brief>
+                                评分：{item.score}分
+                            </Brief>
+                            <Brief>
+                                评价：{item.content}
+                            </Brief>
+                            <Brief>
+                                时间：{new Date(item.reviewTime).toLocaleString()}
                             </Brief>
                         </Item>
                     )}

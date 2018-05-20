@@ -97,7 +97,7 @@ class DashBoard extends React.Component{
 		const myImg = src => <img src={require(`../../components/NavLink/img/${src}.png`)} className="am-icon am-icon-xs" alt="" />;
 		return (
 			<div>
-				{pathname==='/boss'||'/genius'?
+				{pathname==='/boss'||pathname==='/genius'?
 					<NavBar className='fixd-header' mode='dark'
 						rightContent={
 							<Popover mask

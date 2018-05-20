@@ -37,7 +37,7 @@ const models = {
         toName:{type:String,required:true},         //被评论者名称
         reviewTime:{type:Number,default:Date.now},  //评论时间
         content:{type:String,required:true},        //评论内容
-        score:{type:String}                         //打分
+        score:{type:String},                         //打分
     },
     // comment_application:{
     //     from:{type:String,required:true},           //评论者
@@ -53,12 +53,14 @@ const models = {
     collections_genius:{
         from:{type:String,required:true},
         to:{type:String,required:true},
-        collectionTime:{type:Number,default:Date.now}
+        collectionTime:{type:Number,default:Date.now},
+        type:{type:String,required:true}             //收藏者类型
     },
-    collections_company:{
+    collections_company:{   //被收藏的公司列表的意思
         from:{type:String,required:true},
         to:{type:String,required:true},
-        collectionTime:{type:Number,default:Date.now}
+        collectionTime:{type:Number,default:Date.now},
+        type:{type:String,required:true}             //收藏者类型
     }
 }
 for (const key in models) {
