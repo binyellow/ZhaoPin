@@ -7,6 +7,7 @@ const {register,findList,update,getLastLogin} = require('./controllers/user')
 const {deleteMsg} = require('./controllers/Chat')
 const Chat = model.getModule('chat');
 const {addComment,getCommentList} = require('./controllers/Comment')
+const {collectGenius,collectCompany,getCompanyCollection,getGeniusCollection} = require('./controllers/Collection')
 
 const filter = {'pwd':0,'__v':0}
 const user = new koaRouter();
@@ -145,6 +146,10 @@ user.post('/delete-msg',deleteMsg)
 user.get('/get-last-login',getLastLogin)
 user.post('/comment',addComment)
 user.get('/comment-list',getCommentList)
+user.get('/collect-company',collectCompany)
+user.get('/collect-genius',collectGenius)
+user.get('/get-company-collection',getCompanyCollection)
+user.get('/get-genius-collection',getGeniusCollection)
 
 module.exports = user
 

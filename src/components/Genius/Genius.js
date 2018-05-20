@@ -3,9 +3,11 @@ import axios from 'axios';
 import {connect} from 'react-redux'
 import {getUserList} from '../../reducer/UserList-redux'
 import UserInfoCard from '../UserInfoCard/UserInfoCard'
+import {getCollectionList} from '../../reducer/Collection-redux'
+
 @connect(
     state=>({userList:state.UserList.userList}),
-    {getUserList}
+    {getUserList,getCollectionList}
 )
 export default class Genius extends Component {
     constructor(props){
@@ -16,6 +18,7 @@ export default class Genius extends Component {
     }
     componentDidMount(){
         this.props.getUserList('boss')
+        this.props.getCollectionList('genius')
     }
     render() {
         return (

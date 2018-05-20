@@ -50,7 +50,7 @@ const models = {
         userName:{type:String,required:true},
         time:{type:Number,default:Date.now},
     },
-    collections_applicant:{
+    collections_genius:{
         from:{type:String,required:true},
         to:{type:String,required:true},
         collectionTime:{type:Number,default:Date.now}

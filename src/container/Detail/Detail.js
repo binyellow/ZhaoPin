@@ -3,9 +3,11 @@ import {connect} from 'react-redux';
 import {Modal,Row,Col} from 'antd';
 import {Result,NavBar,Icon,List,Button,Popover} from 'antd-mobile';
 import {getUserList,getAllCommentList} from '../../reducer/UserList-redux'
+import {getCollectionList} from '../../reducer/Collection-redux'
 import experienceData from '../../common/experience'
 import cityData from '../../common/city'
 import {getLastLogin} from '../../services/user'
+import {collectItem} from '../../services/collection'
 import AddRemark from '../../components/Chat/AddRemark'
 import {addComment} from '../../services/comment'
 
@@ -13,7 +15,7 @@ const {Item} = List
 const {Brief} = Item
 @connect(
     state=>state,
-    {getUserList,getAllCommentList}
+    {getUserList,getAllCommentList,getCollectionList}
 )
 export default class Detail extends Component {
     constructor(props){
@@ -69,9 +71,22 @@ export default class Detail extends Component {
             }
         });
     }
+    collection = () =>{
+        const to = this.props.match.params.username;
+        const {type} = this.props.login;
+        collectItem({type,to}).then(res=>{
+            if(res.status===200&&res.data.success){
+                console.log(res.data.doc);
+                this.props.getCollectionList(type);
+            }
+        });
+    }
     render() {
         const {username} = this.props.match.params
         const {userList,commentList} = this.props.UserList
+        const {collectionList} = this.props.CollectionList;
+        const {_id} = this.props.login;
+        const isCollected = collectionList.some(v=>v.from===_id&&v.to===username)
         const userItem = userList.find(v=>v._id===username)
         const thisOneCommentList = commentList.filter(v=>v.to===username);
         const workingPlace = cityData[0].find(item=>item.value===userItem.workingPlace)
@@ -145,7 +160,7 @@ export default class Detail extends Component {
                     </List>
                 </div>
                 <Row style={{margin:'5px 0'}} type="flex" justify="space-around">
-                    <Col span={10}>
+                    <Col span={7}>
                         <Button 
                             type="primary" 
                             onClick={this.toChat}
@@ -153,17 +168,24 @@ export default class Detail extends Component {
                             发送消息
                         </Button>
                     </Col>
-                    <Col span={10}>
+                    <Col span={7}>
                         <Button 
                             type="primary" 
-                            onClick={this.toChat}
+                            onClick={()=>this.handleVisible(true)}
                         >
-                            收藏
+                            评论
+                        </Button>
+                    </Col>
+                    <Col span={7}>
+                        <Button 
+                            type="primary" 
+                            onClick={this.collection}
+                        >
+                            {isCollected?'取消收藏':'收藏'}
                         </Button>
                     </Col>
                 </Row>
-                    <h4>评价：</h4>
-                <List>
+                <List renderHeader={()=><h4>评价列表：</h4>}>
                     {thisOneCommentList.map(item=>
                         <Item key={item._id}>
                             <Brief>
