@@ -15,6 +15,7 @@ import Msg from '../../components/Msg/Msg'
 import Analysis from '../Analysis/Analysis'
 import MediaQuery from 'react-responsive';
 import { withRouter } from 'react-router-dom'
+import styles from './DashBoardPc.less'
 
 const { Header, Sider, Content } = Layout;
 // const Item = Popover.Item;
@@ -242,7 +243,7 @@ class DashBoardPc extends React.Component {
         }
       ]
       return (
-        <Layout>
+        <Layout  className={styles.layout}>
           <Sider
             trigger={null}
             collapsible
@@ -260,7 +261,11 @@ class DashBoardPc extends React.Component {
               </Menu.Item>
               <Menu.Item key="3">
                 <Icon type="upload" />
-                <span>nav 3</span>
+                <span onClick={()=>this.props.history.push('/analysis')}>分析</span>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <Icon type="video-camera" />
+                <span onClick={()=>this.props.history.push('/me')}>个人中心</span>
               </Menu.Item>
             </Menu>
           </Sider>
