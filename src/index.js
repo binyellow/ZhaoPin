@@ -17,6 +17,9 @@ import DashBoard from './container/DashBoard/DashBoard';
 import EditPwd from './container/EditPwd/EditPwd';
 import Chat from './components/Chat/Chat';
 import Detail from './container/Detail/Detail'
+import MediaQuery from 'react-responsive';
+import DashBoardPc from './container/DashBoard/DashBoardPc'
+import DashBoardMobile from './container/DashBoard/DashBoardMobile'
 
 const store = createStore(reducer,compose(
     applyMiddleware(thunk),
@@ -36,8 +39,14 @@ ReactDOM.render(
 					<Route path='/register' component={Register}></Route>
                     <Route path='/edit-pwd' component={EditPwd}></Route>
                     <Route path='/detail/:username' component={Detail}/>
-					<Route component={DashBoard}></Route>
+                    {/* <Route component={DashBoard}></Route> */}
 				</Switch>
+                <MediaQuery minWidth={800}>
+                        <Route component={DashBoardPc}></Route>
+                    </MediaQuery>
+                    <MediaQuery maxWidth={800}>
+                        <Route component={DashBoardMobile}></Route>
+                </MediaQuery>
             </div>
         </BrowserRouter>
     </Provider>, 
