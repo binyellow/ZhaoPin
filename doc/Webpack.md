@@ -1,9 +1,8 @@
 ---
 title: Webpack
 date: 2018-02-13 23:57:56
-tags:
-    - Webpack
-categories: Webpack
+tags: Webpack
+version: 0.0.1
 ---
 *注意插件和loader版本问题,要适配webpack4.0*
 ### Webpack自动刷新和模块热替换

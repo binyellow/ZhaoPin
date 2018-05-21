@@ -1,3 +1,10 @@
+---
+title: Node基础
+date: 2018-05-15
+tag: Node
+version: 0.0.1
+---
+
 ### 首先先熟悉JS基础
 1. [CNode:Node.js包教不包会](https://github.com/alsotang/node-lessons)
 2. 模块快速入门导引

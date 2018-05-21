@@ -1,3 +1,10 @@
+---
+title: VSCode插件和Node调试
+date: 2018-03-12 11:45:13
+tags: VSCode
+version: 0.0.1
+---
+
 ### 推荐使用VSCode开发
 #### 以下是常用插件
 1. Auto Close Tag: 自动闭合标签

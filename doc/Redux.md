@@ -1,3 +1,10 @@
+---
+title: 为什么需要Redux、Redux为我们做了什么
+date: 2018-03-12 11:45:13
+tags: Redux
+version: 0.0.1
+---
+
 ### 从需求出发，看看使用React需要什么？
 #### 回顾props和state
 1. props意味着父级分发下来的属性

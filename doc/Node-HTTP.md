@@ -1,3 +1,10 @@
+---
+title: HTTP基础
+date: 2018-05-15
+tag: HTTP
+version: 0.0.1
+---
+
 ### http模块创建http服务端、客户端
 ### http.createServer()、new http.Server()来创建服务器
 1. http.Server事件
