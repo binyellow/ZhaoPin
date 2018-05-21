@@ -20,7 +20,6 @@ const Item = Popover.Item;
 	state=>state,
 	{getMsgList,sendMsg,recvMsg,LoadData,getAllCommentList,filterCollection}
 )
-@withRouter
 class DashBoardMobile extends React.Component{
 	constructor(props){
 		super(props);

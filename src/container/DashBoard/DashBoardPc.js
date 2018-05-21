@@ -23,7 +23,7 @@ const { Header, Sider, Content } = Layout;
 	state=>state,
 	{getMsgList,sendMsg,recvMsg,LoadData,getAllCommentList,filterCollection}
 )
-// @withRouter
+@withRouter
 // class DashBoardPc extends React.Component{
 // 	constructor(props){
 // 		super(props);

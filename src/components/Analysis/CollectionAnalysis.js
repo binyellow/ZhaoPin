@@ -8,10 +8,8 @@ export default class CollectionAnalysis extends Component {
         const {collectionList} = this.props;
         const collectedId = collectionList.map(v=>v.to);//被收藏者的id列表
         let collectedName = []
-        userList.forEach(v=>{
-            if(collectedId.indexOf(v._id)>=0){
-                collectedName.push(v.userName)
-            }
+        collectedId.forEach(v=>{
+          collectedName.push(userList.find(item=>item._id===v).userName)
         })
         const collectedNameNum = getArrNumToObj(collectedName)
         const {type} = this.props.login;

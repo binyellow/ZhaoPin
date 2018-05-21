@@ -80,7 +80,7 @@ export default class RegisterMobile extends Component {
             }
         })
     }
-    render() {
+    render() {      {/*渲染Register页面*/}
         const path = this.props.location.pathname
         const {form:{getFieldDecorator},login:{redirectTo,isAuth}} = this.props;
         return (
