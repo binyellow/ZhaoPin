@@ -50,7 +50,7 @@ class BossInfo extends React.Component{
 				Modal.success({
 					title:'更新成功',
 					content:'个人信息保存成功',
-					onOk:()=>this.props.history.push(this.props.login.redirectTo)
+					onOk:()=>this.props.history.goBack()
 				})
 			}else{
 				Modal.error({
