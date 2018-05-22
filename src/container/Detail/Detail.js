@@ -54,7 +54,7 @@ export default class Detail extends Component {
             this.setState({popVisible:false})
         }
     }
-    comment = (content,score) =>{
+    comment = (content,score) =>{       //评论
         const to = this.props.match.params.username;
         const {userList} = this.props.UserList;
         const {type,userName} = this.props.login;
@@ -71,7 +71,7 @@ export default class Detail extends Component {
             }
         });
     }
-    collection = () =>{
+    collection = () =>{     //收藏
         const to = this.props.match.params.username;
         const {type} = this.props.login;
         collectItem({type,to}).then(res=>{

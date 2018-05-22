@@ -63,12 +63,12 @@ class DashBoardMobile extends React.Component{
 	handleVisible = (flag)=>{
         this.setState({modalVisible:flag})
     }
-	editPersonInfo = () =>{
+	editPersonInfo = () =>{		//修改个人信息
 		const {type} = this.props.login;
 		this.props.LoadData({type});
 		this.props.history.push('/login')
 	}
-	showCollection = () =>{
+	showCollection = () =>{		//显示收藏列表
 		const {collectionList} = this.props.CollectionList;
 		const collectionUserId = collectionList.map(v=>v.to);
 		const {userList} = this.props.UserList;
@@ -78,7 +78,7 @@ class DashBoardMobile extends React.Component{
 	render(){
 		const { pathname } = this.props.location
 		const {login} = this.props
-		const navList = [
+		const navList = [		//导航页对应的标签页列表
 			{
 				path:'/boss',
 				text:'牛人',
@@ -204,7 +204,7 @@ class DashBoardMobile extends React.Component{
 				}
 				<div style={{marginTop:45,marginBottom:50}}>
 					<Switch>
-						{navList.map(v=>(
+						{navList.map(v=>(	//遍历导航页列表，返回对应的路由
 							<Route key={v.path} path={v.path} component={v.component}></Route>
 						))}
 					</Switch>
@@ -213,7 +213,7 @@ class DashBoardMobile extends React.Component{
 					</QueueAnim> */}
 				</div>
 				<NavLinkBar data={navList}></NavLinkBar>
-				<Suggest
+				<Suggest		//建议弹窗
 					visible={this.state.modalVisible} 
                     handleChangeVisible={this.handleVisible}
 				/>

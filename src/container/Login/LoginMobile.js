@@ -23,9 +23,9 @@ const FormItemLayout = {
 export default class LoginMobile extends Component {
     handleLogin = () =>{
         const {validateFields} = this.props.form;
-        validateFields((err,values)=>{
+        validateFields((err,values)=>{  // 校验用户名或密码是否为空
             if(!err){
-                login(values).then(res=>{
+                login(values).then(res=>{   // 调用登录接口
                     if(res.status===200){
                         if(res.data.code===1){
                             Modal.error({title:'登录失败',content:res.data.message})
@@ -43,6 +43,7 @@ export default class LoginMobile extends Component {
             }
         })
     }
+    // 渲染页面
     render() {
         const {form:{getFieldDecorator},login:{redirectTo}} = this.props;
         // const {isAuth,type} = this.props.login;
@@ -73,7 +74,7 @@ export default class LoginMobile extends Component {
                 </FormItem>
                 <div>
                     <Row type="flex" justify="center" className={styles.operator}>
-                        <Col>
+                        <Col style={{marginBottom:'5px'}}>
                             <Button 
                             type="primary" 
                             onClick={this.handleLogin}>

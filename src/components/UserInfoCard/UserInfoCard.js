@@ -21,7 +21,7 @@ class UserInfoCard extends Component {
                     onClick={()=>this.handleToDetail(item)}
                 >
                     <Card.Header
-                        title={item.userName}                    
+                        title={item.userName}
                         thumb={require(`../img/${item.avatar?item.avatar:'boy'}.png`)}
                         extra={item.title}
                     >

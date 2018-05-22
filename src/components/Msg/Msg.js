@@ -15,8 +15,9 @@ const {Brief} = Item
 )
 @withRouter
 export default class Msg extends Component {
-    componentWillUpdate(nextProps, nextState){
+    componentWillUpdate(nextProps, nextState){  // 页面将要更新的钩子函数
         console.log(nextProps,nextState);
+        // 判断聊天列表的长度是否发生改变，如果数量变化了重新请求消息列表和联系人列表
         if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
             const {type} = this.props.login;
             this.props.getUserList(type==='boss'?'genius':'boss')
@@ -28,7 +29,7 @@ export default class Msg extends Component {
         this.props.getUserList(type==='boss'?'genius':'boss')
         this.props.getMsgList()
 	}
-    getLast = (arr) =>{
+    getLast = (arr) =>{     // 获取数组最后一个元素
         return arr[arr.length-1]
     }
     render() {

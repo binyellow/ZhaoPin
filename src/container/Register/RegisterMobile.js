@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import styles from './RegisterMobile.less'
-import {withRouter,Redirect} from 'react-router-dom'
+import {withRouter,Redirect,Link} from 'react-router-dom'
 import Logo from '../../components/Logo/Logo'
-import { Button, Input, Radio, Form, Modal } from 'antd'
+import { Button, Input, Radio, Form, Modal,Row,Col } from 'antd'
 import {connect} from 'react-redux';
 import {LoadData} from '../../reducer/login'
 import { register } from '../../services/user';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-
+const formLayout = {
+    labelCol:{span:6},
+    wrapperCol:{span:10}
+}
 @withRouter
 @Form.create()
 @connect(
@@ -27,11 +30,13 @@ export default class RegisterMobile extends Component {
             type:'genius',
         }
     }
+    // 管理页面的state：账号、密码等
     handleChangeState = (key,value)=>{
         this.setState({
             [key]:value
         })
     }
+    // 校验重复密码是否正确
     validRepeatPwd=(value)=>{
         if(value===this.state.passWord){
             return {
@@ -43,6 +48,7 @@ export default class RegisterMobile extends Component {
             }
         }
     }
+    // 重复密码改变触发函数改变state
     handleRepeatPwdChangeState = (value)=>{
         this.setState({
             repeatPassWord:{
@@ -51,6 +57,7 @@ export default class RegisterMobile extends Component {
             }
         })
     }
+    // 注册函数
     handleRegister = () =>{
         const {validateFields} = this.props.form;
         const {repeatPassWord,type} = this.state;
@@ -111,9 +118,9 @@ export default class RegisterMobile extends Component {
                 )}
                 </FormItem>
                 <FormItem
-                help
-                hasFeedback
-                validateStatus={this.state.repeatPassWord.validateStatus||''}//自定义校验
+                    help
+                    hasFeedback
+                    validateStatus={this.state.repeatPassWord.validateStatus||''}//自定义校验
                 >
                     <Input
                     type="password"
@@ -137,8 +144,19 @@ export default class RegisterMobile extends Component {
                         </RadioGroup>
                     </div>
                     <div style={{marginTop:'10px'}}>
-                        <Button type="primary" onClick={()=>this.handleRegister()}>注册</Button>
-                        <Button type="primary" onClick={()=>this.props.history.push('/login')}>登录</Button>
+                        {/* <Button type="primary" onClick={()=>this.handleRegister()}>注册</Button>
+                        <Button type="primary" onClick={()=>this.props.history.push('/login')}>登录</Button> */}
+                        <Row type="flex" justify="center" className={styles.operator}>
+                            <Col style={{marginBottom:'5px'}}>
+                                <Button 
+                                type="primary" 
+                                onClick={this.handleRegister}>
+                                注册</Button>
+                            </Col>
+                            <Col>
+                                <Link to="/login">登录</Link>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
             </div>
