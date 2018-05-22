@@ -66,9 +66,10 @@ const Login = (ctx, next)=>{
 
 const EditPwd = (ctx,next)=>{
     const {userName,passWord,newPassWord,type} = ctx.query;
+    const cookie = ctx.cookies.get('userId');
     const User = model.getModule('user');
     return new Promise((resolve,reject)=>{
-        User.findOneAndUpdate({userName,passWord:getMd5Pwd(passWord)},{passWord:getMd5Pwd(newPassWord),userName,type},(err,doc)=>{
+        User.findOneAndUpdate({_id:cookie,passWord:getMd5Pwd(passWord)},{passWord:getMd5Pwd(newPassWord),userName,type},(err,doc)=>{
             if(err||passWord===newPassWord){
                 reject({err,code:1,message:'请不要近期试用过的密码'})
             }else{

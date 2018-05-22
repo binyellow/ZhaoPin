@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import globalStyles from '../../common/globalStyles.less'
-import {Form,Input,Button,Modal} from 'antd'
+import {Form,Input,Button,Modal,Row,Col} from 'antd'
 import {connect} from 'react-redux'
 import {withRouter,Link,Redirect} from 'react-router-dom'
 import Logo from '../../components/Logo/Logo'
@@ -22,7 +22,6 @@ export default class EditPwd extends Component {
     constructor(props){
         super(props)
         this.state = {
-            userName:'',
             passWord:'',
             newPassWord:'',
             repeatNewPassWord:{
@@ -56,7 +55,7 @@ export default class EditPwd extends Component {
     }
     handleEditPassWord = () =>{
         const {form:{validateFields},login:{type="genius"}} = this.props;
-        const fieldNames = ['userName','passWord','newPassWord','repeatNewPassWord'];
+        const fieldNames = ['passWord','newPassWord','repeatNewPassWord'];
         validateFields(fieldNames,(err,values)=>{
             if(!err){
                 editPassWord({...values,type}).then(res=>{
@@ -82,18 +81,6 @@ export default class EditPwd extends Component {
                 {/* {this.props.login.isAuth||this.props.login.type?null:<Redirect to="/login"/>} */}
                 {/* {redirectTo&&path!==redirectTo?<Redirect to={redirectTo}/>:null} */}
                 <Logo/>
-                <FormItem
-                label="账号"
-                help
-                {...FormItemLayout}
-                >
-                {getFieldDecorator('userName',{
-                    rules:[{required:true}]
-                })(
-                    <Input
-                    onChange={e=>this.handleChangeState('userName',e.target.value)}/>
-                )}
-                </FormItem>
                 <FormItem
                 label="原始密码"
                 help
@@ -133,23 +120,21 @@ export default class EditPwd extends Component {
                         onChange={e=>this.handleRepeatPwdChangeState(e.target.value)}/>
                 )}
                 </FormItem>
-                <div className={globalStyles.operator}>
-                    <div style={{marginTop:'10px'}}>
-                        <Button 
-                        type="primary" 
-                        onClick={this.handleEditPassWord}
-                        style={{ transform: 'translateX(50px)'}}>
-                        修改密码</Button>
-                        <Button 
-                            style={{position:'relative',left:'180px'}}
-                            onClick={()=>{
-                                this.props.LoadData({});
-                                this.props.history.push('/login')
-                            }}
-                        >注销</Button>
-                        <Link to="/register" style={{position:'relative',left:'200px'}}>注册</Link>
-                    </div>
-                </div>
+                <Row type="flex" justify="center" className={globalStyles.operator}>
+                        <Col style={{marginBottom:'5px'}}>
+                            <Button 
+                            type="primary" 
+                            onClick={this.handleEditPassWord}>
+                            修改密码</Button>
+                        </Col>
+                        <Col>
+                            <Button 
+                                onClick={()=>{
+                                    this.props.history.goBack()
+                                }}
+                            >返回</Button>
+                        </Col>
+                </Row>
             </div>
         )
     }
