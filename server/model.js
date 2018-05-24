@@ -1,5 +1,4 @@
 const mongoose= require('mongoose')
-
 //使用user这个集合
 const DB_URL = 'mongodb://localhost:27017/User';
 mongoose.connect(DB_URL)
