@@ -70,7 +70,7 @@ class DashBoardMobile extends React.Component{
 	}
 	showCollection = () =>{		//显示收藏列表
 		const {collectionList} = this.props.CollectionList;
-		const collectionUserId = collectionList.map(v=>v.to);
+		const collectionUserId = collectionList.map(v=>{if(v.from===this.props.login._id){return v.to}});
 		const {userList} = this.props.UserList;
 		const filterData = userList.filter(item=>collectionUserId.indexOf(item._id)>=0)
 		this.props.filterCollection(filterData);
