@@ -31,13 +31,23 @@ exports.findList = async (params)=>{
  */
 exports.findParamsInDB = async (params)=>{
     let res = {exist:false};
-    await User.findOne({...params},(err,doc)=>{
-        if(err){
-            res = {...res,err}
-        }else if(doc){
-            res = {exist:true,doc,message:'用户已存在'}
-        }
-    }).then()
+    // await User.findOne({...params},(err,doc)=>{
+    //     if(err){
+    //         res = {...res,err}
+    //     }else if(doc){
+    //         res = {exist:true,doc,message:'用户已存在'}
+    //     }
+    // }).then()
+    await new Promise((resolve,reject)=>{
+        User.find({...params},(err,doc)=>{
+            if(doc.length){
+                res = {exist:true,doc,message:'已存在'}
+                resolve(res);
+            }else{
+                resolve(res)
+            }
+        })
+    })
     return res
         
     // await new Promise((resolve,reject)=>{
