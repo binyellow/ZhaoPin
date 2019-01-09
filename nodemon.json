@@ -1,0 +1,15 @@
+{   
+  "ignore": [
+    "src/*.js",
+    "src/**/*.js",
+    "README",
+    "src/*.tsx",
+    "src/**/*.tsx",
+    "node_modules",
+    "public"
+  ],
+  "env": {
+    "NODE_ENV": "development",
+    "BABEL_ENV": "development"
+  }
+}
