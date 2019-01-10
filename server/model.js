@@ -1,6 +1,6 @@
 const mongoose= require('mongoose')
 //使用user这个集合
-const DB_URL = 'mongodb://localhost:27017/User';
+const DB_URL = 'mongodb://localhost:27017/ZhaoPin';
 mongoose.connect(DB_URL)
 mongoose.connection.on('connected',()=>console.log('连接成功'))
 
