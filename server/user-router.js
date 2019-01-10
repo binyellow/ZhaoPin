@@ -5,7 +5,7 @@ const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
 const {register,findList,update,getLastLogin} = require('./controllers/user')
 const {deleteMsg} = require('./controllers/Chat')
-const Chat = model.getModule('chat');
+const Chat = require('./models/chat');
 const {addComment,getCommentList} = require('./controllers/Comment')
 const {collectGenius,collectCompany,getCompanyCollection,getGeniusCollection} = require('./controllers/Collection')
 
@@ -135,6 +135,7 @@ const readMsg = async (ctx,next)=>{
 //         resolve(res)
 //     }
 // })
+
 user.post('/read-msg',readMsg)
 user.get('/get-msg-list',getMsgList)
 user.get('/info', getData)

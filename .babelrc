@@ -1,15 +1,15 @@
 {
-    "presets": [
-      "react-app"
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd-mobile",
+        "style": "css"
+      }
     ],
-    "plugins": [
-      [
-        "import",
-        {
-          "libraryName": "antd-mobile",
-          "style": "css"
-        }
-      ],
-      "transform-decorators-legacy"
-    ]
+    "transform-decorators-legacy"
+  ]
 }

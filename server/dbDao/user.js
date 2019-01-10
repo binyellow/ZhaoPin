@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const User = mongoose.model('user')
+const User = require('../models/user');
 /**
  * 查找数据库所有数据
  */

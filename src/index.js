@@ -41,11 +41,11 @@ ReactDOM.render(
           <Route component={DashBoard} />
         </Switch>
         {/* <MediaQuery minWidth={800}>
-                        <Route component={DashBoardPc}></Route>
-                    </MediaQuery>
-                    <MediaQuery maxWidth={800}>
-                        <Route component={DashBoardMobile}></Route>
-                </MediaQuery> */}
+                <Route component={DashBoardPc}></Route>
+            </MediaQuery>
+            <MediaQuery maxWidth={800}>
+                <Route component={DashBoardMobile}></Route>
+        </MediaQuery> */}
       </div>
     </BrowserRouter>
   </Provider>,

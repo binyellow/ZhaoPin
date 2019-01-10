@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const Chat = mongoose.model('chat')
-
+const Chat = require('../models/chat');
 /**
  * 添加聊天消息
  */

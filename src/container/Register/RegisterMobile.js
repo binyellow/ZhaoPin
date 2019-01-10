@@ -42,13 +42,9 @@ export default class RegisterMobile extends Component {
   // 校验重复密码是否正确
   validRepeatPwd = (value) => {
     if (value === this.state.passWord) {
-      return {
-        validateStatus: 'success'
-      }
+      return { validateStatus: 'success' }
     } else {
-      return {
-        validateStatus: 'error'
-      }
+      return { validateStatus: 'error' }
     }
   }
   // 重复密码改变触发函数改变state
@@ -71,16 +67,11 @@ export default class RegisterMobile extends Component {
     } = this.state;
     validateFields((err, values) => {
       if (!err && repeatPassWord.validateStatus !== 'error' && repeatPassWord.value) {
-        console.log({ ...values,
-          type
-        })
-        register({ ...values,
-          type
-        }).then(res => {
+        console.log({ ...values, type })
+        register({ ...values, type }).then(res => {
+          console.log(res);
           if (res.status === 200) {
-            const {
-              data
-            } = res;
+            const { data } = res;
             if (!data.success) {
               Modal.error({
                 title: '注册失败',
@@ -91,13 +82,8 @@ export default class RegisterMobile extends Component {
                 title: '注册成功',
                 content: `欢迎您${values.userName}`,
                 onOk: () => {
-                  const {
-                    _id
-                  } = data.doc;
-                  this.props.LoadData({ ...values,
-                    type,
-                    _id
-                  });
+                  const { _id } = data._doc;
+                  this.props.LoadData({ ...values, type, _id });
                   this.props.history.push('/login')
                 }
               })
