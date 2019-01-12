@@ -40,12 +40,6 @@ ReactDOM.render(
           <Route path="/detail/:username" component={Detail} />
           <Route component={DashBoard} />
         </Switch>
-        {/* <MediaQuery minWidth={800}>
-                <Route component={DashBoardPc}></Route>
-            </MediaQuery>
-            <MediaQuery maxWidth={800}>
-                <Route component={DashBoardMobile}></Route>
-        </MediaQuery> */}
       </div>
     </BrowserRouter>
   </Provider>,

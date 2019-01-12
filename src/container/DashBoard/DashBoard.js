@@ -120,7 +120,7 @@ class DashBoardMobile extends React.Component{
 		const page = navList.find(item=>item.path === pathname)
 		const myImg = src => <img src={require(`../../components/NavLink/img/${src}.png`)} className="am-icon am-icon-xs" alt="" />;
 		return (
-			<div>
+			<div style={{height: '100%'}}>
 				{pathname==='/boss'||pathname==='/genius'?
 					<NavBar className='fixd-header' mode='dark'
 						rightContent={
@@ -202,7 +202,7 @@ class DashBoardMobile extends React.Component{
 						{pathname==='/'?null:navList.find(v=>v.path===pathname).title}
 					</NavBar>
 				}
-				<div style={{marginTop:45,marginBottom:50}}>
+				<div style={{height: 'calc(100% - 95px)', overflow: 'auto'}}>
 					<Switch>
 						{navList.map(v=>(	//遍历导航页列表，返回对应的路由
 							<Route key={v.path} path={v.path} component={v.component}></Route>
@@ -215,7 +215,7 @@ class DashBoardMobile extends React.Component{
 				<NavLinkBar data={navList}></NavLinkBar>
 				<Suggest		//建议弹窗
 					visible={this.state.modalVisible} 
-                    handleChangeVisible={this.handleVisible}
+          handleChangeVisible={this.handleVisible}
 				/>
 			</div>
 		)
