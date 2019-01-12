@@ -1,26 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const { successResponse, failedResponse } = require('../utils/response')
-const UserDB = require('../dbDao/user')
+const { successResponse, failedResponse } = require('../utils/response');
 const User = require('../models/user');
-const getMd5Pwd = require('../utils/utils')
-const { queryOne } = require('../dbDao/find');
-const create = require('../dbDao/create')
+const getMd5Pwd = require('../utils/utils');
+const { queryOne, query } = require('../dbDao/find');
+const create = require('../dbDao/create');
+const { updateOne } = require('../dbDao/update');
 
+/**
+ * 查询对方（需求方）用户列表
+ * @param {*} ctx 上下文对象
+ * @param {*} next next指针
+ */
 const findList = async (ctx,next)=>{
     const {type} = ctx.query;
-    let res = await UserDB.findList({type});
-    ctx.body = res
+    const data = await query(User, { type });
+    ctx.body = successResponse({data});
 }
 
 const register = async (ctx,next)=>{
     const {userName,passWord} = ctx.request.body;
-    let isExist = await queryOne(User, {userName})//数据库有true,数据库出错false
+    const isExist = await queryOne(User, {userName});
     let res;
-    if(!isExist){//数据库没有这个用户
-        res = await create(User, {...ctx.request.body,passWord:getMd5Pwd(passWord)})
-        console.log(res);
-        ctx.cookies.set('userId',res._id,{httpOnly:false})
+    if(!isExist){
+        res = await create(User, {...ctx.request.body, passWord:getMd5Pwd(passWord)})
+        ctx.cookies.set('userId', res._id, {httpOnly: true})
         ctx.body = successResponse(res)
     }else{
         ctx.body = failedResponse({message:'已存在'});
@@ -28,10 +32,10 @@ const register = async (ctx,next)=>{
 }
 
 const update = async (ctx,next)=>{
-    const id = ctx.cookies.get('userId');
-    const body = ctx.request.body;
-    const resData = await UserDB.update(id,{...body});
-    ctx.body = resData
+    const _id = ctx.cookies.get('userId');
+    const { body } = ctx.request;
+    const data = await updateOne(User, { _id }, {...body});
+    ctx.body = successResponse({ data });
 }
 
 const getLastLogin = async (ctx,next)=>{
@@ -53,4 +57,4 @@ const getLastLogin = async (ctx,next)=>{
     ctx.body =  res;
 }
 
-module.exports = {findList,register,update,getLastLogin}
+module.exports = {findList, register, update, getLastLogin}

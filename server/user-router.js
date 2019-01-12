@@ -154,38 +154,3 @@ user.get('/get-company-collection',getCompanyCollection)
 user.get('/get-genius-collection',getGeniusCollection)
 
 module.exports = user
-
-
-// const register = (ctx, next) => {
-//     const { userName } = ctx.request.body;
-//     const User = model.getModule('user');
-//     return new Promise((resolve,reject)=>{//返回Promise对象的执行结果其实就是 ctx.body=
-//         User.findOne({ userName },(err, doc) => {
-//             if(err){
-//                 reject(err)
-//                 return;
-//             }
-//             if (doc) {
-//                 reject( { code: 1, message: `用户名${userName}已存在`,doc })
-//             }else{
-//                 resolve({ code:0, message:doc })
-//             }
-//         })
-//     }).then(({code, message})=>{
-//             let registerData = ctx.request.body;
-//             const User = model.getModule('user');
-//             return new Promise((resolve,reject)=>{//新的Promise决定之前的状态,then也是处理他的状态
-//                 User.create({...registerData,passWord:getMd5Pwd(registerData.passWord)}).then(data=>{
-//                     console.log(data)
-//                     resolve({code:0,data})
-//                 },err=>reject(err))
-//             })
-//     }).then(({code,data})=>{
-//         ctx.cookies.set('userId',data._id)
-//         ctx.body = {code,data};
-//         next();
-//     }).catch((err) => {
-//         ctx.body = err;
-//         next();
-//     });
-// }
