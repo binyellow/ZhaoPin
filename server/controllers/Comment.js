@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const CompanyComment = mongoose.model('comment');
+const model = require('../model')
+const CompanyComment = model.getModule('comment');
 
 const addComment = async (ctx,next)=>{
     const from = ctx.cookies.get('userId');

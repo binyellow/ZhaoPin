@@ -5,9 +5,7 @@ const Router = require('koa-router')
 const userRouter = require('./user-router')
 const cors = require('koa2-cors')
 const bodyParser = require('koa-body')//koa-body、koa-bodyparser都可以body-parser暂时不知道为啥不可以
-const model = require('./model')
-const User = model.getModule('user')
-const Chat = model.getModule('chat')
+const Chat = ('./models/chat.js');
 const path = require('path')
 const koaStatic = require('koa-static')
 const fs = require('fs');
@@ -33,7 +31,6 @@ app.use((ctx, next)=>{
     ctx.body = fs.createReadStream(path.join(__dirname+'../build/index.html'));//path.resolve('build/index.html')
 })
 app.use(router.routes()).use(router.allowedMethods())
-
 
 var server = require('http').createServer(app.callback());
 var io = require('socket.io')(server)

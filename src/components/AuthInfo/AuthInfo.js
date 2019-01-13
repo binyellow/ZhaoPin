@@ -25,10 +25,9 @@ class AuthRoute extends React.Component {
 			.then(res => {
 				if (res.status === 200) {
 					if (res.data.success) {
-						this.props.LoadData(res.data.data)
-					} else {
-						this.props.history.push('/login')
+            this.props.LoadData(res.data.data)
 					}
+          this.props.history.push('/login')
 				}
 			})
 		// 是否登录

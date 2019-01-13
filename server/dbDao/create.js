@@ -1,5 +1,5 @@
-const create = async (model, params) => {
-  return await model.create(params)
+const create = (model, params) => {
+  return model.create(params)
 }
 
 module.exports = create

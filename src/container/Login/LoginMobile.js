@@ -27,9 +27,9 @@ export default class LoginMobile extends Component {
       if(!err){
         login(values).then(res=>{   // 调用登录接口
           if(res.status===200){
-            if(res.data.code===1){
+            if(!res.data.success){
               Modal.error({title:'登录失败',content:res.data.message})
-            }else if(res.data.code===0){
+            }else if(res.data.success){
               Modal.success({
                 title:'登录成功',
                 content:`欢迎您${values.userName}`,
