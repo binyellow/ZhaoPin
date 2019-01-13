@@ -28,18 +28,31 @@ const getMsgList = async (ctx,next)=>{
   try {
     const { _id = ctx.cookies.get('userId') } = ctx.query;
     const allUserData = await User.find();
-    const formatUserData = allUserData.map(item=> {
-      return { name: item.userName, avatar:item.avatar };
+    let result = {};
+    allUserData.forEach(item=> {
+      result[item._id] = { name: item.userName, avatar:item.avatar };
     });
     const chatList = await Chat.find({ $or: [{ from: _id }, { to: _id }]});
     if(!ctx.cookies.get('userId')) {
-      ctx.cookies.set('userId', _id, { httpOnly: true, domain: 'localhost', maxAge: 60*60*1000 });
+      console.log(_id);
+      ctx.cookies.set('userId', _id, { httpOnly: false, domain: 'localhost', maxAge: 60*60*1000 });
     }
-    ctx.body = successResponse({ msgs: chatList, users: formatUserData });
+    ctx.body = successResponse({ msgs: chatList, users: result });
   } catch (error) {
     ctx.body = failedResponse({ message: error });
     throw(error)
   }
 }
 
-module.exports = { createChat, deleteMsg, getMsgList };
+const readMsg = async (ctx,next)=>{
+  try {
+    const { from, _id: to = ctx.cookies.get('userId') } = ctx.request.body;
+    const result = await Chat.update({from,to},{'$set':{read:true}},{'multi':true});
+    ctx.body = successResponse({ num:result.nModified });
+  } catch (error) {
+    ctx.body = failedResponse({ message: error });
+    throw(error)
+  }
+}
+
+module.exports = { createChat, deleteMsg, getMsgList, readMsg };

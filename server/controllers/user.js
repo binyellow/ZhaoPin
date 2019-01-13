@@ -16,8 +16,12 @@ const { updateOne } = require('../dbDao/update');
  */
 const findList = async (ctx,next)=>{
   try {
-    const {type} = ctx.query;
+    const { type, _id = ctx.cookies.get('userId') } = ctx.query;
     const data = await query(User, { type });
+    if(!ctx.cookies.get('userId')) {
+      console.log(_id);
+      ctx.cookies.set('userId', _id, { httpOnly: false, domain: 'localhost', maxAge: 60*60*1000 });
+    }
     ctx.body = successResponse({data});
   } catch (error) {
     ctx.body = failedResponse({ message: error });
@@ -32,7 +36,7 @@ const register = async (ctx,next)=>{
     let res;
     if(!isExist){
       res = await create(User, { ...ctx.request.body, passWord:getMd5Pwd(passWord) })
-      ctx.cookies.set('userId', res._id, { httpOnly: true })
+      ctx.cookies.set('userId', res._id, { httpOnly: false })
       ctx.body = successResponse(res)
     }else{
       ctx.body = failedResponse({ message:'已存在' });
@@ -57,7 +61,7 @@ const Login = async (ctx, next)=>{
         } else {
           create(LastLoginTime, { userName: requestData.userName });
         }
-        ctx.cookies.set('userId', userResult._id, { httpOnly: true, domain: 'localhost', maxAge: 60*1000 });
+        ctx.cookies.set('userId', userResult._id, { httpOnly: false, domain: 'localhost', maxAge: 60*1000 });
         ctx.body = successResponse({ data: userResult });
       } else {
         ctx.body = failedResponse({ message: '账号或密码错误' });

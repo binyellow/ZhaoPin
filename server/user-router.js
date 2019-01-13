@@ -1,37 +1,25 @@
 const koaRouter = require('koa-router');
-const mongoose= require('mongoose')
 const { register, Login, findList, update, getLoginInfo, getLastLogin, EditPwd } = require('./controllers/user')
-const { getMsgList } = require('./controllers/Chat');
+const { getMsgList, readMsg } = require('./controllers/Chat');
 const {deleteMsg} = require('./controllers/Chat')
-const Chat = require('./models/chat');
 const {addComment,getCommentList} = require('./controllers/Comment')
 const {collectGenius,collectCompany,getCompanyCollection,getGeniusCollection} = require('./controllers/Collection')
 
 const user = new koaRouter();
 
-const readMsg = async (ctx,next)=>{
-    const to = ctx.cookies.get('userId');
-    const { from } = ctx.request.body;
-    await new Promise((resolve,reject)=>{
-        Chat.update({from,to},{'$set':{read:true}},{'multi':true},(err,doc)=>{
-            if(!err){
-                resolve({success:true,num:doc.nModified})
-            }else{
-                reject({})
-            }
-        })
-    }).then(res=>ctx.body = res).catch(e=>ctx.body={success:false,message:e})
-}
-// mongoose,model('user').find({},(e,userDoc)=>{
-//     if(!e){
-//         userDoc.forEach(item=>{
-//             users[item._id] = {name:item.userName,avatar:item.avatar}
+// const readMsg = async (ctx,next)=>{
+//     const to = ctx.cookies.get('userId');
+//     const { from } = ctx.request.body;
+//     await new Promise((resolve,reject)=>{
+//         Chat.update({from,to},{'$set':{read:true}},{'multi':true},(err,doc)=>{
+//             if(!err){
+//                 resolve({success:true,num:doc.nModified})
+//             }else{
+//                 reject({})
+//             }
 //         })
-//         res = {success:true,msgs:doc._doc,users}
-//         console.log(res)
-//         resolve(res)
-//     }
-// })
+//     }).then(res=>ctx.body = res).catch(e=>ctx.body={success:false,message:e})
+// }
 
 user.post('/read-msg',readMsg)
 user.get('/get-msg-list',getMsgList)

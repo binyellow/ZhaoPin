@@ -33,9 +33,9 @@ app.use(router.routes()).use(router.allowedMethods())
 var server = require('http').createServer(app.callback());
 var io = require('socket.io')(server)
 io.on('connection', function(socket){
-    socket.on('sendMsg',data=>{
+    socket.on('sendMsg',async data=>{
         console.log(data)
-        Chat.create(data,(err,doc)=>{
+        await Chat.create(data,(err,doc)=>{
             console.log(1+":  "+doc)
             io.emit('receive',Object.assign({},doc._doc))
         });

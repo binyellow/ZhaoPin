@@ -14,8 +14,8 @@ import {addComment} from '../../services/comment'
 const socket = io('ws://localhost:9030');
 const {Item} = List
 @connect(
-    state=>state,
-    {getMsgList,sendMsg,recvMsg,readMsg,getUserList}
+  state=>state,
+  {getMsgList,sendMsg,recvMsg,readMsg,getUserList}
 )
 export default class Chat extends Component {
     constructor(props){
@@ -29,17 +29,17 @@ export default class Chat extends Component {
         }
     }
     componentWillUpdate(nextProps, nextState){
-      const { login } = this.props.state;
+      const { login } = this.props;
       const { _id } = login;
       console.log(nextProps,nextState);
       if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
-          const {type} = this.props.login;
-          this.props.getUserList(type==='boss'?'genius':'boss')
-          this.props.getMsgList({ _id })
+        const {type} = this.props.login;
+        this.props.getUserList(type==='boss'?'genius':'boss')
+        this.props.getMsgList({ _id })
       }
     }
     componentDidMount(){
-      const { login } = this.props.state;
+      const { login } = this.props;
       const { _id } = login;
       if(!this.props.ChatList.chatMsg.length){
           this.props.recvMsg()
@@ -173,7 +173,7 @@ export default class Chat extends Component {
                         }
                     >{ !lodash.isEmpty(userList) && toName ||to}</NavBar>
                     <QueueAnim type='top'>
-                        {ChatMsg.map(item=>{
+                        {(ChatMsg||[]).map(item=>{
                             const avatar = require(`../img/${users[item.from].avatar}.png`)
                             return <List key={item._id}>
                                 {item.from===to?(
