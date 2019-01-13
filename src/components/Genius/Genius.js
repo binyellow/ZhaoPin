@@ -6,7 +6,7 @@ import UserInfoCard from '../UserInfoCard/UserInfoCard'
 import {getCollectionList} from '../../reducer/Collection-redux'
 
 @connect(
-    state=>({userList:state.UserList.userList}),
+    state=>({userList:state.UserList.userList, login: state.login}),
     {getUserList,getCollectionList}
 )
 export default class Genius extends Component {
@@ -17,8 +17,9 @@ export default class Genius extends Component {
         }
     }
     componentDidMount(){
-        this.props.getUserList('boss')
-        this.props.getCollectionList('genius')
+      const { _id } = this.props.login;
+      this.props.getUserList('boss', { _id })
+      this.props.getCollectionList('genius')
     }
     render() {
         return (

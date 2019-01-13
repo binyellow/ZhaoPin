@@ -29,19 +29,23 @@ export default class Chat extends Component {
         }
     }
     componentWillUpdate(nextProps, nextState){
-        console.log(nextProps,nextState);
-        if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
-            const {type} = this.props.login;
-            this.props.getUserList(type==='boss'?'genius':'boss')
-            this.props.getMsgList()
-        }
+      const { login } = this.props.state;
+      const { _id } = login;
+      console.log(nextProps,nextState);
+      if(nextProps.ChatList.chatMsg.length!==this.props.ChatList.chatMsg.length){
+          const {type} = this.props.login;
+          this.props.getUserList(type==='boss'?'genius':'boss')
+          this.props.getMsgList({ _id })
+      }
     }
     componentDidMount(){
-        if(!this.props.ChatList.chatMsg.length){
-            this.props.recvMsg()
-        }
-        this.props.getMsgList()//this.props.match.params.username
-        this.fixCarousel()
+      const { login } = this.props.state;
+      const { _id } = login;
+      if(!this.props.ChatList.chatMsg.length){
+          this.props.recvMsg()
+      }
+      this.props.getMsgList({ _id })//this.props.match.params.username
+      this.fixCarousel()
     }
     componentWillUnmount(){
         //将要离开页面的时候把聊天的id传过去

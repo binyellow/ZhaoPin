@@ -9,32 +9,6 @@ const {collectGenius,collectCompany,getCompanyCollection,getGeniusCollection} = 
 
 const user = new koaRouter();
 
-// const getMsgList = async (ctx,next)=>{
-//     const user = ctx.cookies.get('userId');
-//     // const {to} = ctx.query;
-//     let res = {}//常量的错不要再犯了
-//     await new Promise((resolve,reject)=>{
-//         let users = {};
-//         const User = mongoose.model('user');
-//         User.find({},(e,userDoc)=>{
-//             if(!e){
-//                 userDoc.forEach(item=>{
-//                     users[item._id] = {name:item.userName,avatar:item.avatar}
-//                 })
-//                 // console.log(user,to)
-//                 Chat.find({$or:[{from:user},{to:user}]},(err,doc)=>{   //查找from,to对应的聊天记录
-//                     if(!err){
-//                         // console.log(doc)
-//                         res = {success:true,msgs:doc,users}
-//                         resolve(res)
-//                     }else{
-//                         reject({success:false,message:err})
-//                     }
-//                 })
-//             }
-//         })
-//     }).then(data=> ctx.body = res).catch(e=>ctx.body = {success:false,message:e})
-// }
 const readMsg = async (ctx,next)=>{
     const to = ctx.cookies.get('userId');
     const { from } = ctx.request.body;

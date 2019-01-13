@@ -13,8 +13,6 @@ const fs = require('fs');
 const app = new koa();
 const router = new Router();
 
-// User.remove({},(err,doc)=>{console.log(doc)})
-// Chat.remove({},(err,doc)=>{console.log(doc)})
 app.use(cors({credentials: true}))
 app.use(bodyParser())
 app.use(koaStatic(path.resolve('build')))

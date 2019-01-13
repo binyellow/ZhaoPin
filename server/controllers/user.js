@@ -57,7 +57,7 @@ const Login = async (ctx, next)=>{
         } else {
           create(LastLoginTime, { userName: requestData.userName });
         }
-        ctx.cookies.set('userId', userResult._id, { httpOnly: true, domain: 'localhost', maxAge: 5*60*1000 });
+        ctx.cookies.set('userId', userResult._id, { httpOnly: true, domain: 'localhost', maxAge: 60*1000 });
         ctx.body = successResponse({ data: userResult });
       } else {
         ctx.body = failedResponse({ message: '账号或密码错误' });

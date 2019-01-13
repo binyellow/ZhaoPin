@@ -26,12 +26,15 @@ const deleteMsg = async (ctx,next)=>{
 
 const getMsgList = async (ctx,next)=>{
   try {
-    const { user = ctx.cookies.get('userId') } = ctx.query;
+    const { _id = ctx.cookies.get('userId') } = ctx.query;
     const allUserData = await User.find();
     const formatUserData = allUserData.map(item=> {
       return { name: item.userName, avatar:item.avatar };
     });
-    const chatList = await Chat.find({ $or: [{ from: user }, { to: user }]});
+    const chatList = await Chat.find({ $or: [{ from: _id }, { to: _id }]});
+    if(!ctx.cookies.get('userId')) {
+      ctx.cookies.set('userId', _id, { httpOnly: true, domain: 'localhost', maxAge: 60*60*1000 });
+    }
     ctx.body = successResponse({ msgs: chatList, users: formatUserData });
   } catch (error) {
     ctx.body = failedResponse({ message: error });

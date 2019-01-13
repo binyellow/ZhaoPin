@@ -31,10 +31,10 @@ function UserListAction(payload){
     }
 }
 
-export function getUserList(type){
+export function getUserList(type, params = {}){
     // 如何用async,await来重构异步操作
     return async dispatch=>{
-        const res = await axios.get('/user/list?type='+type);   //根据type获取联系人列表
+        const res = await axios.get('/user/list?type='+type, { params });   //根据type获取联系人列表
         dispatch(UserListAction(res.data.data))
     }
     // return dispatch=>{
