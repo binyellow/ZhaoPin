@@ -3,12 +3,12 @@
  * @param {*} model 
  * @param {Object} params 查询参数
  */
-const queryOne = (model, params) => {
-  return model.findOne(params).exec();
+const queryOne = (model, params, projection = {}) => {
+  return model.findOne(params, projection).exec();
 }
 
-const query = (model, params) => {
-  return model.find(params).exec();
+const query = (model, params,  projection = {}) => {
+  return model.find(params, projection).exec();
 }
 
 module.exports = { queryOne, query }

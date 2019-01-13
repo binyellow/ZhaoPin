@@ -60,8 +60,8 @@ class GeniusInfo extends React.Component{
 		const data = this.getOneProps(this.state,editItem)
 		update(data).then(res=>{
 			if(res.status===200&&res.data.success===true){
-				this.props.LoadData(res.data.data)
-				this.props.history.goBack()
+				this.props.LoadData({...data, ...res.data.data})
+				this.props.history.push('/login')
 			}else{
 				Modal.alert('更新失败',res.data.message)
 			}

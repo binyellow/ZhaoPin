@@ -82,8 +82,7 @@ export default class RegisterMobile extends Component {
                 title: '注册成功',
                 content: `欢迎您${values.userName}`,
                 onOk: () => {
-                  const { _id } = data._doc;
-                  this.props.LoadData({ ...values, type, _id });
+                  this.props.LoadData({ ...values, ...data._doc });
                   this.props.history.push('/login')
                 }
               })

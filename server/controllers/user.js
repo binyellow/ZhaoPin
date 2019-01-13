@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-const { successResponse, failedResponse } = require('../utils/response');
 const User = require('../models/user');
+const LastLoginTime = require('../models/lastLoginTime');
+const { successResponse, failedResponse } = require('../utils/response');
 const getMd5Pwd = require('../utils/utils');
 const { queryOne, query } = require('../dbDao/find');
 const create = require('../dbDao/create');
@@ -19,42 +20,79 @@ const findList = async (ctx,next)=>{
 }
 
 const register = async (ctx,next)=>{
-    const {userName,passWord} = ctx.request.body;
-    const isExist = await queryOne(User, {userName});
+  const {userName,passWord} = ctx.request.body;
+  try {
+    const isExist = await queryOne(User, { userName });
     let res;
     if(!isExist){
-        res = await create(User, {...ctx.request.body, passWord:getMd5Pwd(passWord)})
-        ctx.cookies.set('userId', res._id, {httpOnly: true})
-        ctx.body = successResponse(res)
+      res = await create(User, { ...ctx.request.body, passWord:getMd5Pwd(passWord) })
+      ctx.cookies.set('userId', res._id, { httpOnly: true })
+      ctx.body = successResponse(res)
     }else{
-        ctx.body = failedResponse({message:'已存在'});
+      ctx.body = failedResponse({ message:'已存在' });
     }
+  } catch (error) {
+    ctx.body = failedResponse({ message: error });
+    throw(error)
+  }
 }
 
 const update = async (ctx,next)=>{
     const _id = ctx.cookies.get('userId');
     const { body } = ctx.request;
     const data = await updateOne(User, { _id }, {...body});
+    console.log(data);
     ctx.body = successResponse({ data });
 }
 
-const getLastLogin = async (ctx,next)=>{
-    const {userName} = ctx.query;
-    console.log(userName);
-    const LastLoginTime = mongoose.model('lastLoginTime')
-    let res = {}
-    await new Promise((resolve,reject)=>{
-        LastLoginTime.find({userName},(err,doc)=>{
-            if(err){
-                res = {success:false,data:err};
-                reject(res);
-            }else{
-                res = {success:true,data:doc};
-                resolve(res);
-            }
-        })
-    })
-    ctx.body =  res;
+const getLoginInfo = async (ctx,next)=>{
+  const filter = {'pwd':0,'__v':0}
+  const id = ctx.cookies.get('userId');
+  const data = await queryOne(User, { id }, filter);
+  ctx.body = successResponse({ data });
 }
 
-module.exports = {findList, register, update, getLastLogin}
+/**
+ * 1. async返回promise
+ * 2. await作用域函数必须是async
+ * 3. await Promise对象，String=>Promise.resolve(String)
+ */
+const getLastLogin = async (ctx,next)=>{
+  const { userName } = ctx.query;
+  const data = await queryOne(LastLoginTime, { userName });
+  ctx.body = successResponse({ data })
+  // const {userName} = ctx.query;
+  // let res = {}
+  // await new Promise((resolve,reject)=>{
+  //   LastLoginTime.find({userName},(err,doc)=>{
+  //     if(err){
+  //       res = {success:false,data:err};
+  //       reject(res);
+  //     }else{
+  //       res = {success:true,data:doc};
+  //       resolve(res);
+  //     }
+  //   })
+  // })
+  // ctx.body =  res;
+}
+
+module.exports = { findList, register, update, getLoginInfo, getLastLogin }
+
+/*  test Async
+function timeOut(time) {
+  return new Promise(resolve=> {
+    setTimeout(()=>resolve(`time===>${time}`), time)
+  })
+}
+async function resolve() {
+  a = await timeOut(2000);
+  console.log(a);
+  console.log(1);
+  b = await timeOut(5000);
+  console.log(b);
+  console.log(2);
+  return 'end';
+}
+resolve().then(res=>console.log(res))
+*/

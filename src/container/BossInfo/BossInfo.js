@@ -46,11 +46,11 @@ class BossInfo extends React.Component{
 		const data = this.getOneProps(this.state,editItem)
 		update(data).then(res=>{
 			if(res.status===200&&res.data.success===true){
-				this.props.LoadData(res.data.data)
+				this.props.LoadData({...data, ...res.data.data})
 				Modal.success({
 					title:'更新成功',
 					content:'个人信息保存成功',
-					onOk:()=>this.props.history.goBack()
+					onOk:()=>this.props.history.push('/login')
 				})
 			}else{
 				Modal.error({

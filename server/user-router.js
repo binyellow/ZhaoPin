@@ -3,7 +3,7 @@ const model = require('./model')
 const mongoose= require('mongoose')
 const lodash = require('lodash')
 const getMd5Pwd = require('./utils/utils')
-const {register,findList,update,getLastLogin} = require('./controllers/user')
+const { register, findList, update, getLastLogin } = require('./controllers/user')
 const {deleteMsg} = require('./controllers/Chat')
 const Chat = require('./models/chat');
 const {addComment,getCommentList} = require('./controllers/Comment')
@@ -25,7 +25,7 @@ const getData = (ctx,next) => {
             })
         }
     }).then(doc=>{
-        ctx.body = {code:0,data:doc}
+        ctx.body = {success: true,data:doc}
         next()
     }).catch(e=>{
         ctx.body = e;

@@ -43,10 +43,10 @@ const models = {
     //     content:{type:String,required:true},        //评论内容
     //     score:{type:String}                         //打分
     // },
-    lastLoginTime:{
-        userName:{type:String,required:true},
-        time:{type:Number,default:Date.now},
-    },
+    // lastLoginTime:{
+    //     userName:{type:String,required:true},
+    //     time:{type:Number,default:Date.now},
+    // },
     collections_genius:{
         from:{type:String,required:true},
         to:{type:String,required:true},
