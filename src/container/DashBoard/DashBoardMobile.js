@@ -34,7 +34,7 @@ class DashBoardMobile extends React.Component{
 	componentDidMount(){
 		console.log(this.props)
 		if(!this.props.ChatList.chatMsg.length){
-            this.props.recvMsg()
+      this.props.recvMsg()
 		}
 		this.props.getMsgList()
 		this.props.getAllCommentList()

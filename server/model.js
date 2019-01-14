@@ -1,8 +1,22 @@
-const mongoose= require('mongoose')
-//使用user这个集合
+const mongoose = require('mongoose');
+
 const DB_URL = 'mongodb://localhost:27017/ZhaoPin';
-mongoose.connect(DB_URL)
-mongoose.connection.on('connected',()=>console.log('连接成功'))
+const connectDB = () => {
+  const connect = () => {
+    // mongoose.Promise = require('bluebird');
+    mongoose.connect(DB_URL, err => {
+      if (err) {
+        console.log(`===>  Error connecting to mongoDB`);
+        console.log(`Reason: ${err}`);
+      } else {
+        console.log(`===>  Succeeded in connecting to mongoDB`);
+      }
+    });
+  };
+  connect();
+  mongoose.connection.on('error', console.log);
+  mongoose.connection.on('disconnected', connect);
+}
 
 const models = {
     user:{
@@ -66,7 +80,8 @@ for (const key in models) {
     }
 }
 module.exports = {
-    getModule:function(name){
-        return mongoose.model(name)
-    }
+  getModule:function(name){
+      return mongoose.model(name)
+  },
+  connectDB
 }
