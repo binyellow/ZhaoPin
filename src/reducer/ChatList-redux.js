@@ -16,57 +16,70 @@ const initState = {
     unRead: 0   //未读信息数
 }
 
-export function ChatList(state=initState,action){
-    switch(action.type){
-        case MSG_LIST:
-            return {
-                ...state,
-                chatMsg:action.payload.msgs,
-                users:action.payload.users,
-                unRead:action.payload.msgs.filter(v=>!v.read&&v.to===action.payload.loginId).length
-            }
-        case MSG_RECV:
-            if(state.chatMsg.some(item=>item.chatId===action.payload.msg.chatId&&item.chatTime===action.payload.msg.chatTime)){
-                return {...state}
-            }else{
-                const n = action.payload.msg.to === action.payload.loginId? 1: 0; 
-                return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unRead:state.unRead+n}
-            }
-        case MSG_READ:
-            return {...state,chatMsg:state.chatMsg.map(item=>{
-                if(item.from===action.payload.from){
-                    item.read = true;
-                }
-                return item;
-            }),unRead:state.unRead-action.payload.num===0?0:state.unRead-action.payload.num}
-        default:
-            return state;
-    }
+export function ChatList(state = initState, action) {
+  switch (action.type) {
+    case MSG_LIST:
+      return {
+        ...state,
+        chatMsg: action.payload.msgs,
+        users: action.payload.users,
+        unRead: action.payload.msgs.filter(v => !v.read && v.to === action.payload.loginId).length
+      }
+    case MSG_RECV:
+      if (state.chatMsg.some(item => item.chatId === action.payload.msg.chatId && item.chatTime === action.payload.msg.chatTime)) {
+        return { ...state
+        }
+      } else {
+        const n = action.payload.msg.to === action.payload.loginId ? 1 : 0;
+        return { ...state,
+          chatMsg: [...state.chatMsg, action.payload.msg],
+          unRead: state.unRead + n
+        }
+      }
+    case MSG_READ:
+      return { ...state,
+        chatMsg: state.chatMsg.map(item => {
+          if (item.from === action.payload.from) {
+            item.read = true;
+          }
+          return item;
+        }),
+        unRead: state.unRead - action.payload.num === 0 ? 0 : state.unRead - action.payload.num
+      }
+    default:
+      return state;
+  }
 }
 
-function msgList(msgs,users,loginId){
-    return {
-        type: MSG_LIST,
-        payload:{msgs,users,loginId}
+function msgList(msgs, users, loginId) {
+  return {
+    type: MSG_LIST,
+    payload: {
+      msgs,
+      users,
+      loginId
     }
+  }
 }
 
-export function sendMsg(data){
-    return dispatch=>{
-        socket.emit('sendMsg',data)
-    }
+export function sendMsg(data) {
+  return dispatch => {
+    socket.emit('sendMsg', data)
+  }
 }
-export function getMsgList(params){
-    return (dispatch,getState)=>{
-        console.log(params);
-        axios.get('/user/get-msg-list',{ params })
-        .then(res=>{
-            if(res.status===200 && res.data.success){
-                const loginId = getState().login._id;
-                dispatch(msgList(res.data.msgs,res.data.users,loginId))
-            }
-        })
-    }
+export function getMsgList(params) {
+  return (dispatch, getState) => {
+    console.log(params);
+    axios.get('/user/get-msg-list', {
+        params
+      })
+      .then(res => {
+        if (res.status === 200 && res.data.success) {
+          const loginId = getState().login._id;
+          dispatch(msgList(res.data.msgs, res.data.users, loginId))
+        }
+      })
+  }
 }
 function msgRecv(msg,loginId){
     return {

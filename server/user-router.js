@@ -6,21 +6,6 @@ const {addComment,getCommentList} = require('./controllers/Comment')
 const {collectGenius,collectCompany,getCompanyCollection,getGeniusCollection} = require('./controllers/Collection')
 
 const user = new koaRouter();
-
-// const readMsg = async (ctx,next)=>{
-//     const to = ctx.cookies.get('userId');
-//     const { from } = ctx.request.body;
-//     await new Promise((resolve,reject)=>{
-//         Chat.update({from,to},{'$set':{read:true}},{'multi':true},(err,doc)=>{
-//             if(!err){
-//                 resolve({success:true,num:doc.nModified})
-//             }else{
-//                 reject({})
-//             }
-//         })
-//     }).then(res=>ctx.body = res).catch(e=>ctx.body={success:false,message:e})
-// }
-
 user.post('/read-msg',readMsg)
 user.get('/get-msg-list',getMsgList)
 user.get('/info', getLoginInfo)
